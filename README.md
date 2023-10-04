@@ -1,1 +1,1 @@
-# Hapiplan-Frontend
+# Haptiplan-Frontend
