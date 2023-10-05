@@ -1,14 +1,19 @@
 <?php
-
-require_once('src/controllers/homepage.php');
-
-if (isset($_GET['action']) && $_GET['action'] !== '') {
-    if ($_GET['action'] === 'test') {
-        # code...
-      
-    }else {
-        echo 'Error 404: the page does not exist!';
-    }
-}else {
-    homepage();
+if (isset($_GET['page'])) {
+    $requested_page = $_GET['page'];
+} else {
+    $requested_page = 'home';
 }
+// a better way would be to put this into an array, but I think a switch is easier to read for this example
+switch ($requested_page) {
+    case "blog":
+        include(__DIR__ . "/templates/blog.php");
+        break;
+    case "home":
+        include(__DIR__ . "/templates/home.php");
+        break;
+    default:
+        include(__DIR__ . "/templates/404.php");
+}
+
+
