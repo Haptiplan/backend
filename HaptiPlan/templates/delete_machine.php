@@ -8,16 +8,13 @@
 </head>
 
 <body>
-    <form action="/Haptiplan-Frontend/HaptiPlan/machine/edit" method="post">
+    <form action="/Haptiplan-Frontend/HaptiPlan/machine/delete" method="post">
         <div class="mb-3">
             <label for="" class="form-label">Maschine Nr:</label>
             <input type="text" class="form-control" id="maschineNr" name="maschineNr">
+            <!-- <input type="hidden" name="_method" value="DELETE"> -->
         </div>
-        <div class="mb-3">
-            <label for="" class="form-label">Beschreibung</label>
-            <input type="text" class="form-control" id="beschreibung" name="beschreibung">
-        </div>
-        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" name="submit" class="btn btn-primary">Delete</button>
     </form>
 
 </body>
