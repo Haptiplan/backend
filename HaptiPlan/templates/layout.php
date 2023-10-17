@@ -24,7 +24,6 @@
    <?php include_once('header.php'); ?>
 
    <?= $content ?>
-   <div id="demo"></div>
 
    <?php include_once('footer.php'); ?>
 

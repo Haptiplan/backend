@@ -9,17 +9,25 @@
 
 <body>
     <form action="/Haptiplan-Frontend/HaptiPlan/machine" method="post">
-        <div class="mb-3">
-            <label for="" class="form-label">Maschine Nr:</label>
-            <input type="text" class="form-control" id="maschineNr" name="maschineNr">
-        </div>
-        <div class="mb-3">
-            <label for="" class="form-label">Beschreibung</label>
-            <input type="text" class="form-control" id="beschreibung" name="beschreibung">
-        </div>
-        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+        <label for="id">ID</label>
+        <input type="text" name="id">
+        <br>
+        <label for="name">Name</label>
+        <input type="text" name="name">
+        <br>
+        <label for="kapazitaet">Kapazität</label>
+        <input type="text" name="kapazitaet">
+        <br>
+        <label for="preis">Preis</label>
+        <input type="text" name="preis">
+        <br>
+        <label for="laufzeit">Laufzeit</label>
+        <input type="text" name="laufzeit">
+        <br>
+        <label for="periode">Periode</label>
+        <input type="text" name="periode">
+        <br>
+        <input type="submit" name="submit" value ="create machine">
     </form>
-
 </body>
-
 </html>

@@ -9,12 +9,10 @@
 
 <body>
     <form action="/Haptiplan-Frontend/HaptiPlan/machine/delete" method="post">
-        <div class="mb-3">
-            <label for="" class="form-label">Maschine Nr:</label>
-            <input type="text" class="form-control" id="maschineNr" name="maschineNr">
-            <!-- <input type="hidden" name="_method" value="DELETE"> -->
-        </div>
-        <button type="submit" name="submit" class="btn btn-primary">Delete</button>
+        <label for="id">ID</label>
+        <input type="text" name="id">
+        <br>
+        <input type="submit" name="submit" value ="delete machine">
     </form>
 
 </body>

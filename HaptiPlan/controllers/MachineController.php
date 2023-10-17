@@ -6,9 +6,14 @@ class MachineController
     function addMachine()
     {
         if (isset($_POST['submit'])) {
+
             $new_data = array(
-                "maschineNr" => $_POST['maschineNr'],
-                "beschreibung" => $_POST['beschreibung']
+                "id" => $_POST['id'],
+                "name" => $_POST['name'],
+                "kapazitaet" => $_POST['kapazitaet'],
+                "preis" => $_POST['preis'],
+                "laufzeit" => $_POST['laufzeit'],
+                "periode" => $_POST['periode']
             );
 
             $jsonFilePath = 'data.json';
@@ -23,6 +28,9 @@ class MachineController
             $jsonData = json_encode($existingData, JSON_PRETTY_PRINT);
 
             file_put_contents($jsonFilePath, $jsonData);
+
+            $this->displayMachine();
+            
         }
     }
 
@@ -30,11 +38,15 @@ class MachineController
     {
         if (isset($_POST['submit'])) {
             $new_data = array(
-                "maschineNr" => $_POST['maschineNr'],
-                "beschreibung" => $_POST['beschreibung']
+                "id" => $_POST['id'],
+                "name" => $_POST['name'],
+                "kapazitaet" => $_POST['kapazitaet'],
+                "preis" => $_POST['preis'],
+                "laufzeit" => $_POST['laufzeit'],
+                "periode" => $_POST['periode']
             );
 
-            $id = $_POST['maschineNr'];
+            $id = $_POST['id'];
 
             $jsonFilePath = 'data.json';
             if (file_exists($jsonFilePath)) {
@@ -53,7 +65,7 @@ class MachineController
     {
         if (isset($_POST['submit'])) {
 
-            $id = $_POST['maschineNr'];
+            $id = $_POST['id'];
 
             $jsonFilePath = 'data.json';
             if (file_exists($jsonFilePath)) {
@@ -61,11 +73,10 @@ class MachineController
                 $existingData = json_decode(file_get_contents($jsonFilePath), true);
                 //var_dump($existingData);
                 foreach ($existingData as $key => $value) {
-                    if ($existingData[$key]["maschineNr"] == $id) {
+                    if ($existingData[$key]["id"] == $id) {
                         unset($existingData[$key]);
                     }
                 }
-
                 $jsonData = json_encode($existingData, JSON_PRETTY_PRINT);
 
                 file_put_contents($jsonFilePath, $jsonData);
@@ -77,10 +88,11 @@ class MachineController
     {
         $jsonFilePath = 'data.json';
         //read the existing JSON file
-        $existingData = json_decode(file_get_contents($jsonFilePath), true);
-        echo '<pre>';
-        var_dump($existingData);
-        echo '</pre>';
+        $existingData = file_get_contents($jsonFilePath);
+        //include './templates/display_machine.php';
+        header('Content-Type: application/json; charset=utf-8');
+        echo $existingData;
+        die();
     }
 
     function createMachine()
