@@ -7,7 +7,7 @@ class Response
     private string $httpBody;
     private int $httpResponseCode;
 
-    public function gethttpHeaders():array
+    public function getHttpHeaders():array
     {
         return $this->httpHeaders;
     }
@@ -40,7 +40,7 @@ class Response
         $this->httpBody = $httpBody;
     }
 
-    public function gettHttpBody():string
+    public function getHttpBody():string
     {
         return $this->httpBody;
     }
