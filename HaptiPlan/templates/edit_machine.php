@@ -8,10 +8,10 @@
 </head>
 
 <body>
-    <form action="/Haptiplan-Frontend/HaptiPlan/machine/edit" method="post">
+    <form action="/Haptiplan-Frontend/HaptiPlan/machine/update" method="post">
         <div class="mb-3">
             <label for="" class="form-label">Maschine Nr:</label>
-            <input type="text" class="form-control" id="maschineNr" name="maschineNr">
+            <input type="text" class="form-control" id="machineNr" name="machineNr">
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Beschreibung</label>

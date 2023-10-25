@@ -1,42 +1,18 @@
 [
     {
-        "maschineNr": "1",
-        "beschreibung": "gggdfdg"
+        "machineNr": "1",
+        "beschreibung": "test1"
     },
     {
-        "maschineNr": "2",
-        "beschreibung": "gggdfdg"
+        "machineNr": "2",
+        "beschreibung": "test2"
     },
     {
-        "maschineNr": "2",
-        "beschreibung": "gggdfdg"
+        "machineNr": "6",
+        "beschreibung": "gbcvbvcbcvbvb"
     },
     {
-        "maschineNr": "2",
-        "beschreibung": "gggdfdg"
-    },
-    {
-        "maschineNr": "2",
-        "beschreibung": "gggdfdg"
-    },
-    {
-        "maschineNr": "15",
-        "beschreibung": "jjjjjj"
-    },
-    {
-        "maschineNr": "z6",
-        "beschreibung": "xczv"
-    },
-    {
-        "maschineNr": "dfgdfg",
-        "beschreibung": "dfgdfg"
-    },
-    {
-        "maschineNr": "dfgdfg",
-        "beschreibung": "dfgdfg"
-    },
-    {
-        "maschineNr": "",
-        "beschreibung": ""
+        "machineNr": "5",
+        "beschreibung": "done"
     }
 ]
