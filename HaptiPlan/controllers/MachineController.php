@@ -9,7 +9,7 @@
 class MachineController
 {
 
-    function addMachine()
+    function addMachine(Request $request)
     {
         if (isset($_POST["machineNr"]) && isset($_POST["beschreibung"])) {
             $new_data = array(
@@ -36,7 +36,7 @@ class MachineController
         return Response::jsonResponse("Machine Number or Beschreibung not correct", 400);
     }
 
-    function updateMachine($id)
+    function updateMachine(Request $request, $id)
     {
         if (isset($_POST['submit'])) {
             $new_data = array(
@@ -64,7 +64,7 @@ class MachineController
         return Response::jsonResponse("Machine Number or Beschreibung not correct", 400);
     }
 
-    function deleteMachine($id)
+    function deleteMachine(Request $request, $id)
     {
 
             $jsonFilePath = 'data.json';
@@ -86,7 +86,7 @@ class MachineController
             return Response::jsonResponse("Machine is not founded", 404);
     }
 
-    function displayMachine()
+    function displayMachine(Request $request)
     {
         $jsonFilePath = 'data.json';
         $existingData = json_decode(file_get_contents($jsonFilePath), true);
@@ -96,23 +96,22 @@ class MachineController
         echo '<pre>';
         var_dump($existingData);
         echo '</pre>';
-
         */
     }
 
-    function createMachine()
+    function createMachine(Request $request)
     {
         $path = './templates/create_machine.php';
         return Response::viewResponse($path);
     }
 
-    function editMachine()
+    function editMachine(Request $request)
     {
         $path = './templates/edit_machine.php';
         return Response::viewResponse($path);
     }
 
-    function formToDeleteMachine()
+    function formToDeleteMachine(Request $request)
     {
         $path =  './templates/delete_machine.php';
         return Response::viewResponse($path);

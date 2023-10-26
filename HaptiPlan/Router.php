@@ -12,50 +12,53 @@ class Router {
     const MACHINE_ROOT = "machine";
 
     private MachineController $machineController;
+    private string $prefix;
 
-    public function __construct()
+    public function __construct(string $prefix)
     {
         $this->machineController = new MachineController();
+        $this->prefix = $prefix;
     }
 
-    function callController($requestedPage, $method){
+    function callController(Request $request){
 
-        if ($requestedPage == self::MACHINE_ROOT) { 
-            if ($method == self::POST_METHOD) {
-                return $this->machineController->addMachine();
-            }
-            if ($method == self::GET_METHOD) {
-                return $this->machineController->displayMachine();
-            }
-        }
 
-        if ($requestedPage == self::MACHINE_ROOT."/create") {
-            if ($method == self::GET_METHOD) {
-                return $this->machineController->createMachine();
+        if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT) { 
+            if ($request->getType() == self::POST_METHOD) {
+                return $this->machineController->addMachine($request);
+            }
+            if ($request->getType() == self::GET_METHOD) {
+                return $this->machineController->displayMachine($request);
             }
         }
 
-        if ($requestedPage == self::MACHINE_ROOT."/edit") {
-            if ($method == self::GET_METHOD) {
-                return $this->machineController->editMachine();
-            }
-        }
-        if ($requestedPage == self::MACHINE_ROOT."/update") {
-            if ($method == self::POST_METHOD) {
-                return $this->machineController->updateMachine($_POST['machineNr']);
-            }
-        }
-        if ($requestedPage == self::MACHINE_ROOT."/formToDeleteMachine") {
-            if ($method == self::GET_METHOD) {
-                return $this->machineController->formToDeleteMachine();
+        if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/create") {
+            if ($request->getType() == self::GET_METHOD) {
+                return $this->machineController->createMachine($request);
             }
         }
 
-        if ($requestedPage == self::MACHINE_ROOT."/delete") {
-            if ($method == self::POST_METHOD) {
-                return $this->machineController->deleteMachine($_POST['machineNr']);
+        if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/edit") {
+            if ($request->getType() == self::GET_METHOD) {
+                return $this->machineController->editMachine($request);
             }
         }
-        return Response::jsonResponse("No Content", 404);
+        if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/update") {
+            if ($request->getType() == self::POST_METHOD) {
+                return $this->machineController->updateMachine($request, $_POST['machineNr']);
+            }
+        }
+        if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/formToDeleteMachine") {
+            if ($request->getType() == self::GET_METHOD) {
+                return $this->machineController->formToDeleteMachine($request);
+            }
+        }
+
+        if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/delete") {
+            if ($request->getType() == self::POST_METHOD) {
+                return $this->machineController->deleteMachine($request, $_POST['machineNr']);
+            }
+        }
+        return Response::jsonResponse("Not found".$request->getUrl(), 404);
     }
 }
