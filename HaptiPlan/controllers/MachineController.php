@@ -13,8 +13,8 @@ class MachineController
     {
         if (isset($_POST["machineNr"]) && isset($_POST["beschreibung"])) {
             $new_data = array(
-                "machineNr" => $_POST["machineNr"],
-                "beschreibung" => $_POST["beschreibung"]
+                "machineNr" => $request->input('machineNr'),
+                "beschreibung" => $request->input('beschreibung')
             );
 
             $jsonFilePath = 'data.json';
@@ -40,8 +40,8 @@ class MachineController
     {
         if (isset($_POST['submit'])) {
             $new_data = array(
-                "machineNr" => $_POST['machineNr'],
-                "beschreibung" => $_POST['beschreibung']
+                "machineNr" => $request->input('machineNr'),
+                "beschreibung" => $request->input('beschreibung')
             );
 
             $jsonFilePath = 'data.json';
@@ -67,23 +67,23 @@ class MachineController
     function deleteMachine(Request $request, $id)
     {
 
-            $jsonFilePath = 'data.json';
-            if (file_exists($jsonFilePath)) {
-                //read the existing JSON file
-                $existingData = json_decode(file_get_contents($jsonFilePath), true);
+        $jsonFilePath = 'data.json';
+        if (file_exists($jsonFilePath)) {
+            //read the existing JSON file
+            $existingData = json_decode(file_get_contents($jsonFilePath), true);
 
-                foreach ($existingData as $key => $value) {
-                    if ($existingData[$key]["machineNr"] == $id) {
-                        unset($existingData[$key]);
-                    }
+            foreach ($existingData as $key => $value) {
+                if ($existingData[$key]["machineNr"] == $id) {
+                    unset($existingData[$key]);
                 }
-
-                $jsonData = json_encode($existingData, JSON_PRETTY_PRINT);
-                file_put_contents($jsonFilePath, $jsonData);
-
-                return Response::jsonResponse("Machine deleted");
             }
-            return Response::jsonResponse("Machine is not founded", 404);
+
+            $jsonData = json_encode($existingData, JSON_PRETTY_PRINT);
+            file_put_contents($jsonFilePath, $jsonData);
+
+            return Response::jsonResponse("Machine deleted");
+        }
+        return Response::jsonResponse("Machine is not founded", 404);
     }
 
     function displayMachine(Request $request)
@@ -92,11 +92,6 @@ class MachineController
         $existingData = json_decode(file_get_contents($jsonFilePath), true);
 
         return Response::jsonResponse($existingData);
-        /*
-        echo '<pre>';
-        var_dump($existingData);
-        echo '</pre>';
-        */
     }
 
     function createMachine(Request $request)

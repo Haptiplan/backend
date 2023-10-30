@@ -10,5 +10,9 @@
     {
         "machineNr": "6",
         "beschreibung": "updated"
+    },
+    {
+        "machineNr": "8",
+        "beschreibung": "done"
     }
 ]

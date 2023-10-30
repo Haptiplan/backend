@@ -11,23 +11,19 @@ class Request
     private array $segments;
     // contains the request type of the request : GET | POST
     private string $type;
-
-    //private  string $userAgent;
-    //private  string $host;
-    //private  string $accept;
-    //private  string $acceptLanguage;
-    //private  string $acceptEncoding;
+    // holds the value of Request after submitting the Form
+    private string $params;
 
     public function __construct()
     {
         $this->init();
     }
-
+    /*
     public function getLastElementInSegments(){
 
-        return $this->segments[count($this->segments)-1];
-        
+        return $this->segments[count($this->segments)-1];  
     }
+    */
 
     public function init()
     {
@@ -103,4 +99,29 @@ class Request
         return $this;
     }
 
+    /**
+     * Get the value of input
+     */
+    public function getInput()
+    {
+        return $this->params;
+    }
+
+    /**
+     * Set the value of input
+     *
+     * @return  self
+     */
+    public function setInput($input)
+    {
+        $this->params = $input;
+
+        return $this;
+    }
+
+    public function input($name)
+    {
+        $this->setInput($_REQUEST[$name]);
+        return $this->getInput();
+    }
 }
