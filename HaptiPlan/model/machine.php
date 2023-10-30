@@ -17,7 +17,7 @@ class Machine{
      * 
      * @param int $id Die Id der Maschine.
      * @param string $name Den Namen der Maschine.
-     * @param string $capacity Die Kapazität der Maschine.
+     * @param string $capacity Die Capacity der Maschine.
      * @param int $price Der Preis der Maschine.
      * 
      * @example
@@ -38,7 +38,7 @@ class Machine{
      * 
      * @return int Id der Maschine.
      */
-    public function getId() :int
+    public function getMachineId() :int
     {
         return $this->id;
     }
@@ -48,7 +48,7 @@ class Machine{
      *
      * @param int $id Die ID der Maschine.
      */
-    public function setId(int $id)
+    public function setMachineId(int $id)
     {
          $this->id = $id;
     }
@@ -58,7 +58,7 @@ class Machine{
      * 
      * @return string Name der Maschine.
      */
-    public function getName() :string
+    public function getMachineName() :string
     {
         return $this->name;
     }
@@ -68,27 +68,27 @@ class Machine{
      *
      * @param string $name Den Namen der Maschine.
      */
-    public function setName(string $name)
+    public function setMachineName(string $name)
     {
         $this->name = $name;
     }  
 
     /**
-     * Die Methode gibt die Kapazität der Maschine zurück
+     * Die Methode gibt die Capacity der Maschine zurück
      * 
-     * @return string Kapazität der Maschine.
+     * @return string Capacity der Maschine.
      */
-    public function getCapacity() :string
+    public function getMachineCapacity() :string
     {
         return $this->capacity;
     }
 
     /**
-     * Setzt die Kapazität der Maschine.
+     * Setzt die Capacity der Maschine.
      *
-     * @param string $capacity Die Kapazität der Maschine.
+     * @param string $capacity Die Capacity der Maschine.
      */
-    public function setCapacity(string $capacity)
+    public function setMachineCapacity(string $capacity)
     {
         $this->capacity = $capacity;
     }  
@@ -100,7 +100,7 @@ class Machine{
      *
      * @return int Der Preis der Maschine.
      */
-    public function getPrice() :int
+    public function getMachinePrice() :int
     {
         return $this->price;
     }
@@ -113,7 +113,7 @@ class Machine{
      * @param int $price Der neue Preis der Maschine.
      * @return void
      */
-    public function setPrice(int $price)
+    public function setMachinePrice(int $price)
     {
          $this->price = $price;
     }
@@ -125,7 +125,7 @@ class Machine{
      *
      * @return int Die Dauer (Laufzeit) der Maschine.
      */
-    public function getDuration() :int
+    public function getMachineDuration() :int
     {
         return $this->duration;
     }
@@ -138,7 +138,7 @@ class Machine{
      * @param int $duration Die neue Dauer (Laufzeit) der Maschine.
      * @return void
      */
-    public function setDuration(int $duration)
+    public function setMachineDuration(int $duration)
     {
          $this->duration = $duration;
     }
@@ -150,7 +150,7 @@ class Machine{
      *
      * @return int Die Periode der Maschine.
      */
-    public function getPeriod() :int
+    public function getMachinePeriod() :int
     {
         return $this->period;
     }
@@ -163,7 +163,7 @@ class Machine{
      * @param int $period Die neue Periode (Zyklus) der Maschine.
      * @return void
      */
-    public function setPeriod(int $period)
+    public function setMachinePeriod(int $period)
     {
          $this->period = $period;
     }
@@ -176,7 +176,6 @@ class Machine{
      */
     public function __toString() :string
     {
-        return "ID: " . $this->id . ", Name: " . $this->name;
+        return "ID: " . $this->id . " Name: " . $this->name . "Kapazität: ".$this->capacity . "Preis: " . $this->price;
     }
 }
-?>

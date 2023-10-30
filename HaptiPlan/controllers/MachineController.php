@@ -8,12 +8,7 @@ class MachineController
         if (isset($_POST['submit'])) {
 
             $new_data = array(
-                "id" => $_POST['id'],
-                "name" => $_POST['name'],
-                "kapazitaet" => $_POST['kapazitaet'],
-                "preis" => $_POST['preis'],
-                "laufzeit" => $_POST['laufzeit'],
-                "periode" => $_POST['periode']
+                "name" => $_POST['name']   
             );
 
             $jsonFilePath = 'data.json';
@@ -29,8 +24,7 @@ class MachineController
 
             file_put_contents($jsonFilePath, $jsonData);
 
-            $this->displayMachine();
-            
+            $this->createMachine();
         }
     }
 
@@ -38,12 +32,11 @@ class MachineController
     {
         if (isset($_POST['submit'])) {
             $new_data = array(
-                "id" => $_POST['id'],
                 "name" => $_POST['name'],
-                "kapazitaet" => $_POST['kapazitaet'],
-                "preis" => $_POST['preis'],
-                "laufzeit" => $_POST['laufzeit'],
-                "periode" => $_POST['periode']
+                "capacity" => $_POST['capacity'],
+                "price" => $_POST['price'],
+                "duration" => $_POST['duration'],
+                "period" => $_POST['period']
             );
 
             $id = $_POST['id'];
@@ -97,7 +90,7 @@ class MachineController
 
     function createMachine()
     {
-        require_once './templates/create_machine.php';
+        require_once './templates/create_machine.html';
     }
 
     function editMachine()

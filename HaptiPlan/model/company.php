@@ -25,15 +25,24 @@ class Company{
         $this->machines = array();
     }   
 
-    
     /**
      * Gibt die Id des Unternehmens zurück.
      * 
      * @return int Die ID des Unternehmens.
      */   
-    public function getId() :int
+    public function getCompanyId() :int
     {
         return $this->id;
+    }
+
+     /**
+     * Setzt die ID des Unternehmens.
+     * 
+     * @param int $id Die ID des Unternehmens.
+     */
+    public function setCompanyId(int $id)
+    {
+        $this->id = $id;
     }
 
     /**
@@ -41,27 +50,17 @@ class Company{
      * 
      * @return string Der Name des Unternehmens.
      */
-    public function getName() :string
+    public function getCompanyName() :string
     {
         return $this->name;
     }
 
     /**
-     * @params int $id Die ID des Unternehmens.
-     * 
-     * Setzt die ID des Unternehmens.
-     */
-    public function setId(int $id)
-    {
-         $this->id = $id;
-    }
-
-    /**
-     * @params string $name Der Name des Unternehmens.
-     * 
      * Setzt den Namen des Unternehmens.
+     * 
+     * @param string $name Der Name des Unternehmens.
      */
-    public function setName(string $name)
+    public function setCompanyName(string $name) :never
     {
         $this->name = $name;
     }
@@ -80,29 +79,49 @@ class Company{
     /**
      * Eine Maschine wird dem Unternehmen hinzugefügt.
      * 
-     * 
-     * 
      * @param int $id Die Id der Maschine.
      * @param string $name Der Name der Maschine.
-     * @param string $capacity Die Kapazität der Maschine.
+     * @param string $capacity Die Capacity der Maschine.
      * @param int $price Der Preis der Maschine.
      * @return $machine Das erstelle Maschinen-Objekt.
      */
-    public function addMachine(int $id, string $name, string $capacity,int $price)
+    public function addMachine(int $id, string $name, string $capacity, int $price)
     {
         $machine = new Machine($id, $name, $capacity, $price);
-        $this->machines[] = $machine;
+        $this->machines[$id] = $machine;
         return $machine; 
     }
-    
+
+    /**
+     * Entfernt eine Maschine anhand der ID
+     * 
+     * @param int $id Die Id der Maschine.
+     */
+    public function removeMachine(int $id)
+    {
+        unset($this->machines[$id]);
+    }
+
+    /**
+     * Gibt alle Maschinen des Unternehmens an.
+     * 
+     * @return $allMachines Alle Maschinen im Unternehmen
+     */
+    public function getMachines() : array
+    { 
+        return $this->machines;
+    }
+   
+    public function setMachines(array $machine) 
+    { 
+        $this->machines[] = $machine;
+    }
     /**
      * Ein User wird dem Unternehmen hinzugefügt.
      * 
      * @param int $id Die ID des Users.
      * @param string $name Den Namen des Users.
-     * 
      * @return $user Das erstelle User-Objekt.
-     * 
      */
     public function addUser(int $id, string $name)
     {
@@ -110,5 +129,14 @@ class Company{
         $this->users[] = $user;
         return $user;
     }
+
+     /**
+     * Gibt alle User des Unternehmen an.
+     * 
+     * @return $user Alle Users im Unternehmen
+     */
+    public function getUsers() : array
+    { 
+      return $this->users;
+    }
 }
-?>

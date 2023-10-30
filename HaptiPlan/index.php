@@ -15,7 +15,3 @@ if (isset($_GET['page'])) {
 
 $router = new Router();
 $router->callController($requested_page, $_SERVER['REQUEST_METHOD']);
-
-
-
-

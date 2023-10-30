@@ -15,17 +15,17 @@
         <label for="name">Name</label>
         <input type="text" name="name">
         <br>
-        <label for="kapazitaet">Kapazität</label>
-        <input type="text" name="kapazitaet">
+        <label for="capacity">Capacity</label>
+        <input type="text" name="capacity">
         <br>
-        <label for="preis">Preis</label>
-        <input type="text" name="preis">
+        <label for="price">Price</label>
+        <input type="text" name="price">
         <br>
-        <label for="laufzeit">Laufzeit</label>
-        <input type="text" name="laufzeit">
+        <label for="duration">Duration</label>
+        <input type="text" name="duration">
         <br>
-        <label for="periode">Periode</label>
-        <input type="text" name="periode">
+        <label for="period">Periode</label>
+        <input type="text" name="period">
         <br>
         <input type="submit" name="submit" value ="edit machine">
     </form>

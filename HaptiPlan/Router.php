@@ -31,6 +31,10 @@ class Router
             if ($method == self::GET_METHOD) {
                 $this->machineController->createMachine();
             }
+            //Wenn Maschine erstellt wurde, dann bleibt man auf create_machine.html
+            if ($method == self::POST_METHOD) { 
+                $this->machineController->addMachine();
+            }
         }
 
         if ($requestedPage == self::MACHINE_ROOT . "/edit") {

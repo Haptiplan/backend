@@ -1,18 +1,29 @@
 [
     {
-        "id": "0",
-        "name": "asad",
-        "kapazitaet": "asdaad",
-        "preis": "dadsadada",
-        "laufzeit": "asdada",
-        "periode": "adadada"
+        "name": "asdada",
+        "capacity": "asdad",
+        "price": "adsads",
+        "duration": "adsad",
+        "period": "asddddddddddd"
     },
     {
-        "id": "1",
-        "name": "Ma",
-        "kapazitaet": "",
-        "preis": "",
-        "laufzeit": "",
-        "periode": ""
+        "name": "Mas"
+    },
+    {
+        "id": "5",
+        "name": "dfdf",
+        "capacity": "22",
+        "price": "500",
+        "duration": "2222",
+        "period": "22222"
+    },
+    {
+        "name": "test"
+    },
+    {
+        "name": "test"
+    },
+    {
+        "name": "test"
     }
 ]

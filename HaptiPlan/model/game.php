@@ -1,11 +1,11 @@
 <?php
 /**
  * Die Game-Klasse repräsentiert das Spiel und verwaltet 
- * die Perioden und Unternehmen.
+ * die Periode und Unternehmen.
  */
 class Game{   
     private int $id;
-    private int $currentPeriod = 0;
+    private int $currentPeriod;
     private array $companies;
     
     /**
@@ -38,7 +38,7 @@ class Game{
     { 
         $output = "";
         foreach($this->companies as $company){ //diplays company array
-            $output .= $company . "<br>";
+            $output .= $company;
         }
         return $output;
     }
@@ -48,7 +48,7 @@ class Game{
      * 
      * @return int ID des Games.
      */
-    public function getId() : int
+    public function getGameId() : int
     {
         return $this->id;
     }
@@ -61,7 +61,7 @@ class Game{
      * @return $company Das erstellte Unternehmen wird zurückgegeben.
      * 
      */
-    public function add(int $id, string $name)
+    public function addCompany(int $id, string $name)
     {
         $company = new Company($id, $name);
         $this->companies[] = $company;
@@ -78,7 +78,7 @@ class Game{
      * @param int $id des Unternehmens.
      * 
      */
-    public function delete(int $id)
+    public function deleteCompany(int $id)
     {        
         unset($this->companies[$id]);
     }
@@ -90,9 +90,8 @@ class Game{
      * @param int $id Die neue ID des Unternehmens.
      * @param string $name Der neue Name des Unternehmens.
      */
-    public function update(int $key, int $id, string $name)
+    public function updateCompany(int $key, int $id, string $name)
     {
         $this->companies[$key] = new Company($id, $name); 
     }    
 }
-?>

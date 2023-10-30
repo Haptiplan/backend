@@ -24,7 +24,7 @@ class User{
      * 
      * @return int Id des User.
      */
-    public function getId() :int
+    public function getUserId() :int
     {
         return $this->id;
     }
@@ -34,7 +34,7 @@ class User{
      *
      * @param int $id Die ID des Users.
      */
-    public function setId(int $id)
+    public function setUserId(int $id)
     {
          $this->id = $id;
     }
@@ -44,7 +44,7 @@ class User{
      * 
      * @return string Name des Users.
      */
-    public function getName() :string
+    public function getUserName() :string
     {
         return $this->name;
     }
@@ -54,7 +54,7 @@ class User{
      *
      * @param string $name Den Namen des Users.
      */
-    public function setName(string $name)
+    public function setUserName(string $name)
     {
         $this->name = $name;
     }
@@ -70,4 +70,3 @@ class User{
         return "ID: " . $this->id . ", Name: " . $this->name;
     }
 }
-?>
