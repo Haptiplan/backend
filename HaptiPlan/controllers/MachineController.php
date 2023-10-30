@@ -2,7 +2,6 @@
 
 class MachineController
 {
-   
 
     function addMachine()
     {
@@ -27,13 +26,15 @@ class MachineController
         }
     }
 
-    function updateMachine($id)
+    function updateMachine()
     {
         if (isset($_POST['submit'])) {
             $new_data = array(
                 "maschineNr" => $_POST['maschineNr'],
                 "beschreibung" => $_POST['beschreibung']
             );
+
+            $id = $_POST['maschineNr'];
 
             $jsonFilePath = 'data.json';
             if (file_exists($jsonFilePath)) {
@@ -47,16 +48,18 @@ class MachineController
             }
         }
     }
-    function deleteMachine($id)
+
+    function deleteMachine()
     {
         if (isset($_POST['submit'])) {
+
+            $id = $_POST['maschineNr'];
 
             $jsonFilePath = 'data.json';
             if (file_exists($jsonFilePath)) {
                 //read the existing JSON file
                 $existingData = json_decode(file_get_contents($jsonFilePath), true);
-                var_dump($existingData);
-
+                //var_dump($existingData);
                 foreach ($existingData as $key => $value) {
                     if ($existingData[$key]["maschineNr"] == $id) {
                         unset($existingData[$key]);
@@ -80,15 +83,18 @@ class MachineController
         echo '</pre>';
     }
 
-    function createMachine(){
+    function createMachine()
+    {
         require_once './templates/create_machine.php';
     }
 
-    function editMachine(){
-        require_once './templates/create_machine.php';
+    function editMachine()
+    {
+        require_once './templates/edit_machine.php';
     }
-    //addMaschine();
-    //updateMaschine($_POST['maschineNr']);
-    //deleteMaschine($_POST['maschineNr']);
-    //displayMaschine();
+
+    function deleteForm()
+    {
+        require_once './templates/delete_machine.php';
+    }
 }
