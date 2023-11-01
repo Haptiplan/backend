@@ -29,7 +29,6 @@
         <br>
         <input type="submit" name="submit" value ="edit machine">
     </form>
-
 </body>
 
 </html>

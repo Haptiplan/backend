@@ -7,6 +7,13 @@ require_once './model/company.php';
 require_once './model/machine.php';
 require_once './model/user.php';
 
+require_once './response/Response.php';
+require_once './response/ResponseHandler.php';
+
+
+$responseHandler = new ResponseHandler();
+
+
 if (isset($_GET['page'])) {
     $requested_page = $_GET['page'];
 } else {
@@ -14,4 +21,5 @@ if (isset($_GET['page'])) {
 }
 
 $router = new Router();
-$router->callController($requested_page, $_SERVER['REQUEST_METHOD']);
+$response = $router->callController($requested_page, $_SERVER['REQUEST_METHOD']);
+$responseHandler->sendResponse($response); 
