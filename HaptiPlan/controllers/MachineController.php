@@ -1,14 +1,20 @@
 <?php
 
+/**
+ * Front Control kann Machinecontroller-Objekt verwenden,
+ * um die Anfrage an den entsprechenden spezifischen Handler 
+ * weiterzuleiten
+ * 
+ */
 class MachineController
 {
 
     function addMachine()
     {
-        if (isset($_POST['submit'])) {
+        if (isset($_POST["machineNr"]) && isset($_POST["beschreibung"])) {
             $new_data = array(
-                "maschineNr" => $_POST['maschineNr'],
-                "beschreibung" => $_POST['beschreibung']
+                "machineNr" => $_POST["machineNr"],
+                "beschreibung" => $_POST["beschreibung"]
             );
 
             $jsonFilePath = 'data.json';
@@ -23,14 +29,18 @@ class MachineController
             $jsonData = json_encode($existingData, JSON_PRETTY_PRINT);
 
             file_put_contents($jsonFilePath, $jsonData);
+
+            return Response::jsonResponse("Machine is created", 201);
         }
+
+        return Response::jsonResponse("Machine Number or Beschreibung not correct", 400);
     }
 
     function updateMachine()
     {
         if (isset($_POST['submit'])) {
             $new_data = array(
-                "maschineNr" => $_POST['maschineNr'],
+                "machineNr" => $_POST['machineNr'],
                 "beschreibung" => $_POST['beschreibung']
             );
 
@@ -40,18 +50,24 @@ class MachineController
             if (file_exists($jsonFilePath)) {
                 //read the existing JSON file
                 $existingData = json_decode(file_get_contents($jsonFilePath), true);
-                $existingData[$id] = $new_data;
+
+                for ($i = 0; $i < count($existingData); $i++) {
+                    if ($existingData[$i]['machineNr'] == $id) {
+                        $existingData[$i] = $new_data;
+                    }
+                }
 
                 $jsonData = json_encode($existingData, JSON_PRETTY_PRINT);
-
                 file_put_contents($jsonFilePath, $jsonData);
+
+                return Response::jsonResponse("Machine updated");
             }
         }
+        return Response::jsonResponse("Machine Number or Beschreibung not correct", 400);
     }
 
-    function deleteMachine()
+    function deleteMachine($id)
     {
-        if (isset($_POST['submit'])) {
 
             $id = $_POST['maschineNr'];
 
@@ -59,42 +75,50 @@ class MachineController
             if (file_exists($jsonFilePath)) {
                 //read the existing JSON file
                 $existingData = json_decode(file_get_contents($jsonFilePath), true);
-                //var_dump($existingData);
+
                 foreach ($existingData as $key => $value) {
-                    if ($existingData[$key]["maschineNr"] == $id) {
+                    if ($existingData[$key]["machineNr"] == $id) {
                         unset($existingData[$key]);
                     }
                 }
 
                 $jsonData = json_encode($existingData, JSON_PRETTY_PRINT);
-
                 file_put_contents($jsonFilePath, $jsonData);
+
+                return Response::jsonResponse("Machine deleted");
             }
-        }
+            return Response::jsonResponse("Machine is not founded", 404);
     }
 
     function displayMachine()
     {
         $jsonFilePath = 'data.json';
-        //read the existing JSON file
         $existingData = json_decode(file_get_contents($jsonFilePath), true);
+
+        return Response::jsonResponse($existingData);
+        /*
         echo '<pre>';
         var_dump($existingData);
         echo '</pre>';
+
+        */
     }
 
     function createMachine()
     {
-        require_once './templates/create_machine.php';
+        $path = './templates/create_machine.php';
+        return Response::viewResponse($path);
     }
 
     function editMachine()
     {
-        require_once './templates/edit_machine.php';
+        $path = './templates/edit_machine.php';
+        return Response::viewResponse($path);
     }
 
-    function deleteForm()
+    function formToDeleteMachine()
     {
-        require_once './templates/delete_machine.php';
+        $path =  './templates/delete_machine.php';
+        return Response::viewResponse($path);
     }
 }

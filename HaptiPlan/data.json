@@ -1,30 +1,19 @@
-{
-    "2": {
-        "maschineNr": "2",
-        "beschreibung": "test"
+[
+    {
+        "machineNr": "1",
+        "beschreibung": "test1"
     },
-    "3": {
-        "maschineNr": "2",
-        "beschreibung": "gggdfdg"
+    {
+        "machineNr": "2",
+        "beschreibung": "test2"
     },
-    "4": {
-        "maschineNr": "2",
-        "beschreibung": "gggdfdg"
+    {
+        "machineNr": "6",
+        "beschreibung": "gbcvbvcbcvbvb"
     },
-    "6": {
-        "maschineNr": "z6", 
-        "beschreibung": "xczv"
-    },
-    "7": {
-        "maschineNr": "dfgdfg",
-        "beschreibung": "dfgdfg"
-    },
-    "8": {
-        "maschineNr": "dfgdfg",
-        "beschreibung": "dfgdfg"
-    },
-    "9": {
-        "maschineNr": "",
-        "beschreibung": ""
+    {
+        "machineNr": "5",
+        "beschreibung": "done"
+
     }
 }

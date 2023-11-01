@@ -1,4 +1,8 @@
 <?php
+/**
+ * Ein einziger Behandler für alle Arten von Anfragen, 
+ * die bei der Anwendung eingehen
+ */
 
 class Router
 {
@@ -20,42 +24,42 @@ class Router
     {
         if ($requestedPage == self::MACHINE_ROOT) {
             if ($method == self::POST_METHOD) {
-                $this->machineController->addMachine();
+                return $this->machineController->addMachine();
             }
             if ($method == self::GET_METHOD) {
-                $this->machineController->displayMachine();
+                return $this->machineController->displayMachine();
             }
         }
 
         if ($requestedPage == self::MACHINE_ROOT . "/create") {
             if ($method == self::GET_METHOD) {
-                $this->machineController->createMachine();
+                return $this->machineController->createMachine();
             }
         }
 
         if ($requestedPage == self::MACHINE_ROOT . "/edit") {
             if ($method == self::GET_METHOD) {
-                $this->machineController->editMachine();
+                return $this->machineController->editMachine();
             }
         }
-
-        if ($requestedPage == self::MACHINE_ROOT . "/update") {
+      
+        if ($requestedPage == self::MACHINE_ROOT."/update") {
             if ($method == self::POST_METHOD) {
-                $this->machineController->updateMachine();
+                return $this->machineController->updateMachine($_POST['machineNr']);
             }
         }
-
-        if ($requestedPage == self::MACHINE_ROOT . "/deleteForm") {
-
+        if ($requestedPage == self::MACHINE_ROOT."/formToDeleteMachine") {
             if ($method == self::GET_METHOD) {
-                $this->machineController->deleteForm();
+                return $this->machineController->formToDeleteMachine();
             }
         }
 
-        if ($requestedPage == self::MACHINE_ROOT . "/delete") {
+        if ($requestedPage == self::MACHINE_ROOT."/delete") {
             if ($method == self::POST_METHOD) {
-                $this->machineController->deleteMachine();
+                return $this->machineController->deleteMachine($_POST['machineNr']);
             }
         }
+        return Response::jsonResponse("No Content", 404);
+
     }
 }

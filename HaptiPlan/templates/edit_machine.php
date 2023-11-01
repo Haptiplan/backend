@@ -11,8 +11,7 @@
     <form action="/Haptiplan-Frontend/HaptiPlan/machine/update" method="post">
         <div class="mb-3">
             <label for="" class="form-label">Maschine Nr:</label>
-            <input type="text" class="form-control" id="maschineNr" name="maschineNr">
-            <!-- <input type="hidden" name="_method" value="PUT"> -->
+            <input type="text" class="form-control" id="machineNr" name="machineNr">
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Beschreibung</label>
@@ -20,7 +19,6 @@
         </div>
         <button type="submit" name="submit" class="btn btn-primary">Update</button>
     </form>
-
 </body>
 
 </html>
