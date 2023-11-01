@@ -4,12 +4,14 @@
  * die bei der Anwendung eingehen
  */
 
-class Router {
+class Router
+{
+    const MACHINE_ROOT = "machine";
 
     const GET_METHOD = "GET";
     const POST_METHOD = "POST";
     const PUT_METHOD = "PUT";
-    const MACHINE_ROOT = "machine";
+    const DELETE_METHOD = "DELETE";
 
     private MachineController $machineController;
 
@@ -18,9 +20,9 @@ class Router {
         $this->machineController = new MachineController();
     }
 
-    function callController($requestedPage, $method){
-
-        if ($requestedPage == self::MACHINE_ROOT) { 
+    function callController($requestedPage, $method)
+    {
+        if ($requestedPage == self::MACHINE_ROOT) {
             if ($method == self::POST_METHOD) {
                 return $this->machineController->addMachine();
             }
@@ -29,17 +31,18 @@ class Router {
             }
         }
 
-        if ($requestedPage == self::MACHINE_ROOT."/create") {
+        if ($requestedPage == self::MACHINE_ROOT . "/create") {
             if ($method == self::GET_METHOD) {
                 return $this->machineController->createMachine();
             }
         }
 
-        if ($requestedPage == self::MACHINE_ROOT."/edit") {
+        if ($requestedPage == self::MACHINE_ROOT . "/edit") {
             if ($method == self::GET_METHOD) {
                 return $this->machineController->editMachine();
             }
         }
+      
         if ($requestedPage == self::MACHINE_ROOT."/update") {
             if ($method == self::POST_METHOD) {
                 return $this->machineController->updateMachine($_POST['machineNr']);
@@ -57,5 +60,6 @@ class Router {
             }
         }
         return Response::jsonResponse("No Content", 404);
+
     }
 }

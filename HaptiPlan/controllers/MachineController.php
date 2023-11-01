@@ -36,13 +36,15 @@ class MachineController
         return Response::jsonResponse("Machine Number or Beschreibung not correct", 400);
     }
 
-    function updateMachine($id)
+    function updateMachine()
     {
         if (isset($_POST['submit'])) {
             $new_data = array(
                 "machineNr" => $_POST['machineNr'],
                 "beschreibung" => $_POST['beschreibung']
             );
+
+            $id = $_POST['maschineNr'];
 
             $jsonFilePath = 'data.json';
             if (file_exists($jsonFilePath)) {
@@ -66,6 +68,8 @@ class MachineController
 
     function deleteMachine($id)
     {
+
+            $id = $_POST['maschineNr'];
 
             $jsonFilePath = 'data.json';
             if (file_exists($jsonFilePath)) {
