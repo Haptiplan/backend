@@ -2,8 +2,8 @@
 
 /**
  * Es handelt sich um eine Kalsse, in der Informationen über 
- * HTTP-Header, HTTP-Body und HTTP-Body gespeichert werden können.
- * diese Wird als Parameter in sendRequest der ResponsHanler-Klasse übergegeben,
+ * HTTP-Header, HTTP-Body und gespeichert werden können.
+ * diese Wird als Parameter in sendResponse methode der ResponsHanler-Klasse übergegeben,
  * um die Antwort an Client schicken zu können
  */
 

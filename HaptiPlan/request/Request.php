@@ -12,7 +12,7 @@ class Request
     // contains the request type of the request : GET | POST
     private string $type;
     // holds the value of Request after submitting the Form
-    private string $params;
+    //private string $params;
 
     public function __construct()
     {
@@ -42,86 +42,66 @@ class Request
     /**
      * Get the value of url
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
     /**
      * Set the value of url
-     *
-     * @return  self
      */
     public function setUrl($url)
     {
         $this->url = $url;
-
-        return $this;
     }
 
     /**
      * Get the value of segments
      */
-    public function getSegments()
+    public function getSegments(): array
     {
         return $this->segments;
     }
 
     /**
      * Set the value of segments
-     *
-     * @return  self
      */
     public function setSegments($segments)
     {
         $this->segments = $segments;
-
-        return $this;
     }
 
     /**
      * Get the value of type
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
      * Set the value of type
-     *
-     * @return  self
      */
     public function setType($type)
     {
         $this->type = $type;
-
-        return $this;
     }
 
     /**
-     * Get the value of input
+     * check whether variable is set 
      */
-    public function getInput()
+    public function has($name):bool
     {
-        return $this->params;
+        if (isset($_REQUEST[$name])) {
+            return true;
+        }
     }
 
     /**
-     * Set the value of input
-     *
-     * @return  self
+     * return the value of the input
      */
-    public function setInput($input)
-    {
-        $this->params = $input;
-
-        return $this;
-    }
-
     public function input($name)
     {
-        $this->setInput($_REQUEST[$name]);
-        return $this->getInput();
+        return $_REQUEST[$name];
     }
 }

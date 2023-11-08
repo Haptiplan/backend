@@ -9,7 +9,7 @@ require_once './response/ResponseHandler.php';
 $request = new Request();
 $responseHandler = new ResponseHandler();
 
-$router = new Router('/Haptiplan-Frontend/HaptiPlan/');
+$router = new Router('/haptiplan-backend/HaptiPlan/');
 $response = $router->callController($request);
 $responseHandler->sendResponse($response); 
 
