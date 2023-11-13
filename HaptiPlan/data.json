@@ -1,26 +1,14 @@
 [
-     {
-        "id": 1,
-        "machine_name": "TestMaschine"
-    },
     {
         "id": 2,
-        "machine_name": "TestMaschine"
-    },
-    {
-        "id": 4,
-        "machine_name": "TestMaschine"
+        "machine_name": "asdsada"
     },
     {
         "id": 5,
-        "machine_name": "TestMaschine"
-    },
-     {
-        "id": 6,
-        "machine_name": "TestMaschine"
+        "machine_name": "Test"
     },
     {
-        "id": 7,
-        "machine_name": "TestMaschine"
+        "id": 6,
+        "machine_name": "test"
     }
 ]
