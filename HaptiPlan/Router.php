@@ -35,7 +35,7 @@ class Router
             if ($method == self::GET_METHOD) {
                 return $this->machineController->createMachine();
             }
-            //Wenn Maschine erstellt wurde, dann bleibt man auf create_machine.html
+            //Wenn Maschine erstellt wurde, dann bleibt man auf create_machine.php
             if ($method == self::POST_METHOD) { 
                 $this->machineController->addMachine();
             }
@@ -49,7 +49,7 @@ class Router
       
         if ($requestedPage == self::MACHINE_ROOT."/update") {
             if ($method == self::POST_METHOD) {
-                return $this->machineController->updateMachine($_POST['machineNr']);
+                return $this->machineController->updateMachine();
             }
         }
         if ($requestedPage == self::MACHINE_ROOT."/formToDeleteMachine") {
@@ -60,7 +60,7 @@ class Router
 
         if ($requestedPage == self::MACHINE_ROOT."/delete") {
             if ($method == self::POST_METHOD) {
-                return $this->machineController->deleteMachine($_POST['machineNr']);
+                return $this->machineController->deleteMachine($_POST['id']);
             }
         }
         return Response::jsonResponse("No Content", 404);

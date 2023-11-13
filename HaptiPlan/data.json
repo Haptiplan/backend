@@ -1,29 +1,26 @@
 [
-    {
-        "name": "asdada",
-        "capacity": "asdad",
-        "price": "adsads",
-        "duration": "adsad",
-        "period": "asddddddddddd"
+     {
+        "id": 1,
+        "machine_name": "TestMaschine"
     },
     {
-        "name": "Mas"
+        "id": 2,
+        "machine_name": "TestMaschine"
     },
     {
-        "id": "5",
-        "name": "dfdf",
-        "capacity": "22",
-        "price": "500",
-        "duration": "2222",
-        "period": "22222"
+        "id": 4,
+        "machine_name": "TestMaschine"
     },
     {
-        "name": "test"
+        "id": 5,
+        "machine_name": "TestMaschine"
+    },
+     {
+        "id": 6,
+        "machine_name": "TestMaschine"
     },
     {
-        "name": "test"
-    },
-    {
-        "name": "test"
+        "id": 7,
+        "machine_name": "TestMaschine"
     }
 ]

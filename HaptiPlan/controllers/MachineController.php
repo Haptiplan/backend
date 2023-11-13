@@ -11,27 +11,18 @@ class MachineController
 
     function addMachine()
     {
-
-        if (isset($_POST['name'])) {
+        $lastId = $this->last_id_in_the_JSON();
+        $lastId++;
+        if (isset($_POST['submit'])) {
 
             $new_data = array(
-                "name" => $_POST['name']   
-
+                "id" => $lastId,
+                "machine_name" => $_POST['machine_name']
             );
-
             $jsonFilePath = 'data.json';
-            if (file_exists($jsonFilePath)) {
-                //read the existing JSON file
-                $existingData = json_decode(file_get_contents($jsonFilePath), true);
-                $existingData[] = $new_data;
-            } else {
-                $existingData = array($new_data);
-            }
-
-            $jsonData = json_encode($existingData, JSON_PRETTY_PRINT);
-
-            file_put_contents($jsonFilePath, $jsonData);
-
+            $existingData = $this->getDataJson($jsonFilePath);
+            $existingData[] = $new_data;
+            $this->setDataJson($jsonFilePath, $existingData);
 
             return Response::jsonResponse("Machine is created", 201);
         }
@@ -44,7 +35,7 @@ class MachineController
         // TODO variablen prüfen ob gesetzt.
         if (isset($_POST['submit'])) {
             $new_data = array(
-                "name" => $_POST['name'], 
+                "name" => $_POST['name'],
                 "capacity" => $_POST['capacity'],
                 "price" => $_POST['price'],
                 "duration" => $_POST['duration'],
@@ -54,46 +45,42 @@ class MachineController
             $id = $_POST['id'];
 
             $jsonFilePath = 'data.json';
-            if (file_exists($jsonFilePath)) {
-                //read the existing JSON file
-                $existingData = json_decode(file_get_contents($jsonFilePath), true);
+            $existingData = $this->getDataJson($jsonFilePath);
 
-                for ($i = 0; $i < count($existingData); $i++) {
-                    if ($existingData[$i]['machineNr'] == $id) {
-                        $existingData[$i] = $new_data;
-                    }
+            for ($i = 0; $i < count($existingData); $i++) {
+                if ($existingData[$i]['machineNr'] == $id) {
+                    $existingData[$i] = $new_data;
                 }
-
-                $jsonData = json_encode($existingData, JSON_PRETTY_PRINT);
-                file_put_contents($jsonFilePath, $jsonData);
-
-                return Response::jsonResponse("Machine updated");
             }
+
+            $this->setDataJson($jsonFilePath, $existingData);
+
+            return Response::jsonResponse("Machine updated");
         }
+
         return Response::jsonResponse("Machine Number or Beschreibung not correct", 400);
     }
 
     function deleteMachine($id)
     {
 
-            $id = $_POST['id'];
+        $id = $_POST['id'];
 
-            $jsonFilePath = 'data.json';
-            if (file_exists($jsonFilePath)) {
-                //read the existing JSON file
-                $existingData = json_decode(file_get_contents($jsonFilePath), true);
+        $jsonFilePath = 'data.json';
+        if ($this->checkJsonExists($jsonFilePath)) {
+            //read the existing JSON file
+            $existingData = json_decode(file_get_contents($jsonFilePath), true);
 
-                foreach ($existingData as $key => $value) {
-                    if ($existingData[$key]["id"] == $id) {
-                        unset($existingData[$key]);
-                    }
+            foreach ($existingData as $key => $value) {
+                if ($existingData[$key]["id"] == $id) {
+                    unset($existingData[$key]);
                 }
-                $jsonData = json_encode($existingData, JSON_PRETTY_PRINT);
-                file_put_contents($jsonFilePath, $jsonData);
-
-                return Response::jsonResponse("Machine deleted");
             }
-            return Response::jsonResponse("Machine is not founded", 404);
+            $this->setDataJson($jsonFilePath, $existingData);
+
+            return Response::jsonResponse("Machine deleted");
+        }
+        return Response::jsonResponse("Machine is not founded", 404);
     }
 
     function displayMachine()
@@ -106,7 +93,7 @@ class MachineController
 
     function createMachine()
     {
-        $path = './templates/create_machine.html';
+        $path = './templates/create_machine.php';
         return Response::viewResponse($path);
     }
 
@@ -118,7 +105,53 @@ class MachineController
 
     function formToDeleteMachine()
     {
-        $path =  './templates/delete_machine.php';
+        $path = './templates/delete_machine.php';
         return Response::viewResponse($path);
     }
+    function last_id_in_the_JSON(): int
+    {
+        $existingData = $this->getDataJson('data.json');
+
+        $array_of_ids = [];
+
+        for ($i = 0; $i < count($existingData); $i++) {
+            $array_of_ids[$i] = $existingData[$i]['id'];
+        }
+        if (!empty($array_of_ids)) {
+            $max = max($array_of_ids);
+        } else {
+            $max = 0;
+        }
+        return $max;
+    }
+    /**
+     * Gibt Daten aus dem JSON raus, falls es keine Json existiert
+     * dann erstellt er eine neue JSON Datei
+     */
+    function getDataJson(string $jsonFilePath)
+    {
+        if (file_exists($jsonFilePath)) {
+            $existingData = json_decode(file_get_contents($jsonFilePath), true);
+        } else {
+            $existingData = [];
+        }
+
+        return $existingData;
+    }
+
+    function setDataJson(string $jsonFilePath, array $existingData)
+    {
+        $jsonData = json_encode($existingData, JSON_PRETTY_PRINT);
+        file_put_contents($jsonFilePath, $jsonData);
+    }
+
+    function checkJsonExists(string $jsonFilePath) : bool
+    {
+        $jsonExists = false;
+        
+        if (file_exists($jsonFilePath)) {
+            $jsonExists = true;
+        }
+        return $jsonExists;
+    }    
 }

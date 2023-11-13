@@ -40,7 +40,7 @@ class Company{
      * 
      * @param int $id Die ID des Unternehmens.
      */
-    public function setCompanyId(int $id)
+    public function setCompanyId(int $id) :void
     {
         $this->id = $id;
     }
@@ -60,7 +60,7 @@ class Company{
      * 
      * @param string $name Der Name des Unternehmens.
      */
-    public function setCompanyName(string $name) :never
+    public function setCompanyName(string $name) :void
     {
         $this->name = $name;
     }
@@ -97,7 +97,7 @@ class Company{
      * 
      * @param int $id Die Id der Maschine.
      */
-    public function removeMachine(int $id)
+    public function removeMachine(int $id) :void
     {
         unset($this->machines[$id]);
     }
@@ -112,7 +112,7 @@ class Company{
         return $this->machines;
     }
    
-    public function setMachines(array $machine) 
+    public function setMachines(array $machine)  :void
     { 
         $this->machines[] = $machine;
     }
@@ -123,7 +123,7 @@ class Company{
      * @param string $name Den Namen des Users.
      * @return $user Das erstelle User-Objekt.
      */
-    public function addUser(int $id, string $name)
+    public function addUser(int $id, string $name) 
     {
         $user = new User($id, $name); 
         $this->users[] = $user;
