@@ -1,5 +1,8 @@
 <?php
 
+require_once './models/Machine.php';
+require_once './include/database.php';
+
 require_once './controllers/MachineController.php';
 require_once './Router.php';
 require_once './request/Request.php';

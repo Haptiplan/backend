@@ -45,7 +45,7 @@ class Router {
         }
         if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/update") {
             if ($request->getType() == self::POST_METHOD) {
-                return $this->machineController->updateMachine($request, $_POST['machineNr']);
+                return $this->machineController->updateMachine($request);
             }
         }
         if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/formToDeleteMachine") {
@@ -56,7 +56,7 @@ class Router {
 
         if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/delete") {
             if ($request->getType() == self::POST_METHOD) {
-                return $this->machineController->deleteMachine($request, $_POST['machineNr']);
+                return $this->machineController->deleteMachine($request);
             }
         }
         return Response::jsonResponse("Not found".$request->getUrl(), 404);

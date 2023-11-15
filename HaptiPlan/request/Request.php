@@ -92,7 +92,7 @@ class Request
      */
     public function has($name):bool
     {
-        if (isset($_REQUEST[$name])) {
+        if (isset($_REQUEST[$name]) && !empty($_REQUEST[$name])) {
             return true;
         }
     }
