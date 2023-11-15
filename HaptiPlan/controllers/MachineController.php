@@ -29,7 +29,6 @@ class MachineController
         $machine =  new Machine();
         $machine->updateMachine($request);
 
-
         return Response::jsonResponse("Machine updated");
         //}
 

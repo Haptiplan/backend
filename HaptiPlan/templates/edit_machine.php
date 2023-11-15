@@ -17,9 +17,8 @@
             <label for="" class="form-label">Beschreibung</label>
             <input type="text" class="form-control" id="beschreibung" name="beschreibung">
         </div>
-        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" name="submit" class="btn btn-primary">Update</button>
     </form>
-
 </body>
 
 </html>

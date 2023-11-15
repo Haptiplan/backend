@@ -4,12 +4,14 @@
  * die bei der Anwendung eingehen
  */
 
-class Router {
+class Router
+{
+    const MACHINE_ROOT = "machine";
 
     const GET_METHOD = "GET";
     const POST_METHOD = "POST";
     const PUT_METHOD = "PUT";
-    const MACHINE_ROOT = "machine";
+    const DELETE_METHOD = "DELETE";
 
     private MachineController $machineController;
     private string $prefix;
