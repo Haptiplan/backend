@@ -3,15 +3,15 @@
 
 class Machine
 {
-    private int $machineID;
-    private String $bezeichnung;
+    private int $machineId;
+    private String $description;
 
     /**
      * Get the value of id
      */
     public function getId()
     {
-        return $this->machineID;
+        return $this->machineId;
     }
 
     /**
@@ -19,51 +19,51 @@ class Machine
      */
     public function setId($id)
     {
-        $this->machineID = $id;
+        $this->machineId = $id;
 
         return $this;
     }
 
     /**
-     * Get the value of bezeichnung
+     * Get the value of description
      */
-    public function getBezeichnung()
+    public function getDescription()
     {
-        return $this->bezeichnung;
+        return $this->description;
     }
 
     /**
-     * Set the value of bezeichnung
+     * Set the value of description
      */
-    public function setBezeichnung($bezeichnung)
+    public function setDescription($description)
     {
-        $this->bezeichnung = $bezeichnung;
+        $this->description = $description;
     }
 
     public function createMachine()
     {
         $conn = Database::connection();
         $stmt = $conn->prepare('INSERT INTO machine VALUES(null,?)');
-        $stmt->execute([$this->bezeichnung]);
+        $stmt->execute([$this->description]);
     }
 
     public function updateMachine($request)
     {
         $conn = Database::connection();
-        $stmt = $conn->prepare('UPDATE machine set bezeichnung = ? WHERE machineID = ?');
-        $stmt->execute([$request->input('bezeichnung'), $request->input('machineID')]);
+        $stmt = $conn->prepare('UPDATE machine set description = ? WHERE machineId = ?');
+        $stmt->execute([$request->input('description'), $request->input('machineId')]);
     }
 
     public function getMachine($request)
     {
         $conn =  Database::connection();
-        $stmt = $conn->prepare('SELECT * FROM machine WHERE machineID = ? ');
-        $machine = $stmt->execute([$request->input('machineID')]);
+        $stmt = $conn->prepare('SELECT * FROM machine WHERE machineId = ? ');
+        $machine = $stmt->execute([$request->input('machineId')]);
         return $machine;
     }
 
 
-    public function getALLMachine()
+    public function getAllMachine()
     {
         $conn =  Database::connection();
         $machines = $conn->query('SELECT * FROM machine')->fetchAll(PDO::FETCH_OBJ);
@@ -73,18 +73,19 @@ class Machine
     public function deleteMachine($request)
     {
         $conn = Database::connection();
-        $stmt = $conn->prepare('DELETE FROM machine WHERE machineID = ?');
-        $stmt->execute([$request->input('machineID')]);
+        $stmt = $conn->prepare('DELETE FROM machine WHERE machineId = ?');
+        $stmt->execute([$request->input('machineId')]);
     }
 
-    public function ifMachineExixste($request)
+    public function ifMachineExist($request)
     {
         
         $conn =  Database::connection();
-        $stmt = $conn->prepare('SELECT * FROM machine WHERE machineID = ? ');
-        $stmt->execute([$request->input('machineID')]);
+        $stmt = $conn->prepare('SELECT * FROM machine WHERE machineId = ? ');
+        $stmt->execute([$request->input('machineId')]);
         $machine = $stmt->fetch(PDO::FETCH_ASSOC);
        
+
         if ($machine) {
             return true;
         }

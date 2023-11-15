@@ -9,18 +9,18 @@ class MachineController
 {
     function addMachine($request)
     {
-        if ($request->has('beschreibung')) {
+        if ($request->has('description')) {
 
-            $beschreibung = $request->input('beschreibung');
+            $description = $request->input('description');
 
             $machine = new Machine();
-            $machine->setBezeichnung($beschreibung);
+            $machine->setDescription($description);
             $machine->createMachine();
 
             return Response::jsonResponse("Machine is created", 201);
         }
 
-        return Response::jsonResponse("Machine Number or Beschreibung not correct", 400);
+        return Response::jsonResponse("Machine Number or description not correct", 400);
     }
 
     function updateMachine($request)
@@ -32,14 +32,14 @@ class MachineController
         return Response::jsonResponse("Machine updated");
         //}
 
-        return Response::jsonResponse("Machine Number or Beschreibung not correct", 400);
+        return Response::jsonResponse("Machine Number or description not correct", 400);
     }
 
     function deleteMachine($request)
     {
         $machine = new Machine();
 
-        if ($machine->ifMachineExixste($request)) {
+        if ($machine->ifMachineExist($request)) {
 
             $machine->deleteMachine($request);
             return Response::jsonResponse("Machine deleted");
@@ -62,19 +62,19 @@ class MachineController
         */
     }
 
-    function createMachine()
+    function createMachineForm()
     {
         $path = './templates/create_machine.php';
         return Response::viewResponse($path);
     }
 
-    function editMachine()
+    function editMachineForm()
     {
         $path = './templates/edit_machine.php';
         return Response::viewResponse($path);
     }
 
-    function formToDeleteMachine()
+    function deleteMachineForm()
     {
         $path =  './templates/delete_machine.php';
         return Response::viewResponse($path);
