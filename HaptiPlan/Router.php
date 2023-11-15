@@ -34,15 +34,15 @@ class Router
             }
         }
 
-        if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/create") {
+        if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/createForm") {
             if ($request->getType() == self::GET_METHOD) {
-                return $this->machineController->createMachine($request);
+                return $this->machineController->createMachineForm($request);
             }
         }
 
-        if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/edit") {
+        if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/editForm") {
             if ($request->getType() == self::GET_METHOD) {
-                return $this->machineController->editMachine($request);
+                return $this->machineController->editMachineForm($request);
             }
         }
         if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/update") {
@@ -50,9 +50,9 @@ class Router
                 return $this->machineController->updateMachine($request);
             }
         }
-        if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/formToDeleteMachine") {
+        if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/deleteForm") {
             if ($request->getType() == self::GET_METHOD) {
-                return $this->machineController->formToDeleteMachine($request);
+                return $this->machineController->deleteMachineForm($request);
             }
         }
 

@@ -1,12 +1,13 @@
 <?php
+require_once 'config.php';
 
 class Database {
 
     public static function connection():PDO
     {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
+        $servername = SERVERNAME;
+        $username = USERNAME;
+        $password = PASSWORD;
 
         try {
             $conn = new PDO("mysql:host=$servername;port=3307;dbname=haptiplan", $username, $password);

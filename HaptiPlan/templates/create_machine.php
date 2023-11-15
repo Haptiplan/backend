@@ -11,13 +11,13 @@
     <form action="/haptiplan-backend/HaptiPlan/machine" method="post">
         <div class="mb-3">
             <label for="" class="form-label">Maschine Nr:</label>
-            <input type="text" class="form-control" id="machineNr" name="machineNr" disabled>
+            <input type="text" class="form-control" id="machineNr" name="machineId" disabled>
         </div>
         <div class="mb-3">
-            <label for="" class="form-label">Beschreibung</label>
-            <input type="text" class="form-control" id="beschreibung" name="beschreibung">
+            <label for="" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" name="description">
         </div>
-        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" name="submit" class="btn btn-primary">create Machine</button>
     </form>
 
 </body>

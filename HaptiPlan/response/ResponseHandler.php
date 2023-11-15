@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Verarbeitet eine HttpResponse und sendet http_response_code, header sowie auch body an den Browser
+ * Processes an httpResponse and sends http_response_code, header and body to the browser.
  */
 
 class ResponseHandler

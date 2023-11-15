@@ -1,10 +1,9 @@
 <?php
 
 /**
- * Es handelt sich um eine Kalsse, in der Informationen über 
- * HTTP-Header, HTTP-Body und gespeichert werden können.
- * diese Wird als Parameter in sendResponse methode der ResponsHanler-Klasse übergegeben,
- * um die Antwort an Client schicken zu können
+ * This is a class that contains information about HTTP headers, HTTP body and these types of applications.
+ *It is passed as a parameter to the sendResponse method of the ResponsHandler class,
+ *to send the response to the client
  */
 
 class Response
