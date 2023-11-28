@@ -1,6 +1,5 @@
 <?php
 
-
 class MachineType
 {
     private int $machineId;
@@ -20,7 +19,6 @@ class MachineType
     public function setId($id)
     {
         $this->machineId = $id;
-
         return $this;
     }
 
