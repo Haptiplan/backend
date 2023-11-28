@@ -1,9 +1,9 @@
 <?php
-class Machine extends Decision{
-
+class Raw extends Decision{
+ 
     private int $position;
     private int $decision_type;
-    private int $machine_type_id;
+    private int $product_type_id;
 
     public function __construct(){
 

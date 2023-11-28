@@ -1,6 +1,6 @@
 <?php
 
-require_once './models/Machine.php';
+require_once './model/machineType.php';
 require_once './include/database.php';
 
 require_once './controllers/MachineController.php';

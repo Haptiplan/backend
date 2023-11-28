@@ -13,7 +13,7 @@ class MachineController
 
             $description = $request->input('description');
 
-            $machine = new Machine();
+            $machine = new MachineType();
             $machine->setDescription($description);
             $machine->createMachine();
 
@@ -26,18 +26,18 @@ class MachineController
     function updateMachine($request)
     {
         //if ($request->has('submit')) {
-        $machine =  new Machine();
+        $machine =  new MachineType();
         $machine->updateMachine($request);
 
         return Response::jsonResponse("Machine updated");
         //}
 
-        return Response::jsonResponse("Machine Number or description not correct", 400);
+        //return Response::jsonResponse("Machine Number or description not correct", 400);
     }
 
     function deleteMachine($request)
     {
-        $machine = new Machine();
+        $machine = new MachineType();
 
         if ($machine->ifMachineExist($request)) {
 
@@ -52,7 +52,7 @@ class MachineController
     {
         //$jsonFilePath = 'data.json';
         //$existingData = json_decode(file_get_contents($jsonFilePath), true);
-        $machine = new Machine();
+        $machine = new MachineType();
         $allMachine = $machine->getALLMachine();
         return Response::jsonResponse($allMachine);
         /*
@@ -84,8 +84,6 @@ class MachineController
     {
         $jsonFilePath = 'data.json';
         $existingData = json_decode(file_get_contents($jsonFilePath), true);
-        var_dump($existingData);
-        die();
 
         if (!$existingData) {
             $max = 0;
