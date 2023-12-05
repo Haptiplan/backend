@@ -49,4 +49,10 @@ class MachineController
         $allMachine = $machine->getALLMachine();
         return Response::jsonResponse($allMachine);
     }
+
+    function getMachine($request){
+        $machine = new Machine();
+        $machine = $machine->getMachine($request);
+        return Response::jsonResponse($machine);
+    }
 }

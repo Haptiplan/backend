@@ -58,7 +58,8 @@ class Machine
     {
         $conn =  Database::connection();
         $stmt = $conn->prepare('SELECT * FROM machine WHERE machineId = ? ');
-        $machine = $stmt->execute([$request->input('machineId')]);
+        $stmt->execute([$request->getPathParams()]);
+        $machine = $stmt->fetch(PDO::FETCH_ASSOC);
         return $machine;
     }
 

@@ -36,6 +36,13 @@ class Router
             }
         }
 
+        //Get a specefic machine
+        if (is_numeric($request->getPathParams())) {
+            if ($request->getType() == self::GET_METHOD) {
+                return $this->machineController->getMachine($request);
+            }
+        }
+
         //Update machine
         if ($request->getUrlwithoutPathParams() == $this->prefix . self::MACHINE_ROOT . "/update") {
             if ($request->getType() == self::PUT_METHOD) {
