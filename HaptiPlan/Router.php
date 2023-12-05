@@ -24,25 +24,24 @@ class Router
 
     function callController(Request $request){
 
-
         if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT) { 
             if ($request->getType() == self::POST_METHOD) {
                 return $this->machineController->addMachine($request);
             }
             if ($request->getType() == self::GET_METHOD) {
-                return $this->machineController->displayMachine($request);
+                return $this->machineController->displayMachine();
             }
         }
 
         if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/createForm") {
             if ($request->getType() == self::GET_METHOD) {
-                return $this->machineController->createMachineForm($request);
+                return $this->machineController->createMachineForm();
             }
         }
 
         if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/editForm") {
             if ($request->getType() == self::GET_METHOD) {
-                return $this->machineController->editMachineForm($request);
+                return $this->machineController->editMachineForm();
             }
         }
         if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/update") {
@@ -52,7 +51,7 @@ class Router
         }
         if ($request->getUrl() == $this->prefix.self::MACHINE_ROOT."/deleteForm") {
             if ($request->getType() == self::GET_METHOD) {
-                return $this->machineController->deleteMachineForm($request);
+                return $this->machineController->deleteMachineForm();
             }
         }
 
