@@ -102,7 +102,7 @@ class Request
      */
     public function input($name)
     {
-        return $_REQUEST[$name];
+        return $_REQUEST[$name]; 
     }
 
     public function getRawData($text)
@@ -112,5 +112,19 @@ class Request
         // Converts it into a PHP object
         $data = json_decode($json);
         return $data->$text;
+    }
+
+    public function getPathParams(): int{
+        $parts = $this->segments;
+        $paramsId = $parts[count($parts) -1];
+        return $paramsId;
+    }
+    public function getUrlwithoutPathParams():string{
+        
+        $url = $this->getUrl();
+        $parts = explode('/', $url);
+        array_pop($parts);
+        $stringResult = implode('/', $parts);
+        return $stringResult;
     }
 }

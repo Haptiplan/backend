@@ -51,7 +51,7 @@ class Machine
     {
         $conn = Database::connection();
         $stmt = $conn->prepare('UPDATE machine set description = ? WHERE machineId = ?');
-        $stmt->execute([$request->input('description'), $request->input('machineId')]);
+        $stmt->execute([$request->getRawData('description'), $request->getPathParams()]);
     }
 
     public function getMachine($request)
@@ -74,7 +74,7 @@ class Machine
     {
         $conn = Database::connection();
         $stmt = $conn->prepare('DELETE FROM machine WHERE machineId = ?');
-        $stmt->execute([$request->input('machineId')]);
+        $stmt->execute([$request->getPathParams()]);
     }
 
     public function ifMachineExist($request)
@@ -82,7 +82,7 @@ class Machine
         
         $conn =  Database::connection();
         $stmt = $conn->prepare('SELECT * FROM machine WHERE machineId = ? ');
-        $stmt->execute([$request->input('machineId')]);
+        $stmt->execute([$request->getPathParams()]);
         $machine = $stmt->fetch(PDO::FETCH_ASSOC);
        
 
