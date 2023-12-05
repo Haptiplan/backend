@@ -55,11 +55,7 @@ class MachineController
         $machine = new MachineType();
         $allMachine = $machine->getALLMachine();
         return Response::jsonResponse($allMachine);
-        /*
-        echo '<pre>';
-        var_dump($existingData);
-        echo '</pre>';
-        */
+
     }
 
     function createMachineForm()
