@@ -1,95 +1,60 @@
 <?php
+require_once 'decision.php';
 
-
-class Machine
+/**
+ * Class Machine
+ *
+ * Represents a decision related to machines and extends the Decision class.
+ */
+class Machine extends Decision
 {
-    private int $machineId;
-    private String $description;
+
+    private int $position;
+    private int $decision_type;
+    private int $machine_type_id;
 
     /**
-     * Get the value of id
+     * Machine constructor.
+     *
+     * @param int $position The position of the machine.
+     * @param int $decision_type The decision type associated with the machine.
+     * @param int $machine_type_id The machine type identifier.
      */
-    public function getId()
+    public function __construct(int $position, int $decision_type, int $machine_type_id)
     {
-        return $this->machineId;
-    }
-
-    /**
-     * Set the value of id
-     */
-    public function setId($id)
-    {
-        $this->machineId = $id;
-
-        return $this;
+        $this->position = $position;
+        $this->decision_type = $decision_type;
+        $this->machine_type_id = $machine_type_id;
     }
 
     /**
-     * Get the value of description
+     * Get the position of the machine.
+     *
+     * @return int The position of the machine.
      */
-    public function getDescription()
+    public function getPosition(): int
     {
-        return $this->description;
+        return $this->position;
     }
 
     /**
-     * Set the value of description
+     * Get the decision type associated with the machine.
+     *
+     * @return int The decision type associated with the machine.
      */
-    public function setDescription($description)
+    public function getDecisionType(): int
     {
-        $this->description = $description;
+        return $this->decision_type;
     }
 
-    public function createMachine()
+    /**
+     * Get the machine type identifier.
+     *
+     * @return int The machine type identifier.
+     */
+    public function getMachineTypeId(): int
     {
-        $conn = Database::connection();
-        $stmt = $conn->prepare('INSERT INTO machine VALUES(null,?)');
-        $stmt->execute([$this->description]);
+        return $this->machine_type_id;
     }
 
-    public function updateMachine($request)
-    {
-        $conn = Database::connection();
-        $stmt = $conn->prepare('UPDATE machine set description = ? WHERE machineId = ?');
-        $stmt->execute([$request->getRawData('description'), $request->getPathParams()]);
-    }
-
-    public function getMachine($request)
-    {
-        $conn =  Database::connection();
-        $stmt = $conn->prepare('SELECT * FROM machine WHERE machineId = ? ');
-        $stmt->execute([$request->getPathParams()]);
-        $machine = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $machine;
-    }
-
-
-    public function getAllMachine()
-    {
-        $conn =  Database::connection();
-        $machines = $conn->query('SELECT * FROM machine')->fetchAll(PDO::FETCH_OBJ);
-        return $machines;
-    }
-
-    public function deleteMachine($request)
-    {
-        $conn = Database::connection();
-        $stmt = $conn->prepare('DELETE FROM machine WHERE machineId = ?');
-        $stmt->execute([$request->getPathParams()]);
-    }
-
-    public function ifMachineExist($request)
-    {
-        
-        $conn =  Database::connection();
-        $stmt = $conn->prepare('SELECT * FROM machine WHERE machineId = ? ');
-        $stmt->execute([$request->getPathParams()]);
-        $machine = $stmt->fetch(PDO::FETCH_ASSOC);
-       
-
-        if ($machine) {
-            return true;
-        }
-        return false; 
-    }
 }

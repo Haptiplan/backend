@@ -9,34 +9,29 @@ class MachineController
 {
     function addMachine($request)
     {
-        $machine = new Machine();
-        $machine->setDescription($request->getRawData('description'));
-        $machineCreated = $machine->createMachine();
-       
+        $machineType = new MachineType();
+        $machineType->setDescription($request->getRawData('description'));
+        $machineType->createMachine();
+
         return Response::jsonResponse("Machine is created", 201);
-        
-        //return Response::jsonResponse("Machine Number or description not correct", 400);
     }
 
     function updateMachine($request)
     {
-        //if ($request->has('submit')) {
-        $machine =  new Machine();
-        $machine->updateMachine($request);
 
-        return Response::jsonResponse("Machine updated");
-        //}
+        $machineType =  new MachineType();
+        $machineType->updateMachine($request);
 
-        return Response::jsonResponse("Machine Number or description not correct", 400);
+        return Response::jsonResponse("Machine updated"); 
     }
 
     function deleteMachine($request)
     {
-        $machine = new Machine();
+        $machineType = new MachineType();
 
-        if ($machine->ifMachineExist($request)) {
+        if ($machineType->ifMachineExist($request)) {
 
-            $machine->deleteMachine($request);
+            $machineType->deleteMachine($request);
             return Response::jsonResponse("Machine deleted");
         }
 
@@ -45,14 +40,14 @@ class MachineController
 
     function displayMachine()
     {
-        $machine = new Machine();
-        $allMachine = $machine->getALLMachine();
+        $machineType = new MachineType();
+        $allMachine = $machineType->getALLMachine();
         return Response::jsonResponse($allMachine);
     }
 
     function getMachine($request){
-        $machine = new Machine();
-        $machine = $machine->getMachine($request);
-        return Response::jsonResponse($machine);
+        $machineType = new MachineType();
+        $machineType = $machineType->getMachine($request);
+        return Response::jsonResponse($machineType);
     }
 }
