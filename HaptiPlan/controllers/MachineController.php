@@ -18,11 +18,10 @@ class MachineController
 
     function updateMachine($request)
     {
-
-        $machineType =  new MachineType();
+        $machineType = new MachineType();
         $machineType->updateMachine($request);
 
-        return Response::jsonResponse("Machine updated"); 
+        return Response::jsonResponse("Machine updated");
     }
 
     function deleteMachine($request)
@@ -45,7 +44,8 @@ class MachineController
         return Response::jsonResponse($allMachine);
     }
 
-    function getMachine($request){
+    function getMachine($request)
+    {
         $machineType = new MachineType();
         $machineType = $machineType->getMachine($request);
         return Response::jsonResponse($machineType);

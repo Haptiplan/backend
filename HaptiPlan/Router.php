@@ -31,7 +31,7 @@ class Router
             }
             //Get all machine
             if ($request->getType() == self::GET_METHOD) {
-                return $this->machineController->displayMachine($request);
+                return $this->machineController->displayMachine();
             }
         }
 
