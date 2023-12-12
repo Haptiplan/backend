@@ -9,30 +9,27 @@ class MachineController
 {
     function addMachine($request)
     {
-        $machine = new Machine();
-        $machine->setDescription($request->getRawData('description'));
-        $machineCreated = $machine->createMachine();
-       
-        return Response::jsonResponse("Machine is created", 201);
-        
-        //return Response::jsonResponse("Machine Number or description not correct", 400);
+            $description = $request->input('description');
+
+            $machine = new MachineType();
+            $machine->setDescription($description);
+            $machine->createMachine();
+
+            return Response::jsonResponse("Machine is created", 201);
     }
 
     function updateMachine($request)
     {
-        //if ($request->has('submit')) {
-        $machine =  new Machine();
+
+        $machine =  new MachineType();
         $machine->updateMachine($request);
 
-        return Response::jsonResponse("Machine updated");
-        //}
-
-        return Response::jsonResponse("Machine Number or description not correct", 400);
+        return Response::jsonResponse("Machine updated"); 
     }
 
     function deleteMachine($request)
     {
-        $machine = new Machine();
+        $machine = new MachineType();
 
         if ($machine->ifMachineExist($request)) {
 
@@ -45,13 +42,13 @@ class MachineController
 
     function displayMachine()
     {
-        $machine = new Machine();
+        $machine = new MachineType();
         $allMachine = $machine->getALLMachine();
         return Response::jsonResponse($allMachine);
     }
 
     function getMachine($request){
-        $machine = new Machine();
+        $machine = new MachineType();
         $machine = $machine->getMachine($request);
         return Response::jsonResponse($machine);
     }

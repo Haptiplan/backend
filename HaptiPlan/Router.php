@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Ein einziger Behandler für alle Arten von Anfragen, 
  * die bei der Anwendung eingehen
