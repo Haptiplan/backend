@@ -9,31 +9,29 @@ class MachineController
 {
     function addMachine($request)
     {
-            $description = $request->input('description');
+        $machineType = new MachineType();
+        $machineType->setDescription($request->getRawData('description'));
+        $machineType->createMachine();
 
-            $machine = new MachineType();
-            $machine->setDescription($description);
-            $machine->createMachine();
-
-            return Response::jsonResponse("Machine is created", 201);
+        return Response::jsonResponse("Machine is created", 201);
     }
 
     function updateMachine($request)
     {
 
-        $machine =  new MachineType();
-        $machine->updateMachine($request);
+        $machineType =  new MachineType();
+        $machineType->updateMachine($request);
 
         return Response::jsonResponse("Machine updated"); 
     }
 
     function deleteMachine($request)
     {
-        $machine = new MachineType();
+        $machineType = new MachineType();
 
-        if ($machine->ifMachineExist($request)) {
+        if ($machineType->ifMachineExist($request)) {
 
-            $machine->deleteMachine($request);
+            $machineType->deleteMachine($request);
             return Response::jsonResponse("Machine deleted");
         }
 
@@ -42,14 +40,14 @@ class MachineController
 
     function displayMachine()
     {
-        $machine = new MachineType();
-        $allMachine = $machine->getALLMachine();
+        $machineType = new MachineType();
+        $allMachine = $machineType->getALLMachine();
         return Response::jsonResponse($allMachine);
     }
 
     function getMachine($request){
-        $machine = new MachineType();
-        $machine = $machine->getMachine($request);
-        return Response::jsonResponse($machine);
+        $machineType = new MachineType();
+        $machineType = $machineType->getMachine($request);
+        return Response::jsonResponse($machineType);
     }
 }
