@@ -27,9 +27,8 @@ class MachineController
     function deleteMachine($request)
     {
         $machineType = new MachineType();
-
+    
         if ($machineType->ifMachineExist($request)) {
-
             $machineType->deleteMachine($request);
             return Response::jsonResponse("Machine deleted");
         }
