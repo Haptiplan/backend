@@ -27,7 +27,7 @@ class Request
 
     public function init()
     {
-        $this->setUrl($_SERVER['REQUEST_URI']);
+        $this->setUrl(strtolower($_SERVER['REQUEST_URI']));
         $this->setType($_SERVER['REQUEST_METHOD']);
         //It returns all the segments of the current URL as an array
         $uriSegments = explode("/", parse_url(substr($this->getUrl(), 1), PHP_URL_PATH));
@@ -90,11 +90,13 @@ class Request
     /**
      * check whether variable is set 
      */
-    public function has($name):bool
+    public function has($name): bool
     {
+        $has = false;
         if (isset($_REQUEST[$name]) && !empty($_REQUEST[$name])) {
-            return true;
+            $has = true;
         }
+        return $has;
     }
 
     /**
@@ -102,6 +104,29 @@ class Request
      */
     public function input($name)
     {
-        return $_REQUEST[$name];
+        return $_REQUEST[$name]; 
+    }
+
+    public function getRawData($text)
+    {
+        // Takes raw data from the request
+        $json = file_get_contents('php://input');
+        // Converts it into a PHP object
+        $data = json_decode($json);
+        return $data->$text;
+    }
+
+    public function getPathParams(): int{
+        $parts = $this->segments;
+        $paramsId = $parts[count($parts) -1];
+        return $paramsId;
+    }
+    public function getUrlwithoutPathParams():string{
+        
+        $url = $this->getUrl();
+        $parts = explode('/', $url);
+        array_pop($parts);
+        $stringResult = implode('/', $parts);
+        return $stringResult;
     }
 }

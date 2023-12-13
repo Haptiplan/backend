@@ -9,39 +9,27 @@ class MachineController
 {
     function addMachine($request)
     {
-        if ($request->has('description')) {
+        $machineType = new MachineType();
+        $machineType->setDescription($request->getRawData('description'));
+        $machineType->createMachine();
 
-            $description = $request->input('description');
-
-            $machine = new Machine();
-            $machine->setDescription($description);
-            $machine->createMachine();
-
-            return Response::jsonResponse("Machine is created", 201);
-        }
-
-        return Response::jsonResponse("Machine Number or description not correct", 400);
+        return Response::jsonResponse("Machine is created", 201);
     }
 
     function updateMachine($request)
     {
-        //if ($request->has('submit')) {
-        $machine =  new Machine();
-        $machine->updateMachine($request);
+        $machineType = new MachineType();
+        $machineType->updateMachine($request);
 
         return Response::jsonResponse("Machine updated");
-        //}
-
-        return Response::jsonResponse("Machine Number or description not correct", 400);
     }
 
     function deleteMachine($request)
     {
-        $machine = new Machine();
-
-        if ($machine->ifMachineExist($request)) {
-
-            $machine->deleteMachine($request);
+        $machineType = new MachineType();
+    
+        if ($machineType->ifMachineExist($request)) {
+            $machineType->deleteMachine($request);
             return Response::jsonResponse("Machine deleted");
         }
 
@@ -50,55 +38,15 @@ class MachineController
 
     function displayMachine()
     {
-        //$jsonFilePath = 'data.json';
-        //$existingData = json_decode(file_get_contents($jsonFilePath), true);
-        $machine = new Machine();
-        $allMachine = $machine->getALLMachine();
+        $machineType = new MachineType();
+        $allMachine = $machineType->getALLMachine();
         return Response::jsonResponse($allMachine);
-        /*
-        echo '<pre>';
-        var_dump($existingData);
-        echo '</pre>';
-        */
     }
 
-    function createMachineForm()
+    function getMachine($request)
     {
-        $path = './templates/create_machine.php';
-        return Response::viewResponse($path);
-    }
-
-    function editMachineForm()
-    {
-        $path = './templates/edit_machine.php';
-        return Response::viewResponse($path);
-    }
-
-    function deleteMachineForm()
-    {
-        $path =  './templates/delete_machine.php';
-        return Response::viewResponse($path);
-    }
-
-    function last_id_in_the_JSON(): int
-    {
-        $jsonFilePath = 'data.json';
-        $existingData = json_decode(file_get_contents($jsonFilePath), true);
-        var_dump($existingData);
-        die();
-
-        if (!$existingData) {
-            $max = 0;
-            return $max;
-        }
-
-        $array_of_ids = [];
-
-        for ($i = 0; $i < count($existingData); $i++) {
-            $array_of_ids[$i] = $existingData[$i]['machineNr'];
-        }
-
-        $max = max($array_of_ids);
-        return $max;
+        $machineType = new MachineType();
+        $machineType = $machineType->getMachine($request);
+        return Response::jsonResponse($machineType);
     }
 }
