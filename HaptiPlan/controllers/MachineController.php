@@ -9,9 +9,14 @@ class MachineController
 {
     function addMachine($request)
     {
-        $machine = new Machine();
-        $machine->setDescription($request->getRawData('description'));
-        $machineCreated = $machine->createMachine();
+        
+        $machinetype = new Machinetype();
+        $machinetype->setMachine_name($request->getRawData('machine_name'));
+        $machinetype->setMachine_capacity($request->getRawData('machine_capacity'));
+        $machinetype->setMachine_price($request->getRawData('machine_price'));
+        $machinetype->setMachine_duration($request->getRawData('machine_duration'));
+        $machinetype->setMachine_period($request->getRawData('machine_period'));
+        $machineCreated = $machinetype->createMachine();
        
         return Response::jsonResponse("Machine is created", 201);
         
@@ -20,19 +25,17 @@ class MachineController
 
     function updateMachine($request)
     {
-        //if ($request->has('submit')) {
-        $machine =  new Machine();
-        $machine->updateMachine($request);
+        $machinetype =  new Machinetype();
+        $machinetype->updateMachine($request);
 
         return Response::jsonResponse("Machine updated");
-        //}
-
-        return Response::jsonResponse("Machine Number or description not correct", 400);
+      
+        //return Response::jsonResponse("Machine Number or description not correct", 400);
     }
 
     function deleteMachine($request)
     {
-        $machine = new Machine();
+        $machine = new Machinetype();
 
         if ($machine->ifMachineExist($request)) {
 
@@ -45,13 +48,13 @@ class MachineController
 
     function displayMachine()
     {
-        $machine = new Machine();
+        $machine = new Machinetype();
         $allMachine = $machine->getALLMachine();
         return Response::jsonResponse($allMachine);
     }
 
     function getMachine($request){
-        $machine = new Machine();
+        $machine = new Machinetype();
         $machine = $machine->getMachine($request);
         return Response::jsonResponse($machine);
     }

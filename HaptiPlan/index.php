@@ -4,7 +4,8 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 Header("Access-Control-Allow-Methods: *");
 
-require_once './models/Machine.php';
+//require_once './models/Machine.php';
+require_once './models/machinetype.php';
 require_once './include/database.php';
 
 require_once './controllers/MachineController.php';
