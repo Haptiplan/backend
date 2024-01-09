@@ -7,7 +7,6 @@
 class Router
 {
     const MACHINE_ROOT = "machine";
-
     const GET_METHOD = "GET";
     const POST_METHOD = "POST";
     const PUT_METHOD = "PUT";
@@ -45,7 +44,6 @@ class Router
         //Update machine
         if ($request->getUrlwithoutPathParams() == $this->prefix . self::MACHINE_ROOT . "/update") {
             if ($request->getType() == self::PUT_METHOD) {
-                $request->getRawData('description');
                 return $this->machineController->updateMachine($request);
             }
         }
