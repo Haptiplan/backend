@@ -8,8 +8,7 @@
 class MachineController
 {
     function addMachine($request)
-    {
-        
+    {  
         $machinetype = new Machinetype();
         $machinetype->setMachine_name($request->getRawData('machine_name'));
         $machinetype->setMachine_capacity($request->getRawData('machine_capacity'));
@@ -19,8 +18,6 @@ class MachineController
         $machineCreated = $machinetype->createMachine();
        
         return Response::jsonResponse("Machine is created", 201);
-        
-        //return Response::jsonResponse("Machine Number or description not correct", 400);
     }
 
     function updateMachine($request)

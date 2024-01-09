@@ -1,6 +1,5 @@
 <?php
 
-
 class Machinetype
 {
     private int $machine_id;	
@@ -66,6 +65,7 @@ class Machinetype
     public function setMachine_capacity($machine_capacity)
     {
         $this->machine_capacity = $machine_capacity;
+
 
         return $this;
     }
@@ -177,6 +177,7 @@ class Machinetype
     {
         $conn =  Database::connection();
         $machines = $conn->query('SELECT * FROM machinetype')->fetchAll(PDO::FETCH_OBJ);
+
         return $machines;
     }
 
@@ -184,6 +185,7 @@ class Machinetype
     {
         $conn = Database::connection();
         $stmt = $conn->prepare('DELETE FROM machinetype WHERE machine_id = ?');
+
         $stmt->execute([$request->getPathParams()]);
     }
 
@@ -195,11 +197,9 @@ class Machinetype
         $stmt->execute([$request->getPathParams()]);
         $machine = $stmt->fetch(PDO::FETCH_ASSOC);
        
-
         if ($machine) {
             return true;
         }
         return false; 
     }
-
 }
