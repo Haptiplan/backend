@@ -26,7 +26,7 @@ require_once './models/machine.php';
 $request = new Request();
 $responseHandler = new ResponseHandler();
 
-$router = new Router('/haptiplan-backend/HaptiPlan/');
+$router = new Router('/backend/HaptiPlan/');
 $response = $router->callController($request);
 $responseHandler->sendResponse($response); 
 
