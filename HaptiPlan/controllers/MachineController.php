@@ -16,26 +16,26 @@ class MachineController
         $machinetype->setMachine_price($request->getRawData('machine_price'));
         $machinetype->setMachine_duration($request->getRawData('machine_duration'));
         $machinetype->setMachine_period($request->getRawData('machine_period'));
-        $mach_dao->insertMachine($request);
+        $mach_dao->insert($request);
         return Response::jsonResponse("Machine is created", 201);
     }
 
-    function updateMachine($request)
+    function update($request)
     {
         $machinetype = new MachineDao();
-        $machinetype->updateMachine($request);
+        $machinetype->update($request);
 
         return Response::jsonResponse("Machine updated");
       
     }
 
-    function deleteMachine($request)
+    function delete($request)
     {
         $machine = new MachineDao();
 
         if ($machine->ifMachineExist($request)) {
 
-            $machine->deleteMachine($request);
+            $machine->delete($request);
             return Response::jsonResponse("Machine deleted");
         }
 
@@ -45,13 +45,13 @@ class MachineController
     function displayMachine()
     {
         $machine = new MachineDao();
-        $allMachine = $machine->getAllMachine();
+        $allMachine = $machine->getAll();
         return Response::jsonResponse($allMachine);
     }
 
-    function getMachine($request){
+    function get($request){
         $machine = new MachineDao();
-        $machine = $machine->getMachine($request);
+        $machine = $machine->get($request);
         return Response::jsonResponse($machine);
     }
 }

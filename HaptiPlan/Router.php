@@ -37,21 +37,21 @@ class Router
         //Get a specefic machine
         if (is_numeric($request->getPathParams())) {
             if ($request->getType() == self::GET_METHOD) {
-                return $this->machineController->getMachine($request);
+                return $this->machineController->get($request);
             }
         }
 
         //Update machine
         if ($request->getUrlwithoutPathParams() == $this->prefix . self::MACHINE_ROOT . "/update") {
             if ($request->getType() == self::PUT_METHOD) {
-                return $this->machineController->updateMachine($request);
+                return $this->machineController->update($request);
             }
         }
 
         //Delete machine
         if ($request->getUrlwithoutPathParams() == $this->prefix . self::MACHINE_ROOT . "/delete") {
             if ($request->getType() == self::DELETE_METHOD) {
-                return $this->machineController->deleteMachine($request);
+                return $this->machineController->delete($request);
             }
         }
         return Response::jsonResponse("Not found" . $request->getUrl(), 404);

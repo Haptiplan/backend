@@ -9,7 +9,7 @@ class MachineDao implements Dao
         $this->db = DATABASE::getInstance();
     }
 
-    public function insertMachine($request)
+    public function insert($request)
     {
         $sql = ('INSERT INTO machinetype VALUES(null,?,?,?,?,?)');
         $this->db->execute($sql, [
@@ -20,12 +20,12 @@ class MachineDao implements Dao
             $request->getRawData('machine_period')
         ]);
     }
-    public function deleteMachine($request)
+    public function delete($request)
     {
         $sql = 'DELETE FROM machinetype WHERE machine_id = (?)';
         $this->db->execute($sql, [$request->getPathParams()]);
     }
-    public function updateMachine($request)
+    public function update($request)
     {
         $sql = 'UPDATE machinetype SET 
             machine_name = ?,
@@ -43,12 +43,12 @@ class MachineDao implements Dao
             //$request->getPathParams()
         ]);
     }
-    public function getMachine($request)
+    public function get($request)
     {
         $sql = 'SELECT machine_id, machine_name FROM machinetype WHERE machine_id = (?)';
         return $this->db->execute($sql, [$request->getPathParams()]);
     }
-    public function getAllMachine()
+    public function getAll()
     {
         $sql = ("SELECT * FROM machinetype");
         $machines = $this->db->query($sql);

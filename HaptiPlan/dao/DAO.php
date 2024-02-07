@@ -1,8 +1,8 @@
 <?php
 interface Dao{
-    public function insertMachine ($request);
-    public function deleteMachine ($request);
-    public function updateMachine ($request);
-    public function getMachine($request);
-    public function getAllMachine();
+    public function insert($request);
+    public function delete($request);
+    public function update($request);
+    public function get($request);
+    public function getAll();
 }
