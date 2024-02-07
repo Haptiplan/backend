@@ -5,10 +5,11 @@ header("Access-Control-Allow-Headers: *");
 Header("Access-Control-Allow-Methods: *");
 
 //require_once './models/Machine.php';
-require_once './models/machinetype.php';
+require_once './dao/MachineDAO.php';
+require_once './dao/DAO.php';
 
 require_once './include/database.php';
-require_once './models/machinetype.php';
+require_once './models/machinetype1.php';
 
 require_once './controllers/machineController.php';
 require_once './router.php';
@@ -25,7 +26,7 @@ require_once './models/machine.php';
 
 $request = new Request();
 $responseHandler = new ResponseHandler();
-
+$MachDao = new MachineDao();
 $router = new Router('/backend/HaptiPlan/');
 $response = $router->callController($request);
 $responseHandler->sendResponse($response); 
