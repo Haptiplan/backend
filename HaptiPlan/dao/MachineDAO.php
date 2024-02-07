@@ -1,6 +1,6 @@
 <?php
-include("DAO.php");
-class MachineDao implements DAO
+include("dao.php");
+class MachineDao implements Dao
 {
     private static $_instance;
     private $db;

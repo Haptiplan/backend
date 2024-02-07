@@ -1,6 +1,6 @@
 <?php
 
-class Machinetype1
+class Machinetype
 {
     private int $machine_id;	
     private String $machine_name; 	

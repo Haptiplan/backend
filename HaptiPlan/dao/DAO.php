@@ -1,5 +1,5 @@
 <?php
-interface DAO{
+interface Dao{
     public function insertMachine ($request);
     public function deleteMachine ($request);
     public function updateMachine ($request);
