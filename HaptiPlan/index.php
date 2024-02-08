@@ -10,8 +10,6 @@ require_once './dao/dao.php';
 require_once './include/database.php';
 
 
-require_once './controllers/machineController.php';
-
 require_once './router.php';
 
 require_once './request/request.php';

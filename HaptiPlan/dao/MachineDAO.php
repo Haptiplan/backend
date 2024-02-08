@@ -19,11 +19,15 @@ class MachineDao implements Dao
             $request->getRawData('machine_duration'),
             $request->getRawData('machine_period')
         ]);
+                return Response::jsonResponse("Machine is created", 201);
+
     }
     public function delete($request)
     {
         $sql = 'DELETE FROM machinetype WHERE machine_id = (?)';
         $this->db->execute($sql, [$request->getPathParams()]);
+        return Response::jsonResponse("Machine deleted");
+
     }
     public function update($request)
     {
@@ -53,7 +57,7 @@ class MachineDao implements Dao
         $sql = ("SELECT * FROM machinetype");
         $machines = $this->db->query($sql);
         
-        return $machines;
+        return Response::jsonResponse($machines);
     }
     
     public function ifMachineExist($request)

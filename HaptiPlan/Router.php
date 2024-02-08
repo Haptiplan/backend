@@ -12,12 +12,12 @@ class Router
     const PUT_METHOD = "PUT";
     const DELETE_METHOD = "DELETE";
 
-    private MachineController $machineController;
+    private MachineDao $machineDao;
     private string $prefix;
 
     public function __construct(string $prefix)
     {
-        $this->machineController = new MachineController();
+        $this->machineDao = new MachineDao();
         $this->prefix = strtolower($prefix);
     }
 
@@ -26,32 +26,32 @@ class Router
         if ($request->getUrl() == $this->prefix . self::MACHINE_ROOT) {
             //Create Machine
             if ($request->getType() == self::POST_METHOD) {
-                return $this->machineController->addMachine($request);
+                return $this->machineDao->insert($request);
             }
             //Get all machine
             if ($request->getType() == self::GET_METHOD) {
-                return $this->machineController->displayMachine();
+                return $this->machineDao->getAll();
             }
         }
 
         //Get a specefic machine
         if (is_numeric($request->getPathParams())) {
             if ($request->getType() == self::GET_METHOD) {
-                return $this->machineController->get($request);
+                return $this->machineDao->get($request);
             }
         }
 
         //Update machine
         if ($request->getUrlwithoutPathParams() == $this->prefix . self::MACHINE_ROOT . "/update") {
             if ($request->getType() == self::PUT_METHOD) {
-                return $this->machineController->update($request);
+                return $this->machineDao->update($request);
             }
         }
 
         //Delete machine
         if ($request->getUrlwithoutPathParams() == $this->prefix . self::MACHINE_ROOT . "/delete") {
             if ($request->getType() == self::DELETE_METHOD) {
-                return $this->machineController->delete($request);
+                return $this->machineDao->delete($request);
             }
         }
         return Response::jsonResponse("Not found" . $request->getUrl(), 404);
