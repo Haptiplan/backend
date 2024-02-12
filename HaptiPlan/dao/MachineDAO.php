@@ -2,7 +2,6 @@
 include("dao.php");
 class MachineDao implements Dao
 {
-    private static $_instance;
     private $db;
     public function __construct()
     {
