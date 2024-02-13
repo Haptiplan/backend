@@ -1,92 +1,132 @@
 <?php
 
-class MachineType
+class Machinetype
 {
-    private int $machineId;
-    private String $description;
+    private int $machine_id;	
+    private String $machine_name; 	
+    private int $machine_capacity; 	
+    private float $machine_price; 	
+    private int $machine_duration; 	
+    private int $machine_period;
 
     /**
-     * Get the value of id
-     */
-    public function getId()
+     * Get the value of machine_id
+     */ 
+    public function getMachine_id()
     {
-        return $this->machineId;
+        return $this->machine_id;
     }
 
     /**
-     * Set the value of id
-     */
-    public function setId($id)
+     * Set the value of machine_id
+     *
+     * @return  self
+     */ 
+    public function setMachine_id($machine_id)
     {
-        $this->machineId = $id;
+        $this->machine_id = $machine_id;
+
         return $this;
     }
 
     /**
-     * Get the value of description
-     */
-    public function getDescription()
+     * Get the value of machine_name
+     */ 
+    public function getMachine_name()
     {
-        return $this->description;
+        return $this->machine_name;
     }
 
     /**
-     * Set the value of description
-     */
-    public function setDescription($description)
+     * Set the value of machine_name
+     *
+     * @return  self
+     */ 
+    public function setMachine_name($machine_name)
     {
-        $this->description = $description;
+        $this->machine_name = $machine_name;
+
+        return $this;
     }
 
-    public function createMachine()
+    /**
+     * Get the value of machine_capacity
+     */ 
+    public function getMachine_capacity()
     {
-        $conn = Database::connection();
-        $stmt = $conn->prepare('INSERT INTO machine VALUES(null,?)');
-        $stmt->execute([$this->description]);
+        return $this->machine_capacity;
     }
 
-    public function updateMachine($request)
+    /**
+     * Set the value of machine_capacity
+     *
+     * @return  self
+     */ 
+    public function setMachine_capacity($machine_capacity)
     {
-        $conn = Database::connection();
-        $stmt = $conn->prepare('UPDATE machine set description = ? WHERE machineId = ?');
-        $stmt->execute([$request->getRawData('description'), $request->getPathParams()]);
+        $this->machine_capacity = $machine_capacity;
+
+
+        return $this;
     }
 
-    public function getMachine($request)
+    /**
+     * Get the value of machine_price
+     */ 
+    public function getMachine_price()
     {
-        $conn =  Database::connection();
-        $stmt = $conn->prepare('SELECT * FROM machine WHERE machineId = ? ');
-        $stmt->execute([$request->getPathParams()]);
-        $machine = $stmt->fetch(PDO::FETCH_OBJ);
-        return $machine;
+        return $this->machine_price;
     }
 
-
-    public function getAllMachine()
+    /**
+     * Set the value of machine_price
+     *
+     * @return  self
+     */ 
+    public function setMachine_price($machine_price)
     {
-        $conn =  Database::connection();
-        $machines = $conn->query('SELECT * FROM machine')->fetchAll(PDO::FETCH_OBJ);
-        return $machines;
+        $this->machine_price = $machine_price;
+
+        return $this;
     }
 
-    public function deleteMachine($request)
+    /**
+     * Get the value of machine_duration
+     */ 
+    public function getMachine_duration()
     {
-        $conn = Database::connection();
-        $stmt = $conn->prepare('DELETE FROM machine WHERE machineId = ?');
-        $stmt->execute([$request->getPathParams()]);
+        return $this->machine_duration;
     }
 
-    public function ifMachineExist($request)
+    /**
+     * Set the value of machine_duration
+     *
+     * @return  self
+     */ 
+    public function setMachine_duration($machine_duration)
     {
-        
-        $conn =  Database::connection();
-        $stmt = $conn->prepare('SELECT * FROM machine WHERE machineId = ? ');
-        $stmt->execute([$request->getPathParams()]);
-        $machine = $stmt->fetch(PDO::FETCH_ASSOC);
-       
-        if ($machine) {
-            return true;
-        }
-        return false; 
+        $this->machine_duration = $machine_duration;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of machine_period
+     */ 
+    public function getMachine_period()
+    {
+        return $this->machine_period;
+    }
+
+    /**
+     * Set the value of machine_period
+     *
+     * @return  self
+     */ 
+    public function setMachine_period($machine_period)
+    {
+        $this->machine_period = $machine_period;
+
+        return $this;
     }
 }

@@ -2,21 +2,35 @@
 require_once 'config.php';
 
 class Database {
+    
+    private $pdo;
+    private static $instance;
 
-    public static function connection():PDO
-    {
-        $servername = SERVERNAME;
-        $username = USERNAME;
-        $password = PASSWORD;
-
-        try {
-            $conn = new PDO("mysql:host=$servername;port=3306;dbname=haptiplan", $username, $password);
-            // set the PDO error mode to exception
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
+    private function __construct(){
+        $db_string = DB_TYPE.":host=".DB_HOST.";dbname=".DB_DATABASE;
+        $this->pdo = new PDO($db_string, DB_USER, DB_PASSWORD);
+    }
+    public static function getInstance(){
+        if(!isset(self::$instance)){
+            self::$instance = new Database();
         }
-        return $conn;
+        return self::$instance;
+    }
+
+    public function query($sql, $params = array()){
+        $db_statement = $this->pdo->prepare($sql);
+
+        $db_statement->execute($params);
+
+        return $db_statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function execute($sql, $sql_params = []) {
+
+        $db_statement = $this->pdo->prepare($sql);
+
+        return $db_statement->execute($sql_params);
+
     }
 }
 
