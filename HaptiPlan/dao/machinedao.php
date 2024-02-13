@@ -10,7 +10,7 @@ class MachineDao implements Dao
 
     public function insert($request)
     {
-        $sql = ('INSERT INTO machinetype VALUES(null,?,?,?,?,?)');
+        $sql = 'INSERT INTO machinetype VALUES(null,?,?,?,?,?)';
         $this->db->execute($sql, [
             $request->getRawData('machine_name'),
             $request->getRawData('machine_capacity'),
@@ -18,7 +18,7 @@ class MachineDao implements Dao
             $request->getRawData('machine_duration'),
             $request->getRawData('machine_period')
         ]);
-                return Response::jsonResponse("Machine is created", 201);
+        return Response::jsonResponse("Machine is created", 201);
 
     }
     public function delete($request)
@@ -52,20 +52,20 @@ class MachineDao implements Dao
     }
     public function getAll()
     {
-        $sql = ("SELECT * FROM machinetype");
+        $sql = 'SELECT * FROM machinetype';
         $machines = $this->db->query($sql);
-        
+
         return Response::jsonResponse($machines);
     }
-    
+
     public function ifExist($request)
     {
-        $sql = ('SELECT * FROM machinetype WHERE machine_id = ? ');
+        $sql = 'SELECT * FROM machinetype WHERE machine_id = ? ';
         $machine = $this->db->execute($sql, [$request->getPathParams()]);
         $machine_exist = false;
         if ($machine) {
             $machine_exist = true;
         }
-        return $machine_exist; 
+        return $machine_exist;
     }
 }
