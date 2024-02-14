@@ -26,6 +26,19 @@ class Router
 
     function callController(Request $request)
     {
+        
+        //Credit
+        if ($request->getUrl() == $this->prefix . self::CREDIT_ROOT) {
+            //Create Credit
+            if ($request->getType() == self::POST_METHOD) {
+                return $this->creditDao->insert($request);
+            }
+            //Get all Credit
+            if ($request->getType() == self::GET_METHOD) {
+                return $this->creditDao->getAll();
+            }
+        }
+
         if ($request->getUrl() == $this->prefix . self::MACHINE_ROOT) {
             //Create Machine
             if ($request->getType() == self::POST_METHOD) {
@@ -36,14 +49,7 @@ class Router
                 return $this->machineDao->getAll();
             }
         }
-
-        //Get a specefic machine
-        if (is_numeric($request->getPathParams())) {
-            if ($request->getType() == self::GET_METHOD) {
-                return $this->machineDao->get($request);
-            }
-        }
-
+        
         //Update machine
         if ($request->getUrlwithoutPathParams() == $this->prefix . self::MACHINE_ROOT . "/update") {
             if ($request->getType() == self::PUT_METHOD) {
@@ -57,19 +63,15 @@ class Router
                 return $this->machineDao->delete($request);
             }
         }
-
-        //Credit
-        if ($request->getUrl() == $this->prefix . self::CREDIT_ROOT) {
-            //Create Credit
-            if ($request->getType() == self::POST_METHOD) {
-                return $this->creditDao->insert($request);
-            }
-            //Get all Credit
+        /** 
+         //Get a specefic machine (Kritisch prüfen!)
+        if (is_numeric($request->getPathParams())) {
             if ($request->getType() == self::GET_METHOD) {
-                return $this->creditDao->getAll();
+                return $this->machineDao->get($request);
             }
         }
-
+*/
+       
         return Response::jsonResponse("Not found" . $request->getUrl(), 404);
     }
 }

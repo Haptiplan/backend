@@ -7,16 +7,14 @@ class CreditDao implements Dao
     {
         $this->db = DATABASE::getInstance();
     }
-
     public function insert($request)
     {
-        $sql = 'INSERT INTO credit VALUES(null,?)';
-        $this->db->execute($sql, [
-            $request->getRawData('credit_amount')
-        ]);
-                return Response::jsonResponse("Credit is created", 201);
-
+        $sql = 'INSERT INTO credit (credit_amount) VALUES (?)';
+        $this->db->execute($sql, [$request->getRawData('credit_amount')]);
+        
+        return Response::jsonResponse("Credit is created", 201);
     }
+
     public function delete($request)
     {
         $sql = 'DELETE FROM credit WHERE credit_id = (?)';
@@ -42,10 +40,10 @@ class CreditDao implements Dao
     {
         $sql = 'SELECT * FROM credit';
         $credits = $this->db->query($sql);
-        
+
         return Response::jsonResponse($credits);
     }
-    
+
     public function ifExist($request)
     {
         $sql = 'SELECT * FROM credit WHERE credit_id = ? ';
@@ -54,6 +52,6 @@ class CreditDao implements Dao
         if ($credit) {
             $credit_exist = true;
         }
-        return $credit_exist; 
+        return $credit_exist;
     }
 }

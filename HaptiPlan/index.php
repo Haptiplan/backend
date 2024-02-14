@@ -25,8 +25,6 @@ require_once './models/machinetype.php';
 
 $request = new Request();
 $responseHandler = new ResponseHandler();
-$mach_dao = new MachineDao();
-$credit_dao = new CreditDao();
 $router = new Router('/backend/HaptiPlan/');
 $response = $router->callController($request);
 $responseHandler->sendResponse($response); 
