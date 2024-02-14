@@ -27,6 +27,7 @@ $request = new Request();
 $responseHandler = new ResponseHandler();
 $router = new Router('/backend/HaptiPlan/');
 $response = $router->callController($request);
+
 $responseHandler->sendResponse($response); 
 
 

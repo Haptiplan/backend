@@ -26,16 +26,18 @@ class Router
 
     function callController(Request $request)
     {
-        
         //Credit
-        if ($request->getUrl() == $this->prefix . self::CREDIT_ROOT) {
-            //Create Credit
-            if ($request->getType() == self::POST_METHOD) {
-                return $this->creditDao->insert($request);
-            }
+        if ($request->getUrl() == $this->prefix . self::CREDIT_ROOT) { 
             //Get all Credit
             if ($request->getType() == self::GET_METHOD) {
                 return $this->creditDao->getAll();
+            }
+        }
+        
+        if ($request->getUrlwithoutPathParams() == $this->prefix . self::CREDIT_ROOT . "/update") {
+            //Update Credit
+             if ($request->getType() == self::PUT_METHOD) {
+                return $this->creditDao->update($request);
             }
         }
 

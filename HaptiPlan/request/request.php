@@ -115,12 +115,23 @@ class Request
         $data = json_decode($json);
         return $data->$text;
     }
-
+    /**
+     * Gibt nur  den letzten Wert der URL zurück
+     * 
+     * @return int Gibt eine ID Nummer zurück.
+     */
     public function getPathParams(): int{
         $parts = $this->segments;
         $paramsId = $parts[count($parts) -1];
         return $paramsId;
     }
+
+    /**
+     * Gibt alles zurück aber ohne den letzten Path
+     * 
+     * array_pop = löscht das letzte Element im Array
+     * @return string Gibt die URL wieder ohne den letzten PathParams
+     */
     public function getUrlwithoutPathParams():string{
         
         $url = $this->getUrl();

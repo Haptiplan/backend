@@ -24,12 +24,11 @@ class CreditDao implements Dao
     }
     public function update($request)
     {
-        $sql = 'UPDATE credit SET 
-            credit_amount = ?,
-        WHERE credit_id = ?';
-        $this->db->execute($sql, [
-            $request->getRawData('credit_amount')
-        ]);
+        $credit_amount = $request->getRawData('credit_amount');
+        $credit_id = $request->getPathParams();
+        $sql = 'UPDATE credit SET credit_amount = ? WHERE credit_id = ?';
+        $this->db->execute($sql, [$credit_amount,$credit_id]);
+        return Response::jsonResponse("Machine updated");
     }
     public function get($request)
     {
