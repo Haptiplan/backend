@@ -5,6 +5,7 @@ header("Access-Control-Allow-Headers: *");
 Header("Access-Control-Allow-Methods: *");
 
 require_once './dao/machinedao.php';
+require_once './dao/employeedao.php';
 require_once './dao/dao.php';
 
 require_once './include/database.php';
@@ -20,6 +21,7 @@ require_once './response/responseHandler.php';
 require_once './models/decision.php';
 require_once './models/building.php';
 require_once './models/credit.php';
+require_once './models/employee.php';
 require_once './models/employeeproduction.php';
 require_once './models/raw.php';
 require_once './models/machine.php';
