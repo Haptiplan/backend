@@ -9,9 +9,11 @@ class CreditDao implements Dao
     }
     public function insert($request)
     {
-        $sql = 'INSERT INTO credit (credit_amount) VALUES (?)';
-        $this->db->execute($sql, [$request->getRawData('credit_amount')]);
-        
+        $credit_amount = $request->getRawData('credit_amount');
+        $credit_id = $request->getPathParams();
+        $sql_insert = 'INSERT INTO credit (credit_id,credit_amount) VALUES (?,?)';
+        $this->db->execute($sql_insert, [$credit_id, $credit_amount]);
+
         return Response::jsonResponse("Credit is created", 201);
     }
 
@@ -26,9 +28,14 @@ class CreditDao implements Dao
     {
         $credit_amount = $request->getRawData('credit_amount');
         $credit_id = $request->getPathParams();
-        $sql = 'UPDATE credit SET credit_amount = ? WHERE credit_id = ?';
-        $this->db->execute($sql, [$credit_amount,$credit_id]);
-        return Response::jsonResponse("Machine updated");
+        $sql_update = 'UPDATE credit SET credit_amount = ? WHERE credit_id = ?';
+        if ($this->ifExist($request)) {
+            $this->db->execute($sql_update, [$credit_amount, $credit_id]);
+        } else {
+            //When Credit with ID dont exist
+           $this->insert($request);
+        }
+        return Response::jsonResponse("Credit updated");
     }
     public function get($request)
     {
@@ -46,9 +53,10 @@ class CreditDao implements Dao
     public function ifExist($request)
     {
         $sql = 'SELECT * FROM credit WHERE credit_id = ? ';
-        $credit = $this->db->execute($sql, [$request->getPathParams()]);
+        $credit = $this->db->query($sql, [$request->getPathParams()]);
+
         $credit_exist = false;
-        if ($credit) {
+        if ($credit != null) {
             $credit_exist = true;
         }
         return $credit_exist;
