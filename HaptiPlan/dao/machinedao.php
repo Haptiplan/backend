@@ -1,5 +1,5 @@
 <?php
-include("dao.php");
+require_once 'dao.php';
 class MachineDao implements Dao
 {
     private $db;
@@ -18,7 +18,7 @@ class MachineDao implements Dao
             $request->getRawData('machine_duration'),
             $request->getRawData('machine_period')
         ]);
-                return Response::jsonResponse("Machine is created", 201);
+        return Response::jsonResponse("Machine is created", 201);
 
     }
     public function delete($request)
@@ -54,11 +54,11 @@ class MachineDao implements Dao
     {
         $sql = 'SELECT * FROM machinetype';
         $machines = $this->db->query($sql);
-        
+
         return Response::jsonResponse($machines);
     }
-    
-    public function ifMachineExist($request)
+
+    public function ifExist($request)
     {
         $sql = 'SELECT * FROM machinetype WHERE machine_id = ? ';
         $machine = $this->db->execute($sql, [$request->getPathParams()]);
@@ -66,6 +66,6 @@ class MachineDao implements Dao
         if ($machine) {
             $machine_exist = true;
         }
-        return $machine_exist; 
+        return $machine_exist;
     }
 }
