@@ -8,6 +8,7 @@ class Router
 {
     const MACHINE_ROOT = "machine";
     const CREDIT_ROOT = "credit";
+    const BUILDING_ROOT = "building";
     const GET_METHOD = "GET";
     const POST_METHOD = "POST";
     const PUT_METHOD = "PUT";
@@ -21,11 +22,25 @@ class Router
     {
         $this->machineDao = new MachineDao();
         $this->creditDao = new CreditDao();
+        $this->buildingDao = new BuildingDao();
         $this->prefix = strtolower($prefix);
     }
 
     function callController(Request $request)
     {
+        
+        //Building
+        if ($request->getUrl() == $this->prefix . self::BUILDING_ROOT) { 
+            //Get all Building
+            if ($request->getType() == self::POST_METHOD) {
+                return $this->buildingDao->insert($request);
+            }
+
+            if ($request->getType() == self::GET_METHOD) {
+                return $this->buildingDao->getAll();
+            }
+        }
+    
         //Credit
         if ($request->getUrl() == $this->prefix . self::CREDIT_ROOT) { 
             //Get all Credit

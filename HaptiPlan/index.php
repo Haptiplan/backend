@@ -7,6 +7,7 @@ Header("Access-Control-Allow-Methods: *");
 require_once './dao/dao.php';
 require_once './dao/machinedao.php';
 require_once './dao/creditdao.php';
+require_once './dao/buildingdao.php';
 
 require_once './include/database.php';
 

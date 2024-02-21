@@ -28,7 +28,7 @@ class CreditDao implements Dao
         $credit_id = $request->getPathParams();
         $sql = 'UPDATE credit SET credit_amount = ? WHERE credit_id = ?';
         $this->db->execute($sql, [$credit_amount,$credit_id]);
-        return Response::jsonResponse("Machine updated");
+        return Response::jsonResponse("Credit updated");
     }
     public function get($request)
     {
