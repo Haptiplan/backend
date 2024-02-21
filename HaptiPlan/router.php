@@ -69,33 +69,14 @@ class Router
             if ($request->getType() == self::GET_METHOD) {
                 return $this->employeeDao->getAll();
             }
-        }
-
-        //Update employee
-        if ($request->getUrlwithoutPathParams() == $this->prefix . self::EMPLOYEE_ROOT . "/update") {
-            if ($request->getType() == self::PUT_METHOD) {
-                return $this->employeeDao->update($request);
-            }
-        }
-
+        }   
+             
         //Delete employee
         if ($request->getUrlwithoutPathParams() == $this->prefix . self::EMPLOYEE_ROOT . "/delete") {
             if ($request->getType() == self::DELETE_METHOD) {
                 return $this->employeeDao->delete($request);
             }
         }
-
-        //TODO: Stimmt noch nicht
-        //Get a specefic employee
-        
-        if (strpos($request->getUrl(), $this->prefix . self::EMPLOYEE_ROOT . "/") === 0) {
-            $urlParts = explode("/", $request->getUrl());
-            $employeeId = end($urlParts);
-            if (is_numeric($employeeId) && $request->getType() == self::GET_METHOD) {
-                return $this->employeeDao->get($request);
-            }
-        }
-        
 
         return Response::jsonResponse("Not found" . $request->getUrl(), 404);
     }

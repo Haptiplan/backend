@@ -10,8 +10,11 @@ class EmployeeDao implements Dao
 
     public function insert($request)
     {
-        $sql = 'INSERT INTO employeetype VALUES(null, ?)';
-        $this->db->execute($sql, [$request->getRawData('employee_salary')]);
+        $sql = 'INSERT INTO employeetype VALUES(null,?,?)';
+        $this->db->execute($sql, [
+            $request->getRawData('employee_name'),
+            $request->getRawData('employee_salary')
+        ]);
 
         return Response::jsonResponse("Employee is created", 201);
     }
@@ -30,7 +33,7 @@ class EmployeeDao implements Dao
     }
     public function get($request)
     {
-        $sql = 'SELECT employee_id, employee_salary FROM employeetype WHERE employee_id = (?)';
+        $sql = 'SELECT employee_id, employee_name, employee_salary FROM employeetype WHERE employee_id = (?)';
         
         return $this->db->execute($sql, [$request->getPathParams()]);
     }

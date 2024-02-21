@@ -3,6 +3,7 @@
 class Employeetype
 {
     private int $employee_id;
+    private int $employee_name;
     private int $employee_salary;
 
     /**
@@ -21,6 +22,25 @@ class Employeetype
     public function setEmployee_id($employee_id)
     {
         $this->employee_id = $employee_id;
+
+        return $this;
+    }
+    /**
+     * Get the value of employee_name
+     */ 
+    public function getEmployee_name()
+    {
+        return $this->employee_name;
+    }
+
+    /**
+     * Set the value of employee_name
+     *
+     * @return  self
+     */ 
+    public function setEmployee_name($employee_name)
+    {
+        $this->employee_name = $employee_name;
 
         return $this;
     }
