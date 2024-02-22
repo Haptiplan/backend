@@ -8,6 +8,7 @@ class Router
 {
     const MACHINE_ROOT = "machine";
     const CREDIT_ROOT = "credit";
+    const USER_ROOT = "user";
     const GET_METHOD = "GET";
     const POST_METHOD = "POST";
     const PUT_METHOD = "PUT";
@@ -15,12 +16,14 @@ class Router
 
     private MachineDao $machineDao;
     private CreditDao $creditDao;
+    private UserDao $userDao;
     private string $prefix;
 
     public function __construct(string $prefix)
     {
         $this->machineDao = new MachineDao();
         $this->creditDao = new CreditDao();
+        $this->userDao = new UserDao();
         $this->prefix = strtolower($prefix);
     }
 
@@ -41,6 +44,31 @@ class Router
             }
         }
 
+        //User
+        if ($request->getUrl() == $this->prefix . self::USER_ROOT) {
+            //Create user
+            if ($request->getType() == self::POST_METHOD) {
+                return $this->userDao->insert($request);
+            }
+            //Get all user
+            if ($request->getType() == self::GET_METHOD) {
+                return $this->userDao->getAll();
+            }
+        }
+        //Update user
+        if ($request->getUrlwithoutPathParams() == $this->prefix . self::USER_ROOT . "/update") {
+             if ($request->getType() == self::PUT_METHOD) {
+                return $this->userDao->update($request);
+            }
+        }
+        //Delete user
+        if ($request->getUrlwithoutPathParams() == $this->prefix . self::USER_ROOT . "/delete") {
+            if ($request->getType() == self::DELETE_METHOD) {
+                return $this->userDao->delete($request);
+            }
+        }
+
+        //Machine
         if ($request->getUrl() == $this->prefix . self::MACHINE_ROOT) {
             //Create Machine
             if ($request->getType() == self::POST_METHOD) {
@@ -65,7 +93,7 @@ class Router
                 return $this->machineDao->delete($request);
             }
         }
-        /** 
+        /* 
          //Get a specefic machine (Kritisch prüfen!)
         if (is_numeric($request->getPathParams())) {
             if ($request->getType() == self::GET_METHOD) {
