@@ -9,8 +9,9 @@ class BuildingDao implements Dao
     }
     public function insert($request)
     {
-        $sql = 'INSERT INTO building (building_price, building_type_id) VALUES (?,?)';
+        $sql = 'INSERT INTO building (building_name,building_price, building_type_id) VALUES (?,?,?)';
         $this->db->execute($sql, [
+        $request->getRawData('building_name'),
         $request->getRawData('building_price'),
         $request->getRawData('building_type_id')
     ]);
@@ -35,7 +36,7 @@ class BuildingDao implements Dao
     }
     public function get($request)
     {
-        $sql = 'SELECT building_id, building_price FROM building WHERE building_id = (?)';
+        $sql = 'SELECT building_id, building_name, building_price FROM building WHERE building_id = (?)';
         return $this->db->execute($sql, [$request->getPathParams()]);
     }
     public function getAll()
