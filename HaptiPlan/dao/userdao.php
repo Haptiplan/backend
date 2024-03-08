@@ -31,7 +31,7 @@ class UserDao implements Dao
         $sql = 'UPDATE users SET 
             (user_name = ?,
             user_password = ?)
-        WHERE machine_id = (?)';
+        WHERE user_id = (?)';
         $this->db->execute($sql, [
             $request->getRawData('user_name'),
             $request->getRawData('user_password')
