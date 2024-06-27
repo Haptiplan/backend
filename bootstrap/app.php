@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'adminAuth' => \App\Http\Middleware\AdminAuth::class,
-            'gamemasterAuth' => \App\Http\Middleware\gamemaster::class,
+            'gamemasterAuth' => \App\Http\Middleware\gamemasterAuth::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

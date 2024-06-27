@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class gamemaster
+class gamemasterAuth
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,7 @@ class gamemaster
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth()->user()->type == 2){ // gamemmaster = 2
+        if(Auth()->user()->type == 1){ // gamemmaster = 1
             return $next($request);
         }else{
             return redirect()->route('login')->with('error', 'You do not have permission to access this page !');
