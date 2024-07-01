@@ -21,18 +21,18 @@ class UserSeeder extends Seeder
         $userObj->type = 0;
         $userObj->save();
 
-        $adminObj = new User();
-        $adminObj->name = 'gamemaster Hicham';
-        $adminObj->email = 'gamemasterHicham@gmail.com';
-        $adminObj->password = Hash::make('123456789');
-        $adminObj->type = 1;
-        $adminObj->save();
+        $gamemaster = new User();
+        $gamemaster->name = 'Gamemaster Hicham';
+        $gamemaster->email = 'gamemasterHicham@gmail.com';
+        $gamemaster->password = Hash::make('123456789');
+        $gamemaster->type = 1;
+        $gamemaster->save();
 
-        $superAdminObj = new User();
-        $superAdminObj->name = 'Admin Hicham';
-        $superAdminObj->email = 'AdminHicham@gmail.com';
-        $superAdminObj->password = Hash::make('123456789');
-        $superAdminObj->type = 2;
-        $superAdminObj->save();
+        $adminObj = new User();
+        $adminObj->name = 'Admin Hicham';
+        $adminObj->email = 'AdminHicham@gmail.com';
+        $adminObj->password = Hash::make('123456789');
+        $adminObj->type = 2;
+        $adminObj->save();
     }
 }
