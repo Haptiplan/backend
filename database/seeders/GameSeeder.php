@@ -14,7 +14,7 @@ class gameSeeder extends Seeder
     public function run(): void
     {
         $gameObj = new Game();
-        $gameObj->current_period_number= 0;
+        $gameObj->name ='Erstes Spiel';
         $gameObj->save();
     }
 }
