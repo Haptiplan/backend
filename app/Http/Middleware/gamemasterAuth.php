@@ -15,7 +15,7 @@ class gamemasterAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth()->user()->type == 1){ // gamemmaster = 1
+        if(Auth()->user()->role == 1){ // gamemmaster = 1
             return $next($request);
         }else{
             return redirect()->route('login')->with('error', 'You do not have permission to access this page !');
