@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Game;
+
 
 class GameController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Game $game)
     {
-        return view('create_game');
+        $games = Game::all();
+        return view('create_game', ['games' => $games]);
     }
 
     /**
@@ -28,7 +32,9 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $game = $request->input("game_name");
+        DB::table('games')->insert(['name' => $game]);    
+        return "created";
     }
 
     /**

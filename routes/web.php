@@ -35,5 +35,6 @@ Route::middleware('gamemasterAuth')->prefix('gamemaster')->group(function(){
 });
 
 Route::get('/create_game', [GameController::class, 'index'])->name('game_index');
+Route::post('/create_game', [GameController::class, 'store'])->name('game_store');
 
 require __DIR__.'/auth.php';
