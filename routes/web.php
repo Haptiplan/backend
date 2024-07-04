@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\MachineController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -41,5 +42,17 @@ Route::get('/create_game', [GameController::class, 'index'])
 Route::post('/create_game', [GameController::class, 'store'])
 ->name('game_store')
 ->middleware('check_role: 1,2'); //1 is gamemaster, 2 is admin
+
+Route::get('/create_machine', [MachineController::class, 'index'])
+->name('machine_index')
+->middleware('check_role: 1,2');
+
+Route::post('/create_machine', [MachineController::class, 'store'])
+->name('machine_store')
+->middleware('check_role: 1,2');
+
+Route::get('/machines', [MachineController::class, 'index'])
+->name('machine_list')
+->middleware('check_role: 0');
 
 require __DIR__.'/auth.php';
