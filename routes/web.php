@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -32,5 +33,13 @@ Route::middleware('adminAuth')->prefix('admin')->group(function(){
 Route::middleware('gamemasterAuth')->prefix('gamemaster')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemasterDashboardShow');
 });
+
+Route::get('/create_game', [GameController::class, 'index'])
+->name('game_index')
+->middleware('check_role: 1,2');
+
+Route::post('/create_game', [GameController::class, 'store'])
+->name('game_store')
+->middleware('check_role: 1,2'); //1 is gamemaster, 2 is admin
 
 require __DIR__.'/auth.php';

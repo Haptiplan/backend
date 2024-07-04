@@ -15,7 +15,7 @@ class AdminAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth()->user()->type == 2){ // admin = 2
+        if(Auth()->user()->role == 2 ){ // admin = 2
             return $next($request);
         }else{
             return redirect()->route('login')->with('error', 'You do not have permission to access this page !');
