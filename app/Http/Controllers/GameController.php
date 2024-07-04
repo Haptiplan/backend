@@ -33,7 +33,7 @@ class GameController extends Controller
     public function store(Request $request, Game $game)
     {
         $game_name = $request->input("game_name");
-        DB::table('games')->insert(['name' => $game_name]); 
+        DB::table('games')->insert(['game_name' => $game_name]); 
         $games = Game::all();   
         return view('create_game', ['games' => $games]);
     }
