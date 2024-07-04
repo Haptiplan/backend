@@ -30,11 +30,12 @@ class GameController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Game $game)
     {
-        $game = $request->input("game_name");
-        DB::table('games')->insert(['name' => $game]);    
-        return "created";
+        $game_name = $request->input("game_name");
+        DB::table('games')->insert(['name' => $game_name]); 
+        $games = Game::all();   
+        return view('create_game', ['games' => $games]);
     }
 
     /**
