@@ -14,10 +14,13 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
+                        
                     </x-nav-link>
+                    @if(Auth::check() && (Auth::user()->role == \App\Models\User::ROLE_ADMIN || Auth::user()->role == \App\Models\User::ROLE_GAMEMASTER))
                     <x-nav-link :href="route('game_index')" :active="request()->routeIs('game_index')">
                         {{ __('Game erstellen') }}
                     </x-nav-link>
+                    @endif
                 </div>
             </div>
 

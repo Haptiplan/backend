@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'adminAuth' => \App\Http\Middleware\AdminAuth::class,
             'gamemasterAuth' => \App\Http\Middleware\gamemasterAuth::class,
+            'check_role' => \App\Http\Middleware\check_role::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
