@@ -45,12 +45,16 @@ Route::post('/create_game', [GameController::class, 'store'])
 ->middleware('check_role: 1'); //1 is gamemaster
 
 /**Companies */
-Route::get('/create_company', [CompanyController::class, 'index'])
-->name('company_index')
+Route::get('/create_company', [CompanyController::class, 'create'])
+->name('company_create')
 ->middleware('check_role: 1');
 
 Route::post('/create_company', [CompanyController::class, 'store'])
 ->name('company_store')
 ->middleware('check_role: 1');
+
+Route::delete('/create_company/{id}', [CompanyController::class, 'destroy'])
+->name('company_delete')
+->middleware('check_role:1');
 
 require __DIR__.'/auth.php';

@@ -15,9 +15,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::all();
-        $games = Game::all();
-        return view('create_company', ['companies' => $companies, 'games' => $games]);
+        //
     }
 
     /**
@@ -25,7 +23,9 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        $companies = Company::all();
+        $games = Game::all();
+        return view('create_company', ['companies' => $companies, 'games' => $games]);
     }
 
     /**
@@ -79,8 +79,10 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Company $company)
+    public function destroy($id)
     {
-        //
+        Company::where('id', $id)->firstOrFail()->delete();
+    
+        return redirect()->route('company_create');
     }
 }

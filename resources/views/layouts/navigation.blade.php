@@ -20,7 +20,7 @@
                     <x-nav-link :href="route('game_index')" :active="request()->routeIs('game_index')">
                         {{ __('Game erstellen') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('company_index')" :active="request()->routeIs('company_index')">
+                    <x-nav-link :href="route('company_create')" :active="request()->routeIs('company_create')">
                         {{ __('Company erstellen')}}
                     </x-nav-link>
                     @endif
