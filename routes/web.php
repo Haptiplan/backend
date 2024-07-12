@@ -53,6 +53,14 @@ Route::post('/create_company', [CompanyController::class, 'store'])
 ->name('company_store')
 ->middleware('check_role: 1');
 
+Route::get('create_company/{id}/edit', [CompanyController::class, 'edit'])
+->name('company_edit')
+->middleware('check_role: 1');
+
+Route::put('create_company/{id}', [CompanyController::class, 'update'])
+->name('company_update')
+->middleware('check_role: 1');
+
 Route::delete('/create_company/{id}', [CompanyController::class, 'destroy'])
 ->name('company_delete')
 ->middleware('check_role:1');

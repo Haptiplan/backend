@@ -46,10 +46,7 @@ class CompanyController extends Controller
             'game_id' => $company_fk,
         ]);
     
-        $companies = Company::all();
-        $games = Game::all();
-    
-        return view('create_company', ['companies' => $companies, 'games' => $games]);
+        return redirect()->route('company_create');
     }
 
     /**
@@ -63,18 +60,31 @@ class CompanyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Company $company)
+    public function edit($id)
     {
-        //
+        $company = Company::find($id);
+        $games = Game::all();
+
+        return view('edit_company', ['company' => $company, 'games' => $games]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Company $company)
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'company_name' => 'required|unique:companies,company_name,' . $id,
+            'game_id' => 'required|exists:games,id', 
+        ]);
+        $company = Company::find($id);
+        $company->company_name = $validated['company_name'];
+        $company->game_id = $request['game_id'];
+        $company->update();
+
+        return redirect()->route('company_create');
     }
+
 
     /**
      * Remove the specified resource from storage.
