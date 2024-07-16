@@ -17,7 +17,7 @@
                         
                     </x-nav-link>
                     @if(Auth::check() && (Auth::user()->role == \App\Models\User::ROLE_ADMIN || Auth::user()->role == \App\Models\User::ROLE_GAMEMASTER))
-                    <x-nav-link :href="route('game_index')" :active="request()->routeIs('game_index')">
+                    <x-nav-link :href="route('game_create')" :active="request()->routeIs('game_create')">
                         {{ __('Game erstellen') }}
                     </x-nav-link>
                     <x-nav-link :href="route('machine_index')" :active="request()->routeIs('machine_index')">

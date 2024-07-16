@@ -35,14 +35,7 @@ Route::middleware('gamemasterAuth')->prefix('gamemaster')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemasterDashboardShow');
 });
 
-Route::get('/create_game', [GameController::class, 'index'])
-->name('game_index')
-->middleware('check_role: 1,2');
-
-Route::post('/create_game', [GameController::class, 'store'])
-->name('game_store')
-->middleware('check_role: 1,2'); //1 is gamemaster, 2 is admin
-
+//Machines
 Route::get('/create_machine', [MachineController::class, 'index'])
 ->name('machine_index')
 ->middleware('check_role: 1,2');
@@ -54,5 +47,26 @@ Route::post('/create_machine', [MachineController::class, 'store'])
 Route::get('/machines', [MachineController::class, 'index'])
 ->name('machine_list')
 ->middleware('check_role: 0');
+
+//Games
+Route::get('/create_game', [GameController::class, 'create'])
+->name('game_create')
+->middleware('check_role: 1');
+
+Route::post('/create_game', [GameController::class, 'store'])
+->name('game_store')
+->middleware('check_role: 1');
+
+Route::get('create_game/{id}/edit', [GameController::class, 'edit'])
+->name('game_edit')
+->middleware('check_role: 1');
+
+Route::put('create_game/{id}', [GameController::class, 'update'])
+->name('game_update')
+->middleware('check_role: 1');
+
+Route::delete('/create_game/{id}', [GameController::class, 'destroy'])
+->name('game_delete')
+->middleware('check_role:1');
 
 require __DIR__.'/auth.php';

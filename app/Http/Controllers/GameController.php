@@ -15,8 +15,6 @@ class GameController extends Controller
      */
     public function index(Game $game)
     {
-        $games = Game::all();
-        return view('create_game', ['games' => $games]);
     }
 
     /**
@@ -24,7 +22,8 @@ class GameController extends Controller
      */
     public function create()
     {
-        //
+        $games = Game::all();   
+        return view('create_game', ['games' => $games]);
     }
 
     /**
@@ -51,7 +50,9 @@ class GameController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $game = Game::findOrFail($id); 
+        $games = Game::all();
+        return view('edit_game', ['game' => $game, 'games' => $games]);
     }
 
     /**
@@ -59,7 +60,15 @@ class GameController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'game_id' => 'required|exists:games,id', 
+        ]);
+        $game = Game::find($id);
+        $game->game_name = $validated['game_name'];
+        $game->game_id = $request['game_id'];
+        $game->update();
+
+        return redirect()->route('game_create');
     }
 
     /**
@@ -67,6 +76,8 @@ class GameController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Game::where('id', $id)->firstOrFail()->delete();
+
+        return redirect()->route('game_create');
     }
 }
