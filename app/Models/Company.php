@@ -10,7 +10,7 @@ class Company extends Model
 {
     use HasFactory;
 
-    public function post(): BelongsTo
+    public function game(): BelongsTo
     {
         return $this->belongsTo(Game::class, 'id');
     }
