@@ -25,7 +25,7 @@ class PlayerController extends Controller
      */
     public function create()
     {
-        $users = User::all();
+        $users = DB::table('users')->where('role', '=', 0)->get();
         $companies = Company::all();
         $players = Player::all();
         $games = Game::all();
