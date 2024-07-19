@@ -3,6 +3,7 @@
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -64,5 +65,27 @@ Route::put('create_company/{id}', [CompanyController::class, 'update'])
 Route::delete('/create_company/{id}', [CompanyController::class, 'destroy'])
 ->name('company_delete')
 ->middleware('check_role:1');
+
+/**User */
+Route::get('/create_player', [PlayerController::class, 'create'])
+->name('player_create')
+->middleware('check_role: 1');
+
+Route::post('/create_player', [PlayerController::class, 'store'])
+->name('player_store')
+->middleware('check_role: 1');
+
+Route::get('create_player/{id}/edit', [PlayerController::class, 'edit'])
+->name('player_edit')
+->middleware('check_role: 1');
+
+Route::put('create_player/{id}', [PlayerController::class, 'update'])
+->name('player_update')
+->middleware('check_role: 1');
+
+Route::delete('/create_player/{id}', [PlayerController::class, 'destroy'])
+->name('player_delete')
+->middleware('check_role:1');
+
 
 require __DIR__.'/auth.php';
