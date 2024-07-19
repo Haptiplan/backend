@@ -85,7 +85,7 @@ class PlayerController extends Controller
     {
         $validated = $request->validate([ 'company_id' => 'required|exists:companies,id' ]);
         $player = Player::find($id);
-        $player->company_id = $validated('company_id');
+        $player->company_id = $validated['company_id'];
         $player->update();
 
         return redirect()->route('player_create');
