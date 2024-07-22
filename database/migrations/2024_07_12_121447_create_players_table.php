@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('players', function (Blueprint $table) {
             $table->foreignId('id')->constrained(
                 table: 'users', indexName: 'id'
-            );  
+            )->onDelete('cascade');  
             $table->foreignId('company_id')->constrained(
                 table: 'companies', indexName: 'company_id'
-            );
+            )->onDelete('cascade');
             $table->timestamps();
-            $table->unique('user_id');
         });
     }
 

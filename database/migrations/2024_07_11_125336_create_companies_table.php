@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('company_name');
             $table->foreignId('game_id')->constrained(
                 table: 'games', indexName: 'game_id'
-            );    
+            )->onDelete('cascade');    
             $table->timestamps();
         });
     }
