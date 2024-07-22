@@ -30,9 +30,14 @@ class GameController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Game $game)
+    public function store(Request $request)
     {
-        $game_name = $request->input("game_name");
+        $game_name = $request->validate([
+            'game_name' => 'required|unique:games'
+        ], [
+            'game_name.required' => 'The game must have a name!',
+            'game_name.unique' => 'The name of the game must be unique!'
+        ]);
         DB::table('games')->insert(['game_name' => $game_name]); 
         $games = Game::all();   
         return view('create_game', ['games' => $games]);
