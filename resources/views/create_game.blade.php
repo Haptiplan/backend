@@ -26,7 +26,7 @@
                     </form> 
                     <div>
                         @foreach($games as $game)
-                             <li>{{$game->name }}</li>
+                             <li>{{$game->game_name }}</li>
                          @endforeach
                     </div>
                 </div>

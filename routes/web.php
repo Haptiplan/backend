@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ProfileController;
@@ -34,12 +35,34 @@ Route::middleware('gamemasterAuth')->prefix('gamemaster')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemasterDashboardShow');
 });
 
+/**Games **/
 Route::get('/create_game', [GameController::class, 'index'])
 ->name('game_index')
-->middleware('check_role: 1,2');
+->middleware('check_role: 1');
 
 Route::post('/create_game', [GameController::class, 'store'])
 ->name('game_store')
-->middleware('check_role: 1,2'); //1 is gamemaster, 2 is admin
+->middleware('check_role: 1'); //1 is gamemaster
+
+/**Companies */
+Route::get('/create_company', [CompanyController::class, 'create'])
+->name('company_create')
+->middleware('check_role: 1');
+
+Route::post('/create_company', [CompanyController::class, 'store'])
+->name('company_store')
+->middleware('check_role: 1');
+
+Route::get('create_company/{id}/edit', [CompanyController::class, 'edit'])
+->name('company_edit')
+->middleware('check_role: 1');
+
+Route::put('create_company/{id}', [CompanyController::class, 'update'])
+->name('company_update')
+->middleware('check_role: 1');
+
+Route::delete('/create_company/{id}', [CompanyController::class, 'destroy'])
+->name('company_delete')
+->middleware('check_role:1');
 
 require __DIR__.'/auth.php';
