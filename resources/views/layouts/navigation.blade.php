@@ -24,7 +24,7 @@
                         {{ __('Company erstellen')}}
                     </x-nav-link>
                     <x-nav-link :href="route('player_create')" :active="request()->routeIs('user_create')">
-                        {{ __('User erstellen')}}
+                        {{ __('Player zuweisen')}}
                     </x-nav-link>
                     @endif
                 </div>

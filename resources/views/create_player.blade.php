@@ -37,8 +37,10 @@
                         </div>
                     </form> 
                     <div>
+                    @foreach ($companies as $company)
+                    <label class="font-bold mb-6"><u>{{$company->company_name}}:</u></label> <br>
                     @foreach($user_list as $user)
-                    @if ($players->contains('id', $user->id))
+                    @if ($players->contains('id', $user->id) and $players->contains('company_id', $company->id))
                     <li>
                         {{$user->name}}
                         <a href="{{ route('player_edit', $user->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
@@ -53,6 +55,7 @@
                         </form>
                     </li>
                     @endif
+                    @endforeach
                     @endforeach
                     </div>
                 </div>
