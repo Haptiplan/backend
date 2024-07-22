@@ -42,12 +42,14 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
-        $id = $request->input('id');
-        $company_id = $request->input('company_id');
+        $validated = $request->validate([
+            'id' => 'required|unique:players,id',
+            'company_id' => 'required',
+        ]);
     
         DB::table('players')->insert([
-            'id' => $id,
-            'company_id' => $company_id,
+            'id' => $validated['id'],
+            'company_id' => $validated['company_id'],
         ]);
     
         return redirect()->route('player_create');
