@@ -25,12 +25,19 @@ class PlayerController extends Controller
      */
     public function create()
     {
-        $users = DB::table('users')->where('role', '=', 0)->get();
+        $users = DB::table('users')
+            ->where('role', '=', 0)
+            ->whereNotIn('id', function($query) {
+                $query->select('p.id')->from('players as p');
+            })
+            ->get();
+        $user_list = User::all();
         $companies = Company::all();
         $players = Player::all();
         $games = Game::all();
         return view('create_player', [
             'users' => $users, 
+            'user_list' => $user_list,
             'companies' => $companies, 
             'players' => $players, 
             'games' => $games,

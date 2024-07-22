@@ -37,7 +37,7 @@
                         </div>
                     </form> 
                     <div>
-                    @foreach($users as $user)
+                    @foreach($user_list as $user)
                     @if ($players->contains('id', $user->id))
                     <li>
                         {{$user->name}}
