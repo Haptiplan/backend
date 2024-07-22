@@ -38,15 +38,28 @@ Route::middleware('gamemasterAuth')->prefix('gamemaster')->group(function(){
 //Machines
 Route::get('/create_machine', [MachineController::class, 'index'])
 ->name('machine_index')
-->middleware('check_role: 1,2');
+->middleware('check_role: 1');
 
 Route::post('/create_machine', [MachineController::class, 'store'])
 ->name('machine_store')
-->middleware('check_role: 1,2');
+->middleware('check_role: 1');
 
 Route::get('/machines', [MachineController::class, 'index'])
 ->name('machine_list')
 ->middleware('check_role: 0');
+
+Route::get('create_machine/{id}/edit', [MachineController::class, 'edit'])
+->name('machine_edit')
+->middleware('check_role: 1');
+
+Route::put('create_machine/{id}', [MachineController::class, 'update'])
+->name('machine_update')
+->middleware('check_role: 1');
+
+Route::delete('/create_machine/{id}', [MachineController::class, 'destroy'])
+->name('machine_delete')
+->middleware('check_role:1');
+
 
 //Games
 Route::get('/create_game', [GameController::class, 'create'])

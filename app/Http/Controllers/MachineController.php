@@ -10,24 +10,11 @@ use App\Models\Machine;
 
 class MachineController extends Controller
 {
-    public function store(Request $request){
-       
-        $machine = $request->input("machine_name");
-        DB::table('machines')->insert(['machineName' => $machine]);    
-        $machines = Machine::all();
-
-        return view("create_machines", ['machines' => $machines]);
-    }
-
-    public function create(){
-        return view("create_machines");
-    }
-
     public function index(){
         $machines = Machine::all();
         $user = Auth::user();
 
-        if ($user->role == \App\Models\User::ROLE_ADMIN || $user->role == \App\Models\User::ROLE_GAMEMASTER) {
+        if ($user->role == \App\Models\User::ROLE_GAMEMASTER) {
             return view("create_machines", ['machines' => $machines]);
         } elseif ($user->role == \App\Models\User::ROLE_USER) {
             return view("machines", ['machines' => $machines]);
@@ -36,11 +23,46 @@ class MachineController extends Controller
         }
     }
 
-    public function delete(){
-
+    public function create(){
+        return view("create_machines");
     }
 
-    public function edit(){
+    public function store(Request $request){
+       
+        $machine = $request->input("machine_name");
+        DB::table('machines')->insert(['machine_name' => $machine]);    
+        $machines = Machine::all();
 
+        return view("create_machines", ['machines' => $machines]);
     }
+
+    public function edit(string $machine_id){
+        $machine = Machine::findOrFail($machine_id); 
+        return view('edit_machine', ['machine' => $machine]);
+    }
+
+    public function update(Request $request, string $machine_id)
+    {
+        $validated = $request->validate([
+            'machine_name' => 'required|string|max:255', 
+        ]);
+        
+        $machine = Machine::find($machine_id);
+
+        $machine->machine_name = $validated['machine_name'];
+        $machine->save();
+        $machine->update();
+
+        return redirect()->route('machine_index');
+    }
+
+    public function destroy(string $machine_id)
+    {
+        $machine = Machine::findOrFail($machine_id);
+        $machine->delete();
+
+        return redirect()->route('machine_index');
+    }
+
+    
 }

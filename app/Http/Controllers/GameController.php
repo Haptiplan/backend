@@ -34,7 +34,7 @@ class GameController extends Controller
         $game_name = $request->input("game_name");
         DB::table('games')->insert(['game_name' => $game_name]); 
         $games = Game::all();   
-        return view('create_game', ['games' => $games]);
+        return redirect()->route('game_create')->with('success', 'Spiel erfolgreich erstellt!');
     }
 
     /**
@@ -48,24 +48,25 @@ class GameController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $game_id)
     {
-        $game = Game::findOrFail($id); 
-        $games = Game::all();
-        return view('edit_game', ['game' => $game, 'games' => $games]);
+        $game = Game::findOrFail($game_id); 
+        return view('edit_game', ['game' => $game]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $game_id)
     {
         $validated = $request->validate([
-            'game_id' => 'required|exists:games,id', 
+            'game_name' => 'required|string|max:255', 
         ]);
-        $game = Game::find($id);
+        
+        $game = Game::find($game_id);
+
         $game->game_name = $validated['game_name'];
-        $game->game_id = $request['game_id'];
+        $game->save();
         $game->update();
 
         return redirect()->route('game_create');
@@ -76,7 +77,8 @@ class GameController extends Controller
      */
     public function destroy(string $id)
     {
-        Game::where('id', $id)->firstOrFail()->delete();
+        $game = Game::findOrFail($id);
+        $game->delete();
 
         return redirect()->route('game_create');
     }
