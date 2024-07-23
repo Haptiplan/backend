@@ -12,11 +12,20 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    @if(Auth::check() && Auth::user()->role == \App\Models\User::ROLE_USER)
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
-                        
                     </x-nav-link>
+                    @endif
+                    @if(Auth::check() && Auth::user()->role == \App\Models\User::ROLE_ADMIN)
+                    <x-nav-link :href="route('adminDashboardShow')" :active="request()->routeIs('adminDashboardShow')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+                    @endif
                     @if(Auth::check() && Auth::user()->role == \App\Models\User::ROLE_GAMEMASTER)
+                    <x-nav-link :href="route('gamemasterDashboardShow')" :active="request()->routeIs('gamemasterDashboardShow')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('game_index')" :active="request()->routeIs('game_index')">
                         {{ __('Game erstellen') }}
                     </x-nav-link>
