@@ -12,7 +12,7 @@ class MachineController extends Controller
     public function store(Request $request){
        
         $machine = $request->input("machine_name");
-        DB::table('machines')->insert(['machineName' => $machine]);    
+        DB::table('machines')->insert(['machine_name' => $machine]);    
         return "created";
     }
 

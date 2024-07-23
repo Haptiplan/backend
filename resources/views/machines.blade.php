@@ -10,7 +10,7 @@
 
     <ul>
         @foreach($machines as $machine)
-            <li>{{ $machine->machineName }}</li>
+            <li>{{ $machine->machine_name }}</li>
         @endforeach
     </ul>
 </body>
