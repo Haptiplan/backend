@@ -26,7 +26,7 @@ class CompanyController extends Controller
     {
         $companies = Company::all();
         $games = Game::all();
-        return view('create_company', ['companies' => $companies, 'games' => $games]);
+        return view('companies.create', ['companies' => $companies, 'games' => $games]);
     }
 
     /**
@@ -66,7 +66,7 @@ class CompanyController extends Controller
             'game_id' => $company_fk,
         ]);
     
-        return redirect()->route('company_create');
+        return redirect()->route('company.create');
     }
 
     /**
@@ -85,7 +85,7 @@ class CompanyController extends Controller
         $company = Company::find($id);
         $games = Game::all();
 
-        return view('edit_company', ['company' => $company, 'games' => $games]);
+        return view('companies.edit', ['company' => $company, 'games' => $games]);
     }
 
     /**
@@ -122,7 +122,7 @@ class CompanyController extends Controller
         $company->game_id = $validated['game_id'];
         $company->save();
 
-        return redirect()->route('company_create')->with('success', 'Company updated successfully.');
+        return redirect()->route('company.create')->with('success', 'Company updated successfully.');
     }
 
 
@@ -134,6 +134,6 @@ class CompanyController extends Controller
     {
         Company::where('id', $id)->firstOrFail()->delete();
     
-        return redirect()->route('company_create');
+        return redirect()->route('company.create');
     }
 }

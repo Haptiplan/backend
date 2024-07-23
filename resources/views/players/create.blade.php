@@ -19,7 +19,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form class="space-y-4" action="{{ route('player_store') }}" method="POST">
+                    <form class="space-y-4" action="{{ route('player.store') }}" method="POST">
                         @csrf
                         <div>
                             <select  name="id" id="id" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
@@ -53,10 +53,10 @@
                                     @if ($player->id == $user->id && $player->company_id == $company->id)
                                         <li>
                                             {{$user->name}}
-                                            <a href="{{ route('player_edit', $user->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
+                                            <a href="{{ route('player.edit', $user->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
                                                 Edit
                                             </a>
-                                            <form action="{{ route('player_delete', $user->id) }}" method="POST" class="inline">
+                                            <form action="{{ route('player.delete', $user->id) }}" method="POST" class="inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">

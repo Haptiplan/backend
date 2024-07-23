@@ -19,7 +19,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form class="space-y-4" action="{{ route('game_store') }}" method="POST">
+                    <form class="space-y-4" action="{{ route('game.store') }}" method="POST">
                             @csrf
                         <div>
                             <label for="game_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">

@@ -16,7 +16,7 @@ class GameController extends Controller
     public function index(Game $game)
     {
         $games = Game::all();
-        return view('create_game', ['games' => $games]);
+        return view('games.create', ['games' => $games]);
     }
 
     /**
@@ -40,7 +40,7 @@ class GameController extends Controller
         ]);
         DB::table('games')->insert(['game_name' => $game_name]); 
         $games = Game::all();   
-        return view('create_game', ['games' => $games]);
+        return view('games.create', ['games' => $games]);
     }
 
     /**

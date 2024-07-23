@@ -17,14 +17,14 @@ class MachineController extends Controller
     }
 
     public function create(){
-        return view("create_machines");
+        return view("machines.create");
     }
 
     public function index(){
 
         $machines = Machine::all();
 
-        return view("machines", ['machines' => $machines]);
+        return view("machines.index", ['machines' => $machines]);
     }
 
     public function delete(){

@@ -26,13 +26,13 @@
                     <x-nav-link :href="route('gamemasterDashboardShow')" :active="request()->routeIs('gamemasterDashboardShow')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('game_index')" :active="request()->routeIs('game_index')">
+                    <x-nav-link :href="route('game.index')" :active="request()->routeIs('game.index')">
                         {{ __('Game erstellen') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('company_create')" :active="request()->routeIs('company_create')">
+                    <x-nav-link :href="route('company.create')" :active="request()->routeIs('company.create')">
                         {{ __('Company erstellen')}}
                     </x-nav-link>
-                    <x-nav-link :href="route('player_create')" :active="request()->routeIs('user_create')">
+                    <x-nav-link :href="route('player.create')" :active="request()->routeIs('user.create')">
                         {{ __('Player zuweisen')}}
                     </x-nav-link>
                     @endif

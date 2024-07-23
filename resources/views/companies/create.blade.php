@@ -19,7 +19,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form class="space-y-4" action="{{ route('company_store') }}" method="POST">
+                    <form class="space-y-4" action="{{ route('company.store') }}" method="POST">
                             @csrf
                         <div>
                             <label for="company_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -47,10 +47,10 @@
                     
                                 <li>
                                     {{$company->company_name}}
-                                    <a href="{{ route('company_edit', $company->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
+                                    <a href="{{ route('company.edit', $company->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
                                         Edit
                                     </a>
-                                    <form action="{{ route('company_delete', $company->id) }}" method="POST" class="inline">
+                                    <form action="{{ route('company.delete', $company->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">

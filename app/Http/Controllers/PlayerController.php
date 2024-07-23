@@ -35,7 +35,7 @@ class PlayerController extends Controller
         $companies = Company::all();
         $players = Player::all();
         $games = Game::all();
-        return view('create_player', [
+        return view('players.create', [
             'users' => $users, 
             'user_list' => $user_list,
             'companies' => $companies, 
@@ -63,7 +63,7 @@ class PlayerController extends Controller
             'company_id' => $validated['company_id'],
         ]);
     
-        return redirect()->route('player_create');
+        return redirect()->route('player.create');
     }
 
     /**
@@ -83,7 +83,7 @@ class PlayerController extends Controller
         $player = Player::find($id);
         $companies = Company::all();
         $games = Game::all();
-        return view('edit_player', [
+        return view('players.edit', [
             'user' => $user, 
             'player' => $player,
             'companies' => $companies, 
@@ -106,7 +106,7 @@ class PlayerController extends Controller
         $player->company_id = $validated['company_id'];
         $player->update();
 
-        return redirect()->route('player_create');
+        return redirect()->route('player.create');
     }
 
     /**
@@ -117,6 +117,6 @@ class PlayerController extends Controller
         $player = Player::where('id', $id)->firstOrFail();
         $player->delete();
 
-        return redirect()->route('player_create');
+        return redirect()->route('player.create');
     }
 }
