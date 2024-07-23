@@ -12,12 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('players', function (Blueprint $table) {
-            $table->foreignId('id')->constrained(
-                table: 'users', indexName: 'id'
-            )->onDelete('cascade');  
-            $table->foreignId('company_id')->constrained(
-                table: 'companies', indexName: 'company_id'
-            )->onDelete('cascade');
+            $table->foreignId('id')->constrained('users')->onDelete('cascade');  
+            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
             $table->timestamps();
         });
     }
