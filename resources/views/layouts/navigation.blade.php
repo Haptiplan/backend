@@ -16,18 +16,21 @@
                         {{ __('Dashboard') }}
                         
                     </x-nav-link>
-                    @if(Auth::check() && (Auth::user()->role == \App\Models\User::ROLE_ADMIN || Auth::user()->role == \App\Models\User::ROLE_GAMEMASTER))
+
+                    @if(Auth::check() && Auth::user()->role == \App\Models\User::ROLE_GAMEMASTER)
                     <x-nav-link :href="route('game_create')" :active="request()->routeIs('game_create')">
                         {{ __('Game erstellen') }}
                     </x-nav-link>
                     <x-nav-link :href="route('machine_index')" :active="request()->routeIs('machine_index')">
                         {{ __('Maschine erstellen')}}
                     </x-nav-link>
+                    <x-nav-link :href="route('company_create')" :active="request()->routeIs('company_create')">
+                        {{ __('Company erstellen')}}
+                    </x-nav-link>
                     @endif
                     @if(Auth::check() && Auth::user()->role == \App\Models\User::ROLE_USER)
                     <x-nav-link :href="route('machine_list')" :active="request()->routeIs('machine_index')">
-                        {{ __('Maschinenliste')}}
-                    </x-nav-link>
+                        {{ __('Maschinenliste')}}           
                     @endif
                 </div>
             </div>
