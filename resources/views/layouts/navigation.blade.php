@@ -13,17 +13,25 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                        
+                        {{ __('Dashboard') }} 
                     </x-nav-link>
+
                     @if(Auth::check() && Auth::user()->role == \App\Models\User::ROLE_GAMEMASTER)
                     <x-nav-link :href="route('game_index')" :active="request()->routeIs('game_index')">
                         {{ __('Game erstellen') }}
-                    </x-nav-link>
+                    </x-nav-link> 
+                     <x-nav-link :href="route('machine_index')" :active="request()->routeIs('machine_index')">
+                        {{ __('Maschine erstellen')}}
+                    </x-nav-link> 
                     <x-nav-link :href="route('company_create')" :active="request()->routeIs('company_create')">
                         {{ __('Company erstellen')}}
-                    </x-nav-link>
+                    </x-nav-link> 
                     @endif
+                        @if(Auth::check() && Auth::user()->role == \App\Models\User::ROLE_USER)
+                    <x-nav-link :href="route('machine_list')" :active="request()->routeIs('machine_index')">
+                        {{ __('Maschinenliste')}}  
+                     </x-nav-link>          
+                    @endif 
                 </div>
             </div>
 
