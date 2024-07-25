@@ -15,6 +15,8 @@ class GameController extends Controller
      */
     public function index(Game $game)
     {
+        $games = Game::all();   
+        return view('create_game', ['games' => $games]);
     }
 
     /**
@@ -22,8 +24,7 @@ class GameController extends Controller
      */
     public function create()
     {
-        $games = Game::all();   
-        return view('create_game', ['games' => $games]);
+        
     }
 
     /**
@@ -34,7 +35,7 @@ class GameController extends Controller
         $game_name = $request->input("game_name");
         DB::table('games')->insert(['game_name' => $game_name]); 
         $games = Game::all();   
-        return redirect()->route('game_create')->with('success', 'Spiel erfolgreich erstellt!');
+        return redirect()->route('game_index')->with('success', 'Spiel erfolgreich erstellt!');
     }
 
     /**
@@ -69,7 +70,7 @@ class GameController extends Controller
         $game->save();
         $game->update();
 
-        return redirect()->route('game_create');
+        return redirect()->route('game_index');
     }
 
     /**
@@ -80,6 +81,6 @@ class GameController extends Controller
         $game = Game::findOrFail($id);
         $game->delete();
 
-        return redirect()->route('game_create');
+        return redirect()->route('game_index');
     }
 }
