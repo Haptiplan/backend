@@ -25,7 +25,10 @@
                     </x-nav-link> 
                     <x-nav-link :href="route('company_create')" :active="request()->routeIs('company_create')">
                         {{ __('Company erstellen')}}
-                    </x-nav-link> 
+                    </x-nav-link>
+                    <x-nav-link :href="route('player_create')" :active="request()->routeIs('user_create')">
+                        {{ __('Player zuweisen')}}
+                    </x-nav-link>
                     @endif
                         @if(Auth::check() && Auth::user()->role == \App\Models\User::ROLE_USER)
                     <x-nav-link :href="route('machine_list')" :active="request()->routeIs('machine_index')">
