@@ -1,3 +1,9 @@
+@php
+use App\Models\User;
+$admin = User::ROLE_ADMIN;
+$gamemaster = User::ROLE_GAMEMASTER;
+$user = User::ROLE_USER;
+@endphp
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,12 +17,14 @@
                 </div>
 
                 <!-- Navigation Links -->
+             
+                
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }} 
                     </x-nav-link>
 
-                    @if(Auth::check() && Auth::user()->role == \App\Models\User::ROLE_GAMEMASTER)
+                    @if(Auth::check() && Auth::user()->role == $gamemaster)
                     <x-nav-link :href="route('game_index')" :active="request()->routeIs('game_index')">
                         {{ __('Game erstellen') }}
                     </x-nav-link> 
@@ -30,7 +38,7 @@
                         {{ __('Player zuweisen')}}
                     </x-nav-link>
                     @endif
-                        @if(Auth::check() && Auth::user()->role == \App\Models\User::ROLE_USER)
+                        @if(Auth::check() && Auth::user()->role == $user)
                     <x-nav-link :href="route('machine_list')" :active="request()->routeIs('machine_index')">
                         {{ __('Maschinenliste')}}  
                      </x-nav-link>          

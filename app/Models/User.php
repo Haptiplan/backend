@@ -12,9 +12,10 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    const ROLE_USER = 0;
+    const ROLE_ADMIN = 0;
     const ROLE_GAMEMASTER = 1;
-    const ROLE_ADMIN = 2;
+    const ROLE_USER = 2;
+    
 
     public function player(): HasMany
     {
