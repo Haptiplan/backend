@@ -11,7 +11,7 @@
          @csrf
         <div>
             <label for="machine_name">Machine name</label>
-            <input type="text" name="machine_name" id="machine_name">
+            <input type="text" name="machine_name" id="machine_name" required>
         </div>
         <button type="submit">create machine</button>
     </form>

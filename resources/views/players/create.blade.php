@@ -22,13 +22,13 @@
                     <form class="space-y-4" action="{{ route('player.store') }}" method="POST">
                         @csrf
                         <div>
-                            <select  name="id" id="id" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
+                            <select  name="id" id="id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
                                 <option  class="block text-sm font-medium text-gray-700 dark:text-gray-300" value="" disabled hidden selected>Choose a user here</option>
                                 @foreach ($users as $user)
                                     <option value="{{$user->id}}">{{$user->name}}</option>
                                 @endforeach
                             </select>
-                            <select  name="company_id" id="company_id" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
+                            <select  name="company_id" id="company_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
                                 <option  class="block text-sm font-medium text-gray-700 dark:text-gray-300" value="" disabled hidden selected>Choose company here</option>
                                 @foreach ($games as $game)
                                 <optgroup label="Game: {{$game->game_name}}" class="text-sm font-medium text-gray-700 dark:text-gray-300">
