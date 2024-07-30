@@ -26,7 +26,7 @@ class PlayerController extends Controller
     public function create()
     {
         $users = DB::table('users')
-            ->where('role', '=', 0)
+            ->where('role', '=', User::ROLE_USER)
             ->whereNotIn('id', function($query) {
                 $query->select('p.id')->from('players as p');
             })
