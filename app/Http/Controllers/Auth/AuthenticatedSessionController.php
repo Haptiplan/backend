@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
@@ -56,11 +56,11 @@ class AuthenticatedSessionController extends Controller
         // check if the given user exists in db
         if(Auth::attempt(['email'=> $input['email'], 'password'=> $input['password']])){
             // check the user role
-            if (Auth::user()->role == 0) {
+            if (Auth::user()->role == User::ROLE_USER) {
                 return redirect()->route('dashboard');
-            } elseif (Auth::user()->role == 1) {
+            } elseif (Auth::user()->role == User::ROLE_GAMEMASTER) {
                 return redirect()->route('gamemasterDashboardShow');
-            } elseif (Auth::user()->role == 2) {
+            } elseif (Auth::user()->role == User::ROLE_ADMIN) {
                 return redirect()->route('adminDashboardShow');
             }
         }
