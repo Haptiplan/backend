@@ -47,7 +47,7 @@ class UserController extends Controller
             'email' => 'required|unique:users,email',
             'role' => 'required',
             'password' => 'required',
-            'game' => 'required_if:role,1',
+            'game' => 'required_if:role,' . User::ROLE_GAMEMASTER,
         ]);
 
         $user = User::create([
@@ -105,14 +105,14 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|unique:users,email,' . $user->id,
             'role' => 'required',
-            'game' => 'required_if:role,1'
+            'game' => 'required_if:role,' . User::ROLE_GAMEMASTER
         ]);
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->role = $validated['role'];
 
-        if($validated['role'] == 1) {
+        if($validated['role'] == User::ROLE_GAMEMASTER) {
             $gamemaster = Gamemaster::findOrNew($id);
             $gamemaster->id = $id;
             $gamemaster->game_id = $validated['game'];
