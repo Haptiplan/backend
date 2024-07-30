@@ -16,6 +16,12 @@
                         {{ __('Dashboard') }} 
                     </x-nav-link>
 
+                    @if(Auth::check() && Auth::user()->role == \App\Models\User::ROLE_ADMIN)
+                    <x-nav-link :href="route('user_create')" :active="request()->routeIs('user_create')">
+                        {{ __('User erstellen') }}
+                    </x-nav-link> 
+                    @endif
+
                     @if(Auth::check() && Auth::user()->role == \App\Models\User::ROLE_GAMEMASTER)
                     <x-nav-link :href="route('game_index')" :active="request()->routeIs('game_index')">
                         {{ __('Game erstellen') }}

@@ -6,6 +6,7 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\MachineController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -31,6 +32,26 @@ Route::middleware(['auth', 'verified'])->get('/dashboard', [DashboardController:
 Route::middleware('adminAuth')->prefix('admin')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('adminDashboardShow');
 });
+
+Route::get('/create_user', [UserController::class, 'create'])
+->name('user_create')
+->middleware('check_role: 2');
+
+Route::post('/create_user', [UserController::class, 'store'])
+->name('user_store')
+->middleware('check_role: 2');
+
+Route::get('create_user/{id}/edit', [UserController::class, 'edit'])
+->name('user_edit')
+->middleware('check_role: 2');
+
+Route::put('create_user/{id}', [UserController::class, 'update'])
+->name('user_update')
+->middleware('check_role: 2');
+
+Route::delete('/create_user/{id}', [UserController::class, 'destroy'])
+->name('user_delete')
+->middleware('check_role:2');
 
 /**Gamemaster routes **/
 Route::middleware('gamemasterAuth')->prefix('gamemaster')->group(function(){
