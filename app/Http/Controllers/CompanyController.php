@@ -37,7 +37,7 @@ class CompanyController extends Controller
         $company_name = $request->input('company_name');
         $game_id = $request->input('game_id');
 
-        $company_exists = Company::where('company_name', $company_name)
+        $company_exists = Company::where('name', $company_name)
             ->where('game_id', $game_id)
             ->exists();
 
@@ -62,7 +62,7 @@ class CompanyController extends Controller
         $company_fk = $validated['game_id'];
     
         DB::table('companies')->insert([
-            'company_name' => $company_name,
+            'name' => $company_name,
             'game_id' => $company_fk,
         ]);
     
@@ -96,7 +96,7 @@ class CompanyController extends Controller
         $company_name = $request->input('company_name');
         $game_id = $request->input('game_id');
 
-        $game_id_exists = Company::where('company_name', $company_name)
+        $game_id_exists = Company::where('name', $company_name)
             ->where('game_id', $game_id)
             ->exists();
 
@@ -118,7 +118,7 @@ class CompanyController extends Controller
         ]);
 
         $company = Company::find($id);
-        $company->company_name = $validated['company_name'];
+        $company->name = $validated['company_name'];
         $company->game_id = $validated['game_id'];
         $company->save();
 

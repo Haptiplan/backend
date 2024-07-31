@@ -8,7 +8,6 @@ use App\Http\Controllers\MachineController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 $admin = User::ROLE_ADMIN;
 $gamemaster = User::ROLE_GAMEMASTER;
@@ -33,12 +32,12 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->get('/dashboard', [DashboardController::class, 'generalUserDashboard'])->name('dashboard');
 
 /**Admin routes **/
-Route::middleware('adminAuth')->prefix('admin')->group(function(){
+Route::middleware('admin_auth')->prefix('admin')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('adminDashboardShow');
 });
 
 /**Gamemaster routes **/
-Route::middleware('gamemasterAuth')->prefix('gamemaster')->group(function(){
+Route::middleware('gamemaster_auth')->prefix('gamemaster')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemasterDashboardShow');
 });
 

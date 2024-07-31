@@ -20,9 +20,9 @@
                             <select name="company_id" id="company_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
                                 <option class="block text-sm font-medium text-gray-700 dark:text-gray-300" value="" disabled hidden selected>Select company here</option>
                                 @foreach ($games as $game)
-                                    <optgroup label="Game: {{$game->game_name}}" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <optgroup label="Game: {{$game->name}}" class="text-sm font-medium text-gray-700 dark:text-gray-300">
                                         @foreach ($companies->where('game_id', $game->id) as $company)
-                                            <option value="{{$company->id}}" @if($company->id == $player->company_id) selected @endif>{{$company->company_name}}</option>
+                                            <option value="{{$company->id}}" @if($company->id == $player->company_id) selected @endif>{{$company->name}}</option>
                                         @endforeach
                                     </optgroup>
                                 @endforeach

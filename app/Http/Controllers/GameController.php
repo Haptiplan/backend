@@ -33,14 +33,14 @@ class GameController extends Controller
     public function store(Request $request)
     {
         $game_name = $request->validate([
-            'game_name' => 'required|unique:games'
+            'game_name' => 'required|unique:games,name'
         ], [
             'game_name.required' => 'The game must have a name!',
             'game_name.unique' => 'The name of the game must be unique!'
         ]);
-        DB::table('games')->insert(['game_name' => $game_name]); 
+        DB::table('games')->insert(['name' => $game_name['game_name']]); 
         $games = Game::all();   
-        return redirect()->route('games.create')->with('success', 'Spiel erfolgreich erstellt!');
+        return redirect()->route('game.index')->with('success', 'Spiel erfolgreich erstellt!');
     }
 
     /**
@@ -71,7 +71,7 @@ class GameController extends Controller
         
         $game = Game::find($game_id);
 
-        $game->game_name = $validated['game_name'];
+        $game->name = $validated['game_name'];
         $game->save();
         $game->update();
 

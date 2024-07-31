@@ -13,7 +13,7 @@
                     <div>
                         @foreach($machines as $machine)
                         <li>
-                            {{$machine->machine_name}}
+                            {{$machine->name}}
                         </li>
                         @endforeach
                     </div>

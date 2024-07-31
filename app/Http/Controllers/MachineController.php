@@ -30,10 +30,10 @@ class MachineController extends Controller
     public function store(Request $request){
        
         $machine = $request->input("machine_name");
-        DB::table('machines')->insert(['machine_name' => $machine]);    
+        DB::table('machines')->insert(['name' => $machine]);    
         $machines = Machine::all();
 
-        return view("machines.index", ['machines' => $machines]);
+        return view("machines.create", ['machines' => $machines]);
     }
 
     public function edit(string $machine_id){
@@ -49,7 +49,7 @@ class MachineController extends Controller
         
         $machine = Machine::find($machine_id);
 
-        $machine->machine_name = $validated['machine_name'];
+        $machine->name = $validated['machine_name'];
         $machine->save();
         $machine->update();
 
