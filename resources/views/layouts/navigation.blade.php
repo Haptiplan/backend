@@ -20,32 +20,40 @@ $user = User::ROLE_USER;
              
                 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    @if(Auth::check() && Auth::user()->role == $user)
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }} 
                     </x-nav-link>
-
+                    @endif
                     @if(Auth::check() && Auth::user()->role == $admin)
-                    <x-nav-link :href="route('user_create')" :active="request()->routeIs('user_create')">
+                    <x-nav-link :href="route('adminDashboardShow')" :active="request()->routeIs('adminDashboardShow')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('user.create')" :active="request()->routeIs('user.create')">
                         {{ __('User erstellen') }}
                     </x-nav-link> 
                     @endif
 
                     @if(Auth::check() && Auth::user()->role == $gamemaster)
-                    <x-nav-link :href="route('game_index')" :active="request()->routeIs('game_index')">
+                    <x-nav-link :href="route('gamemasterDashboardShow')" :active="request()->routeIs('gamemasterDashboardShow')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('game.index')" :active="request()->routeIs('game.index')">
                         {{ __('Game erstellen') }}
                     </x-nav-link> 
-                     <x-nav-link :href="route('machine_index')" :active="request()->routeIs('machine_index')">
+                     <x-nav-link :href="route('machine.index')" :active="request()->routeIs('machine.index')">
                         {{ __('Maschine erstellen')}}
                     </x-nav-link> 
-                    <x-nav-link :href="route('company_create')" :active="request()->routeIs('company_create')">
+                    <x-nav-link :href="route('company.create')" :active="request()->routeIs('company.create')">
                         {{ __('Company erstellen')}}
                     </x-nav-link>
-                    <x-nav-link :href="route('player_create')" :active="request()->routeIs('user_create')">
+                    <x-nav-link :href="route('player.create')" :active="request()->routeIs('player.create')">
                         {{ __('Player zuweisen')}}
                     </x-nav-link>
                     @endif
                     @if(Auth::check() && Auth::user()->role == $user)
-                    <x-nav-link :href="route('machine_list')" :active="request()->routeIs('machine_index')">
+                    <x-nav-link :href="route('machine.list')" :active="request()->routeIs('machine.index')">
                         {{ __('Maschinenliste')}}  
                      </x-nav-link>          
                     @endif 

@@ -10,7 +10,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h1 class="text-2xl font-bold mb-6">Create User</h1>
-                    <form class="space-y-4" action="{{ route('user_store') }}" method="POST">
+                    <form class="space-y-4" action="{{ route('user.store') }}" method="POST">
                         @csrf
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -43,7 +43,7 @@
                             <select name="game" id="game" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
                                 <option value="" disabled hidden selected>Choose a game for the gamemaster here</option>
                                 @foreach ($games as $game)
-                                <option value="{{$game->id}}" >{{$game->game_name}}</option>
+                                <option value="{{$game->id}}" >{{$game->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -57,10 +57,10 @@
                         @foreach ($users as $user)
                         <li>
                             {{$user->name}}
-                            <a href="{{ route('user_edit', $user->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
+                            <a href="{{ route('user.edit', $user->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
                                 Edit
                             </a>
-                            <form action="{{ route('user_delete', $user->id) }}" method="POST" class="inline">
+                            <form action="{{ route('user.delete', $user->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">

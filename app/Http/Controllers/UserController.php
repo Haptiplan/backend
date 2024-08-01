@@ -30,7 +30,7 @@ class UserController extends Controller
         $players = Player::all();
         $games = Game::all();
         $companies = Company::all();
-        return view('create_user', [
+        return view('users.create', [
             'users' => $users,
             'players' => $players,
             'games' => $games,
@@ -66,7 +66,7 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect()->route('user_create');
+        return redirect()->route('user.create');
     }
 
     /**
@@ -87,7 +87,7 @@ class UserController extends Controller
         $games = Game::all();
         $gamemaster = Gamemaster::find($id);
         $companies = Company::all();
-        return view('edit_user', [
+        return view('users.edit', [
             'user' => $user,
             'player' => $player,
             'gamemaster' => $gamemaster,
@@ -122,7 +122,7 @@ class UserController extends Controller
         }
         $user->save();
 
-        return redirect()->route('user_create');
+        return redirect()->route('user.create');
     }
 
     /**
@@ -132,6 +132,6 @@ class UserController extends Controller
     {
         User::where('id', $id)->firstOrFail()->delete();
 
-        return redirect()->route('user_create');
+        return redirect()->route('user.create');
     }
 }

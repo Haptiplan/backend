@@ -16,7 +16,7 @@ class GameController extends Controller
     public function index(Game $game)
     {
         $games = Game::all();   
-        return view('create_game', ['games' => $games]);
+        return view('games.create', ['games' => $games]);
     }
 
     /**
@@ -30,12 +30,17 @@ class GameController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Game $game)
+    public function store(Request $request)
     {
-        $game_name = $request->input("game_name");
-        DB::table('games')->insert(['game_name' => $game_name]); 
+        $game_name = $request->validate([
+            'game_name' => 'required|unique:games,name'
+        ], [
+            'game_name.required' => 'The game must have a name!',
+            'game_name.unique' => 'The name of the game must be unique!'
+        ]);
+        DB::table('games')->insert(['name' => $game_name['game_name']]); 
         $games = Game::all();   
-        return redirect()->route('game_index')->with('success', 'Spiel erfolgreich erstellt!');
+        return redirect()->route('game.index')->with('success', 'Spiel erfolgreich erstellt!');
     }
 
     /**
@@ -52,7 +57,7 @@ class GameController extends Controller
     public function edit(string $game_id)
     {
         $game = Game::findOrFail($game_id); 
-        return view('edit_game', ['game' => $game]);
+        return view('games.edit', ['game' => $game]);
     }
 
     /**
@@ -66,11 +71,11 @@ class GameController extends Controller
         
         $game = Game::find($game_id);
 
-        $game->game_name = $validated['game_name'];
+        $game->name = $validated['game_name'];
         $game->save();
         $game->update();
 
-        return redirect()->route('game_index');
+        return redirect()->route('game.index');
     }
 
     /**
@@ -81,6 +86,6 @@ class GameController extends Controller
         $game = Game::findOrFail($id);
         $game->delete();
 
-        return redirect()->route('game_index');
+        return redirect()->route('game.index');
     }
 }
