@@ -7,6 +7,7 @@ use App\Models\Game;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Closure;
 
 class CompanyController extends Controller
 {
@@ -25,7 +26,7 @@ class CompanyController extends Controller
     {
         $companies = Company::all();
         $games = Game::all();
-        return view('create_company', ['companies' => $companies, 'games' => $games]);
+        return view('companies.create', ['companies' => $companies, 'games' => $games]);
     }
 
     /**
@@ -33,20 +34,39 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+        $company_name = $request->input('company_name');
+        $game_id = $request->input('game_id');
+
+        $company_exists = Company::where('name', $company_name)
+            ->where('game_id', $game_id)
+            ->exists();
+
         $validated = $request->validate([
-            'company_name' => 'required|unique:companies,company_name',
-            'game_id' => 'required',
+            'company_name' => 'required',
+            'game_id' => [
+                'required',
+                function (string $attribute, mixed $value, Closure $fail) use ($company_exists) 
+                {
+                    if ($company_exists) 
+                    {
+                        $fail("The name of the company is already taken in the selected game!");
+                    }
+                },
+            ],
+        ], [
+            'company_name.required' => 'The field for the company name cannot be empty!',
+            'game_id.required' => 'A game must be selected!',
         ]);
     
         $company_name = $validated['company_name'];
         $company_fk = $validated['game_id'];
     
         DB::table('companies')->insert([
-            'company_name' => $company_name,
+            'name' => $company_name,
             'game_id' => $company_fk,
         ]);
     
-        return redirect()->route('company_create');
+        return redirect()->route('company.create');
     }
 
     /**
@@ -65,7 +85,7 @@ class CompanyController extends Controller
         $company = Company::find($id);
         $games = Game::all();
 
-        return view('edit_company', ['company' => $company, 'games' => $games]);
+        return view('companies.edit', ['company' => $company, 'games' => $games]);
     }
 
     /**
@@ -73,17 +93,38 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'company_name' => 'required|unique:companies,company_name,' . $id,
-            'game_id' => 'required|exists:games,id', 
-        ]);
-        $company = Company::find($id);
-        $company->company_name = $validated['company_name'];
-        $company->game_id = $request['game_id'];
-        $company->update();
+        $company_name = $request->input('company_name');
+        $game_id = $request->input('game_id');
 
-        return redirect()->route('company_create');
+        $game_id_exists = Company::where('name', $company_name)
+            ->where('game_id', $game_id)
+            ->exists();
+
+        $validated = $request->validate([
+            'company_name' => 'required',
+            'game_id' => [
+                'required',
+                function (string $attribute, mixed $value, Closure $fail) use ($game_id_exists) 
+                {
+                    if ($game_id_exists) 
+                    {
+                        $fail("The name of the company is already taken in the selected game!");
+                    }
+                },
+            ],
+        ], [
+            'company_name.required' => 'The field for the company name must be filled!',
+            'game_id.required' => 'A game must be selected!',
+        ]);
+
+        $company = Company::find($id);
+        $company->name = $validated['company_name'];
+        $company->game_id = $validated['game_id'];
+        $company->save();
+
+        return redirect()->route('company.create')->with('success', 'Company updated successfully.');
     }
+
 
 
     /**
@@ -93,6 +134,6 @@ class CompanyController extends Controller
     {
         Company::where('id', $id)->firstOrFail()->delete();
     
-        return redirect()->route('company_create');
+        return redirect()->route('company.create');
     }
 }

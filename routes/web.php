@@ -8,7 +8,6 @@ use App\Http\Controllers\MachineController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 $admin = User::ROLE_ADMIN;
 $gamemaster = User::ROLE_GAMEMASTER;
@@ -33,101 +32,101 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->get('/dashboard', [DashboardController::class, 'generalUserDashboard'])->name('dashboard');
 
 /**Admin routes **/
-Route::middleware('adminAuth')->prefix('admin')->group(function(){
+Route::middleware('admin_auth')->prefix('admin')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('adminDashboardShow');
 });
 
 /**Gamemaster routes **/
-Route::middleware('gamemasterAuth')->prefix('gamemaster')->group(function(){
+Route::middleware('gamemaster_auth')->prefix('gamemaster')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemasterDashboardShow');
 });
 
 //Machines
 Route::get('/create_machine', [MachineController::class, 'index'])
-->name('machine_index')
+->name('machine.index')
 ->middleware('check_role:' . $gamemaster);
 
 Route::post('/create_machine', [MachineController::class, 'store'])
-->name('machine_store')
+->name('machine.store')
 ->middleware('check_role:' . $gamemaster);
 
 Route::get('/machines', [MachineController::class, 'index'])
-->name('machine_list')
+->name('machine.list')
 ->middleware('check_role:' . $user);
 
 Route::get('create_machine/{id}/edit', [MachineController::class, 'edit'])
-->name('machine_edit')
+->name('machine.edit')
 ->middleware('check_role:' . $gamemaster);
 
 Route::put('create_machine/{id}', [MachineController::class, 'update'])
-->name('machine_update')
+->name('machine.update')
 ->middleware('check_role:' . $gamemaster);
 
 Route::delete('/create_machine/{id}', [MachineController::class, 'destroy'])
-->name('machine_delete')
+->name('machine.delete')
 ->middleware('check_role:' . $gamemaster);
 
 /**Games **/
 Route::get('/create_game', [GameController::class, 'index'])
-->name('game_index')
+->name('game.index')
 ->middleware('check_role:' . $gamemaster);
 
 Route::post('/create_game', [GameController::class, 'store'])
-->name('game_store')
+->name('game.store')
 ->middleware('check_role:' . $gamemaster);
 
 Route::get('create_game/{id}/edit', [GameController::class, 'edit'])
-->name('game_edit')
+->name('game.edit')
 ->middleware('check_role:' . $gamemaster);
 
 Route::put('create_game/{id}', [GameController::class, 'update'])
-->name('game_update')
+->name('game.update')
 ->middleware('check_role:' . $gamemaster);
 
 Route::delete('/create_game/{id}', [GameController::class, 'destroy'])
-->name('game_delete')
+->name('game.delete')
 ->middleware('check_role:' . $gamemaster);
 
 /**Companies */
 Route::get('/create_company', [CompanyController::class, 'create'])
-->name('company_create')
+->name('company.create')
 ->middleware('check_role:' . $gamemaster);
 
 Route::post('/create_company', [CompanyController::class, 'store'])
-->name('company_store')
+->name('company.store')
 ->middleware('check_role:' . $gamemaster);
 
 Route::get('create_company/{id}/edit', [CompanyController::class, 'edit'])
-->name('company_edit')
+->name('company.edit')
 ->middleware('check_role:' . $gamemaster);
 
 Route::put('create_company/{id}', [CompanyController::class, 'update'])
-->name('company_update')
+->name('company.update')
 ->middleware('check_role:' . $gamemaster);
 
 Route::delete('/create_company/{id}', [CompanyController::class, 'destroy'])
-->name('company_delete')
+->name('company.delete')
 ->middleware('check_role:' . $gamemaster);
 
 /**User */
 Route::get('/create_player', [PlayerController::class, 'create'])
-->name('player_create')
+->name('player.create')
 ->middleware('check_role:' . $gamemaster);
 
 Route::post('/create_player', [PlayerController::class, 'store'])
-->name('player_store')
+->name('player.store')
 ->middleware('check_role:' . $gamemaster);
 
 Route::get('create_player/{id}/edit', [PlayerController::class, 'edit'])
-->name('player_edit')
+->name('player.edit')
 ->middleware('check_role:' . $gamemaster);
 
 Route::put('create_player/{id}', [PlayerController::class, 'update'])
-->name('player_update')
+->name('player.update')
 ->middleware('check_role:' . $gamemaster);
 
 Route::delete('/create_player/{id}', [PlayerController::class, 'destroy'])
-->name('player_delete')
+->name('player.delete')
 ->middleware('check_role:' . $gamemaster);
 
 

@@ -15,30 +15,30 @@ class MachineController extends Controller
         $user = Auth::user();
 
         if ($user->role == \App\Models\User::ROLE_GAMEMASTER) {
-            return view("create_machines", ['machines' => $machines]);
+            return view("machines.create", ['machines' => $machines]);
         } elseif ($user->role == \App\Models\User::ROLE_USER) {
-            return view("machines", ['machines' => $machines]);
+            return view("machines.index", ['machines' => $machines]);
         } else {
             abort(403);
         }
     }
 
     public function create(){
-        return view("create_machines");
+        return view("machines.create");
     }
 
     public function store(Request $request){
        
         $machine = $request->input("machine_name");
-        DB::table('machines')->insert(['machine_name' => $machine]);    
+        DB::table('machines')->insert(['name' => $machine]);    
         $machines = Machine::all();
 
-        return view("create_machines", ['machines' => $machines]);
+        return view("machines.create", ['machines' => $machines]);
     }
 
     public function edit(string $machine_id){
         $machine = Machine::findOrFail($machine_id); 
-        return view('edit_machine', ['machine' => $machine]);
+        return view('machines.edit', ['machine' => $machine]);
     }
 
     public function update(Request $request, string $machine_id)
@@ -49,11 +49,11 @@ class MachineController extends Controller
         
         $machine = Machine::find($machine_id);
 
-        $machine->machine_name = $validated['machine_name'];
+        $machine->name = $validated['machine_name'];
         $machine->save();
         $machine->update();
 
-        return redirect()->route('machine_index');
+        return redirect()->route('machine.index');
     }
 
     public function destroy(string $machine_id)
@@ -61,7 +61,7 @@ class MachineController extends Controller
         $machine = Machine::findOrFail($machine_id);
         $machine->delete();
 
-        return redirect()->route('machine_index');
+        return redirect()->route('machine.index');
     }
 
     
