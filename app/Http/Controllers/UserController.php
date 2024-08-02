@@ -61,6 +61,8 @@ class UserController extends Controller
         if($validated['role'] == User::ROLE_GAMEMASTER)
         {
             (new GamemasterContoller)->store($user->id, $validated['game']);
+        } else {
+            (new GamemasterContoller)->destroyAll($user->id);
         }
 
         return redirect()->route('user.create');
@@ -83,7 +85,7 @@ class UserController extends Controller
         $player = Player::find($id);
         $gamemasters = Gamemaster::findMany($id);
         $game_ids = $gamemasters->pluck('game_id')->toArray();
-        
+
         $games_used = Game::whereIn('id', $game_ids)->get();
         $games_free = Game::whereNotIn('id', $game_ids)->get();
         return view('users.edit', [
@@ -105,14 +107,14 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|unique:users,email,' . $user->id,
             'role' => 'required',
-            'game' => 'required_if:role,' . User::ROLE_GAMEMASTER
+            'game' => ''
         ]);
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->role = $validated['role'];
 
-        if($validated['role'] == User::ROLE_GAMEMASTER) {
+        if($validated['role'] == User::ROLE_GAMEMASTER && !empty($validated['game'])) {
             (new GamemasterContoller)->store($id, $validated['game']);
         }
         $user->save();
