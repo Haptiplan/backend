@@ -29,6 +29,10 @@ $user = User::ROLE_USER;
                     <x-nav-link :href="route('adminDashboardShow')" :active="request()->routeIs('adminDashboardShow')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('user.create')" :active="request()->routeIs('user.create')">
+                        {{ __('User erstellen') }}
+                    </x-nav-link> 
                     @endif
 
                     @if(Auth::check() && Auth::user()->role == $gamemaster)
@@ -48,7 +52,7 @@ $user = User::ROLE_USER;
                         {{ __('Player zuweisen')}}
                     </x-nav-link>
                     @endif
-                        @if(Auth::check() && Auth::user()->role == $user)
+                    @if(Auth::check() && Auth::user()->role == $user)
                     <x-nav-link :href="route('machine.list')" :active="request()->routeIs('machine.index')">
                         {{ __('Maschinenliste')}}  
                      </x-nav-link>          

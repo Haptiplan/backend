@@ -52,6 +52,10 @@ class AuthenticatedSessionController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
+
+        $admin = User::ROLE_ADMIN;
+        $gamemaster = User::ROLE_GAMEMASTER;
+        $user = User::ROLE_USER;
         
         // check if the given user exists in db
         if(Auth::attempt(['email'=> $input['email'], 'password'=> $input['password']])){
