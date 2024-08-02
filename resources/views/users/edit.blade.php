@@ -33,34 +33,36 @@
                             </label>
                             <select name="role" id="role" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
                                 <option value="" disabled hidden selected>Choose a user role here</option>
-                                <option value="2" @if ($user->role == User::ROLE_ADMIN) selected @endif>Admin</option>
-                                <option value="1" @if ($user->role == User::ROLE_GAMEMASTER) selected @endif>Gamemaster</option>
-                                <option value="0" @if ($user->role == User::ROLE_USER) selected @endif>Player</option>
+                                <option value="{{User::ROLE_ADMIN}}" @if ($user->role == User::ROLE_ADMIN) selected @endif>Admin</option>
+                                <option value="{{User::ROLE_GAMEMASTER}}" @if ($user->role == User::ROLE_GAMEMASTER) selected @endif>Gamemaster</option>
+                                <option value="{{User::ROLE_USER}}" @if ($user->role == User::ROLE_USER) selected @endif>Player</option>
                             </select>
-                            <div>
+                            @if ($user->role == User::ROLE_GAMEMASTER)
                             <select name="game" id="game" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
                                 <option value="" disabled hidden selected>Choose a game to add here</option>
                                 @foreach ($games_free as $game)
                                 <option value="{{$game->id}}">{{$game->name}}</option>
                                 @endforeach
                             </select>
+                            @endif
                             <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
                                 Update
                             </button>
-                        </div>
                     </form> 
-                        <label for="game" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
-                            Game(s):
-                        </label>
-                        @foreach ($gamemasters as $gamemaster)
-                        <li>
-                            @foreach ($games_used as $game)
-                            @if (isset($gamemaster) && $gamemaster->game_id == $game->id)
-                                {{$game->name}}
-                            @endif
-                            @endforeach
-                        </li>
+                    @if ($user->role == User::ROLE_GAMEMASTER)
+                    <label for="game" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
+                        Game(s):
+                    </label>
+                    @foreach ($gamemasters as $gamemaster)
+                    <li>
+                        @foreach ($games_used as $game)
+                        @if (isset($gamemaster) && $gamemaster->game_id == $game->id)
+                            {{$game->name}}
+                        @endif
                         @endforeach
+                    </li>
+                    @endforeach
+                    @endif
                     </div>
                 </div>
             </div>
