@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -26,7 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $users = User::all();
+        $users = User::where('id', '!=', Auth::id())->get();
         $players = Player::all();
         $games = Game::all();
         $companies = Company::all();
@@ -57,13 +58,11 @@ class UserController extends Controller
             'password' => bcrypt($validated['password']),
         ]);
 
-        if($validated['role'] == 1)
+        if($validated['role'] == User::ROLE_GAMEMASTER)
         {
-            $id = $user->id;
-            DB::table('gamemasters')->insert([
-                'id' => $id,
-                'game_id' => $validated['game'],
-            ]);
+            (new GamemasterContoller)->store($user->id, $validated['game']);
+        } else {
+            (new GamemasterContoller)->destroyAll($user->id);
         }
 
         return redirect()->route('user.create');
@@ -84,14 +83,17 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $player = Player::find($id);
-        $games = Game::all();
-        $gamemaster = Gamemaster::find($id);
-        $companies = Company::all();
+        $gamemasters = Gamemaster::findMany($id);
+        $game_ids = $gamemasters->pluck('game_id')->toArray();
+
+        $games_used = Game::whereIn('id', $game_ids)->get();
+        $games_free = Game::whereNotIn('id', $game_ids)->get();
         return view('users.edit', [
             'user' => $user,
             'player' => $player,
-            'gamemaster' => $gamemaster,
-            'games' => $games,
+            'gamemasters' => $gamemasters,
+            'games_free' => $games_free,
+            'games_used' => $games_used,
         ]);
     }
 
@@ -105,24 +107,20 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|unique:users,email,' . $user->id,
             'role' => 'required',
-            'game' => 'required_if:role,' . User::ROLE_GAMEMASTER
+            'game' => ''
         ]);
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->role = $validated['role'];
 
-        if($validated['role'] == User::ROLE_GAMEMASTER) {
-            $gamemaster = Gamemaster::findOrNew($id);
-            $gamemaster->id = $id;
-            $gamemaster->game_id = $validated['game'];
-            $gamemaster->save();
-        } else {
-            Gamemaster::where('id', $id)->delete();
+        if($validated['role'] == User::ROLE_GAMEMASTER && !empty($validated['game'])) {
+            (new GamemasterContoller)->store($id, $validated['game']);
         }
         $user->save();
 
-        return redirect()->route('user.create');
+
+        return redirect()->route('user.edit', $user->id);
     }
 
     /**

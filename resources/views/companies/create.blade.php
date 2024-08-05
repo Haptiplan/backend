@@ -12,7 +12,7 @@
                     <h1 class="text-2xl font-bold mb-6">Create Company</h1>
                     @if ($errors->any())
                         <div class="alert alert-danger bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                            <ul class="block text-sm font-medium text-blue-600 dark:text-red-300">
+                            <ul class="block text-sm font-medium text-red-600 dark:text-red-300">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach

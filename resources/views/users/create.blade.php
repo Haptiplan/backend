@@ -1,10 +1,11 @@
+<?php use App\Models\User; ?>
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -33,9 +34,9 @@
                             </label>
                             <select name="role" id="role" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
                                 <option value="" disabled hidden selected>Choose a user role here</option>
-                                <option value="2">Admin</option>
-                                <option value="1">Gamemaster</option>
-                                <option value="0">Player</option>
+                                <option value="{{User::ROLE_ADMIN}}">Admin</option>
+                                <option value="{{User::ROLE_GAMEMASTER}}">Gamemaster</option>
+                                <option value="{{User::ROLE_USER}}">Player</option>
                             </select>
                             <label for="game" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
                                 Game
