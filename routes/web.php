@@ -29,6 +29,22 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+/**Impersonating routes **/
+Route::get('/users/impersonate', [UserController::class, 'impersonate'])
+->name('impersonate.view')
+->middleware('check_role:' . $admin . ',' . $gamemaster);
+
+Route::post('/users/impersonate/start', [UserController::class, 'startImpersonate'])
+->name('impersonate.start')
+->middleware('check_role:' . $admin . ',' . $gamemaster);
+
+Route::get('/users/stop', [UserController::class, 'stopImpersonate'])
+->name('impersonate.stop');
+
+Route::middleware('impersonate')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'generalUserDashboard']);
+});
+
 /**General user routes **/
 Route::middleware(['auth', 'verified'])->get('/dashboard', [DashboardController::class, 'generalUserDashboard'])->name('dashboard');
 

@@ -80,6 +80,17 @@ $user = User::ROLE_USER;
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        @if(Auth::check() && (Auth::user()->role == $gamemaster || Auth::user()->role == $admin))
+                        <x-dropdown-link :href="route('impersonate.view')">
+                            {{ __('Imitieren') }}
+                        </x-dropdown-link>
+                        @if(Auth::user()->isImpersonating())
+                            <x-dropdown-link href="{{ route('impersonate.stop') }}">
+                                {{ __('Imitieren beenden') }}
+                            </x-dropdown-link>
+                        @endif
+                        @endif
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
