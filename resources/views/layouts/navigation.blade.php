@@ -52,6 +52,7 @@ $user = User::ROLE_USER;
                         {{ __('Player zuweisen')}}
                     </x-nav-link>
                     @endif
+
                     @if(Auth::check() && Auth::user()->role == $user)
                     <x-nav-link :href="route('machine.list')" :active="request()->routeIs('machine.index')">
                         {{ __('Maschinenliste')}}  
