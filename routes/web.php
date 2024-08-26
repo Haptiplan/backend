@@ -89,7 +89,7 @@ Route::post('/create_machine', [MachineController::class, 'store'])
 
 Route::get('/machines', [MachineController::class, 'index'])
 ->name('machine.list')
-->middleware('check_role:' . $user);
+->middleware(['impersonate', 'check_role:' . $user]);
 
 Route::get('create_machine/{id}/edit', [MachineController::class, 'edit'])
 ->name('machine.edit')

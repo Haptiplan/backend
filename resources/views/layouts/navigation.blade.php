@@ -84,11 +84,11 @@ $user = User::ROLE_USER;
                         <x-dropdown-link :href="route('impersonate.view')">
                             {{ __('Imitieren') }}
                         </x-dropdown-link>
+                        @endif
                         @if(Auth::user()->isImpersonating())
                             <x-dropdown-link href="{{ route('impersonate.stop') }}">
                                 {{ __('Imitieren beenden') }}
                             </x-dropdown-link>
-                        @endif
                         @endif
 
                         <!-- Authentication -->

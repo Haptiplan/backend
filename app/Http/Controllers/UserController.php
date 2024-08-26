@@ -165,15 +165,15 @@ class UserController extends Controller
         {
             $player = Player::where('company_id', $validated['company'])->firstOrFail();
             $user = User::where('id', $player->id)->firstOrFail();
-            $active_user->setImpersonating($user->id, $user->role);
-            return view('welcome');
+            $active_user->setImpersonating($user->id);
+            return redirect()->route('dashboard');
         } 
         elseif ($validated['role'] == User::ROLE_GAMEMASTER && $active_user->role == User::ROLE_ADMIN)
         {
             $gamemaster = Gamemaster::where('game_id', $validated['game'])->firstOrFail();
             $user = User::where('id', $gamemaster->id)->firstOrFail();
-            $active_user->setImpersonating($user->id, $user->role);
-            return view('welcome');
+            $active_user->setImpersonating($user->id);
+            return redirect()->route('dashboard');
         }
 
         return redirect()->route('impersonate.view');
@@ -187,6 +187,6 @@ class UserController extends Controller
         $active_user = $request->user();
         $active_user->stopImpersonating();
 
-        return redirect()->back();
+        return redirect()->route('dashboard');
     }
 }
