@@ -13,33 +13,33 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h1 class="text-2xl font-bold mb-6">Edit User</h1>
+                    <h1 class="text-2xl font-bold mb-6">{{ __('Benutzer bearbeiten') }}</h1>
                     <form class="space-y-4" action="{{ route('user.update', $user->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                User Name
+                            {{ __('Benutzername') }}
                             </label>
                             <input type="text" name="name" id="name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200" value="{{ $user->name }}">
                             
                             <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Email
+                            {{ __('Email') }}
                             </label>
                             <input type="email" name="email" id="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200" value="{{ $user->email }}">
 
                             <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Role
+                            {{ __('Rolle') }}
                             </label>
                             <select name="role" id="role" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
-                                <option value="" disabled hidden selected>Choose a user role here</option>
-                                <option value="{{User::ROLE_ADMIN}}" @if ($user->role == User::ROLE_ADMIN) selected @endif>Admin</option>
-                                <option value="{{User::ROLE_GAMEMASTER}}" @if ($user->role == User::ROLE_GAMEMASTER) selected @endif>Gamemaster</option>
-                                <option value="{{User::ROLE_USER}}" @if ($user->role == User::ROLE_USER) selected @endif>Player</option>
+                                <option value="" disabled hidden selected>{{ __('Wähle eine Benutzerrolle aus') }}</option>
+                                <option value="{{User::ROLE_ADMIN}}" @if ($user->role == User::ROLE_ADMIN) selected @endif>{{ __('Admin') }}</option>
+                                <option value="{{User::ROLE_GAMEMASTER}}" @if ($user->role == User::ROLE_GAMEMASTER) selected @endif>{{ __('Spielleiter') }}</option>
+                                <option value="{{User::ROLE_USER}}" @if ($user->role == User::ROLE_USER) selected @endif>{{ __('Spieler') }}</option>
                             </select>
                             @if ($user->role == User::ROLE_GAMEMASTER)
                             <select name="game" id="game" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
-                                <option value="" disabled hidden selected>Choose a game to add here</option>
+                                <option value="" disabled hidden selected>{{ __('Wähle hier ein Spiel zum hinzufügen aus') }}</option>
                                 @foreach ($games_free as $game)
                                 <option value="{{$game->id}}">{{$game->name}}</option>
                                 @endforeach
@@ -51,7 +51,7 @@
                     </form> 
                     @if ($user->role == User::ROLE_GAMEMASTER)
                     <label for="game" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
-                        Game(s):
+                        {{ __('Spiele:') }}
                     </label>
                     @foreach ($gamemasters as $gamemaster)
                     <li>

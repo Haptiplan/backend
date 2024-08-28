@@ -15,12 +15,12 @@
                         @method('PUT')
                         <div>
                             <label for="player_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Player Name: {{$user->name}}
+                                {{ __('Spielername:') }} {{$user->name}}
                             </label>
                             <select name="company_id" id="company_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
-                                <option class="block text-sm font-medium text-gray-700 dark:text-gray-300" value="" disabled hidden selected>Select company here</option>
+                                <option class="block text-sm font-medium text-gray-700 dark:text-gray-300" value="" disabled hidden selected>{{ __('Unternehmen auswählen') }}</option>
                                 @foreach ($games as $game)
-                                    <optgroup label="Game: {{$game->name}}" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <optgroup label="{{ __('Spiel: ') . $game->name}}" class="text-sm font-medium text-gray-700 dark:text-gray-300">
                                         @foreach ($companies->where('game_id', $game->id) as $company)
                                             <option value="{{$company->id}}" @if($company->id == $player->company_id) selected @endif>{{$company->name}}</option>
                                         @endforeach
@@ -30,7 +30,7 @@
                         </div>
                         <div>
                             <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                Update
+                                {{ __('Aktualisieren') }}
                             </button>
                         </div>
                     </form> 
