@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
@@ -15,11 +15,15 @@ class User extends Authenticatable
     const ROLE_ADMIN = 0;
     const ROLE_GAMEMASTER = 1;
     const ROLE_USER = 2;
-    
+
 
     public function player(): HasMany
     {
         return $this->hasMany(Player::class, 'id');
+    }
+    public function gamemaster(): HasMany
+    {
+        return $this->hasMany(Gamemaster::class, 'id');
     }
 
     /**
@@ -55,5 +59,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function setImpersonating($id)
+    {
+        Session::put('impersonate', $id);
+    }
+
+    public function stopImpersonating()
+    {
+        Session::forget('impersonate');
+    }
+
+    public function isImpersonating()
+    {
+        return Session::has('impersonate');
     }
 }
