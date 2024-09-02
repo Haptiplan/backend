@@ -12,7 +12,7 @@ class Player extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'id', 'id');
     }
 
     public function company(): BelongsTo

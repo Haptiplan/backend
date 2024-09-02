@@ -13,7 +13,7 @@ class Game extends Model
 
     public function companies(): HasMany
     {
-        return $this->hasMany(Company::class, 'id');
+        return $this->hasMany(Company::class);
     }
 
     public function gamemasters(): HasOne
