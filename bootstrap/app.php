@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin_auth' => \App\Http\Middleware\AdminAuth::class,
             'gamemaster_auth' => \App\Http\Middleware\GamemasterAuth::class,
             'check_role' => \App\Http\Middleware\CheckRole::class,
+            'localization' => \App\Http\Middleware\Localization::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -31,7 +31,7 @@ $user = User::ROLE_USER;
                     </x-nav-link>
 
                     <x-nav-link :href="route('user.create')" :active="request()->routeIs('user.create')">
-                        {{ __('User erstellen') }}
+                        {{ __('messages.navUser') }}
                     </x-nav-link> 
                     @endif
 
@@ -40,21 +40,21 @@ $user = User::ROLE_USER;
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('game.index')" :active="request()->routeIs('game.index')">
-                        {{ __('Game erstellen') }}
+                        {{ __('messages.navGame') }}
                     </x-nav-link> 
                      <x-nav-link :href="route('machine.index')" :active="request()->routeIs('machine.index')">
-                        {{ __('Maschine erstellen')}}
+                        {{ __('messages.navMachine')}}
                     </x-nav-link> 
                     <x-nav-link :href="route('company.create')" :active="request()->routeIs('company.create')">
-                        {{ __('Company erstellen')}}
+                        {{ __('messages.navCompany')}}
                     </x-nav-link>
                     <x-nav-link :href="route('player.create')" :active="request()->routeIs('player.create')">
-                        {{ __('Player zuweisen')}}
+                        {{ __('messages.navPlayer')}}
                     </x-nav-link>
                     @endif
                     @if(Auth::check() && Auth::user()->role == $user)
                     <x-nav-link :href="route('machine.list')" :active="request()->routeIs('machine.index')">
-                        {{ __('Maschinenliste')}}  
+                        {{ __('messages.listMachines')}}  
                      </x-nav-link>          
                     @endif 
                 </div>
@@ -77,7 +77,7 @@ $user = User::ROLE_USER;
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('messages.profile') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -87,7 +87,7 @@ $user = User::ROLE_USER;
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('messages.logOut') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -133,7 +133,7 @@ $user = User::ROLE_USER;
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('messages.logOut') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

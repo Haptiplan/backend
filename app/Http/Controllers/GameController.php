@@ -34,9 +34,6 @@ class GameController extends Controller
     {
         $game_name = $request->validate([
             'game_name' => 'required|unique:games,name'
-        ], [
-            'game_name.required' => 'The game must have a name!',
-            'game_name.unique' => 'The name of the game must be unique!'
         ]);
         DB::table('games')->insert(['name' => $game_name['game_name']]); 
         $games = Game::all();   

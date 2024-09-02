@@ -49,13 +49,10 @@ class CompanyController extends Controller
                 {
                     if ($company_exists) 
                     {
-                        $fail("The name of the company is already taken in the selected game!");
+                        $fail(__('validation.companyUsedInGame'));
                     }
                 },
             ],
-        ], [
-            'company_name.required' => 'The field for the company name cannot be empty!',
-            'game_id.required' => 'A game must be selected!',
         ]);
     
         $company_name = $validated['company_name'];
@@ -108,13 +105,10 @@ class CompanyController extends Controller
                 {
                     if ($game_id_exists) 
                     {
-                        $fail("The name of the company is already taken in the selected game!");
+                        $fail(__("validation.companyUsedInGame"));
                     }
                 },
             ],
-        ], [
-            'company_name.required' => 'The field for the company name must be filled!',
-            'game_id.required' => 'A game must be selected!',
         ]);
 
         $company = Company::find($id);
@@ -122,7 +116,7 @@ class CompanyController extends Controller
         $company->game_id = $validated['game_id'];
         $company->save();
 
-        return redirect()->route('company.create')->with('success', 'Company updated successfully.');
+        return redirect()->route('company.create');
     }
 
 

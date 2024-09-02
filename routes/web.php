@@ -8,6 +8,8 @@ use App\Http\Controllers\MachineController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Route;
 
 $admin = User::ROLE_ADMIN;
@@ -17,6 +19,15 @@ $user = User::ROLE_USER;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'de'])) {
+        App::setLocale($locale);
+        Session::put('locale', $locale);
+    }
+    return redirect()->back();
+});
+
 /*
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -52,10 +52,6 @@ class PlayerController extends Controller
         $validated = $request->validate([
             'id' => 'required|unique:players,id',
             'company_id' => 'required',
-        ], [
-            'id.required' => 'A player must be selected!',
-            'id.unique' => 'The user already is in a game!',
-            'company_id.required' => 'A company must be selected!'
         ]);
     
         DB::table('players')->insert([
@@ -98,9 +94,6 @@ class PlayerController extends Controller
     {
         $validated = $request->validate([ 
             'company_id' => 'required|exists:companies,id' 
-        ], [
-            'company_id.required' => 'A game must be selected!',
-            'company_id.exists' => 'The company does not exist anymore!'
         ]);
         $player = Player::find($id);
         $player->company_id = $validated['company_id'];

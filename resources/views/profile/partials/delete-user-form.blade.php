@@ -1,18 +1,18 @@
 <section class="space-y-6">
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Account löschen') }}
+            {{ __('messages.deleteAcc') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Sobald Ihr Account gelöscht ist, werden alle Ressourcen und Daten endgültig gelöscht. Speichern Sie bitte vor dem Löschen alle relevanten Daten und Informationen, die Sie behalten möchten.') }}
+            {{ __('messages.deleteAccInfo') }}
         </p>
     </header>
 
     <x-danger-button
         x-data=""
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >{{ __('Account löschen') }}</x-danger-button>
+    >{{ __('messages.deleteAcc') }}</x-danger-button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
         <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
@@ -20,22 +20,22 @@
             @method('delete')
 
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                {{ __('Wollen Sie Ihren Account wirklich löschen?') }}
+                {{ __('messages.deleteAccConfirm') }}
             </h2>
 
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                {{ __('Sobald Ihr Account gelöscht ist, werden alle Ressourcen und Daten endgültig gelöscht. Geben Sie Ihr Passwort ein, um das endgültige Löschen Ihres Accounts zu bestätigen.') }}
+                {{ __('messages.deleteAccMessage') }}
             </p>
 
             <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Passwort') }}" class="sr-only" />
+                <x-input-label for="password" value="{{ __('messages.password') }}" class="sr-only" />
 
                 <x-text-input
                     id="password"
                     name="password"
                     type="password"
                     class="mt-1 block w-3/4"
-                    placeholder="{{ __('Passwort') }}"
+                    placeholder="{{ __('messages.password') }}"
                 />
 
                 <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
@@ -43,11 +43,11 @@
 
             <div class="mt-6 flex justify-end">
                 <x-secondary-button x-on:click="$dispatch('close')">
-                    {{ __('Abbrechen') }}
+                    {{ __('messages.cancel') }}
                 </x-secondary-button>
 
                 <x-danger-button class="ms-3">
-                    {{ __('Account löschen') }}
+                    {{ __('messages.deleteAcc') }}
                 </x-danger-button>
             </div>
         </form>
