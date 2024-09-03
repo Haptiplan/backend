@@ -189,16 +189,17 @@ return [
     */
 
     'attributes' => [
-        'company_id' => 'Company ID',
+        'company_id' => 'company ID',
         'created_at' => 'created at',
         'current_period_number' => 'current period number',
-        'email' => 'E-Mail Address',
-        'game_id' => 'Game ID',
+        'email' => 'e-mail address',
+        'game_id' => 'game ID',
         'id' => 'ID',
-        'name' => 'Name',
-        'password' => 'Password',
-        'role' => 'Role',
+        'name' => 'name',
+        'password' => 'password',
+        'role' => 'role',
         'updated_at' => 'updated at',
+        'current_password' => 'current password'
     ],
 
 ];

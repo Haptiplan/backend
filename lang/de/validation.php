@@ -199,6 +199,7 @@ return [
         'password' => 'Passwort',
         'role' => 'Rolle',
         'updated_at' => 'aktualisiert am',
+        'current_password' => 'aktuelle Passwort'
     ],
 
 ];
