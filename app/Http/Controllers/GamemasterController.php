@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-class GamemasterContoller extends Controller
+class GamemasterController extends Controller
 {
     /**
      * Store a newly created resource in storage.
