@@ -15,7 +15,7 @@ class GamemasterContoller extends Controller
      */
     public function store($id, $game_id)
     {
-        if(!(DB::table('gamemasters')->where('id', $id)->where('game_id', $game_id)->exists()))
+        if (!(DB::table('gamemasters')->where('id', $id)->where('game_id', $game_id)->exists()))
             DB::table('gamemasters')->insert([
                 'id' => $id,
                 'game_id' => $game_id,

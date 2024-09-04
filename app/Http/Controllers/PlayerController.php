@@ -32,9 +32,13 @@ class PlayerController extends Controller
             })
             ->get();
         $user_list = User::all();
-        $companies = Company::all();
-        $players = Player::all();
-        $games = Game::all();
+        $games = Game::hasGamemasters()->get();
+
+        $game_ids = $games->pluck('id')->toArray();
+        $companies = Company::whereIn('game_id', $game_ids)->get();
+
+        $company_ids = $companies->pluck('id')->toArray();
+        $players = Player::whereIn('company_id', $company_ids)->get();
         return view('players.create', [
             'users' => $users, 
             'user_list' => $user_list,

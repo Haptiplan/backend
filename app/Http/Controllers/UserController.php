@@ -27,12 +27,13 @@ class UserController extends Controller
      */
     public function create()
     {
-        $users = User::where('id', '!=', Auth::id())->get();
-        $players = Player::all();
+        $admins = User::where('id', '!=', Auth::id())->where('role', User::ROLE_ADMIN)->get();
+        $gamemasters = User::whereHas('gamemaster')->get();
+        $players = User::whereHas('player')->get();
         $games = Game::all();
-        $companies = Company::all();
         return view('users.create', [
-            'users' => $users,
+            'admins' => $admins,
+            'gamemasters' => $gamemasters,
             'players' => $players,
             'games' => $games,
         ]);

@@ -22,6 +22,11 @@ class User extends Authenticatable
         return $this->hasMany(Player::class, 'id');
     }
 
+    public function gamemaster(): HasMany
+    {
+        return $this->hasMany(Gamemaster::class, 'id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

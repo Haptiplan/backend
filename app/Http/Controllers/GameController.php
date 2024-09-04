@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Models\Game;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 
 class GameController extends Controller
@@ -15,17 +17,14 @@ class GameController extends Controller
      */
     public function index(Game $game)
     {
-        $games = Game::all();   
+        $games = Game::hasGamemasters()->get();
         return view('games.create', ['games' => $games]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -34,12 +33,17 @@ class GameController extends Controller
     {
         $game_name = $request->validate([
             'game_name' => 'required|unique:games,name'
-        ], [
-            'game_name.required' => 'The game must have a name!',
-            'game_name.unique' => 'The name of the game must be unique!'
         ]);
-        DB::table('games')->insert(['name' => $game_name['game_name']]); 
-        $games = Game::all();   
+        DB::table('games')->insert(['name' => $game_name['game_name']]);
+
+        $game = Game::where('name', $game_name['game_name'])->firstOrFail();
+        if (Session::has('impersonate')) {
+            (new GamemasterContoller)->store(Session::get('impersonate'), $game->id);
+        } else {
+            (new GamemasterContoller)->store(Auth::user()->id, $game->id);
+        }
+
+        $games = Game::all();
         return redirect()->route('game.index')->with('success', 'Spiel erfolgreich erstellt!');
     }
 
@@ -56,7 +60,7 @@ class GameController extends Controller
      */
     public function edit(string $game_id)
     {
-        $game = Game::findOrFail($game_id); 
+        $game = Game::hasGamemasters()->findOrFail($game_id);
         return view('games.edit', ['game' => $game]);
     }
 
@@ -66,9 +70,9 @@ class GameController extends Controller
     public function update(Request $request, string $game_id)
     {
         $validated = $request->validate([
-            'game_name' => 'required|string|max:255', 
+            'game_name' => 'required|string|max:255',
         ]);
-        
+
         $game = Game::find($game_id);
 
         $game->name = $validated['game_name'];
