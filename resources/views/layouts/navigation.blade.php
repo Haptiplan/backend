@@ -17,12 +17,12 @@ $user = User::ROLE_USER;
                 </div>
 
                 <!-- Navigation Links -->
-             
-                
+
+
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @if(Auth::check() && Auth::user()->role == $user)
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }} 
+                        {{ __('Dashboard') }}
                     </x-nav-link>
                     @endif
                     @if(Auth::check() && Auth::user()->role == $admin)
@@ -31,8 +31,8 @@ $user = User::ROLE_USER;
                     </x-nav-link>
 
                     <x-nav-link :href="route('user.create')" :active="request()->routeIs('user.create')">
-                        {{ __('User erstellen') }}
-                    </x-nav-link> 
+                        {{ __('messages.navUser') }}
+                    </x-nav-link>
                     @endif
 
                     @if(Auth::check() && Auth::user()->role == $gamemaster)
@@ -40,24 +40,24 @@ $user = User::ROLE_USER;
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('game.index')" :active="request()->routeIs('game.index')">
-                        {{ __('Game erstellen') }}
-                    </x-nav-link> 
-                     <x-nav-link :href="route('machine.index')" :active="request()->routeIs('machine.index')">
-                        {{ __('Maschine erstellen')}}
-                    </x-nav-link> 
+                        {{ __('messages.navGame') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('machine.index')" :active="request()->routeIs('machine.index')">
+                        {{ __('messages.navMachine')}}
+                    </x-nav-link>
                     <x-nav-link :href="route('company.create')" :active="request()->routeIs('company.create')">
-                        {{ __('Company erstellen')}}
+                        {{ __('messages.navCompany')}}
                     </x-nav-link>
                     <x-nav-link :href="route('player.create')" :active="request()->routeIs('player.create')">
-                        {{ __('Player zuweisen')}}
+                        {{ __('messages.navPlayer')}}
                     </x-nav-link>
                     @endif
 
                     @if(Auth::check() && Auth::user()->role == $user)
                     <x-nav-link :href="route('machine.list')" :active="request()->routeIs('machine.index')">
-                        {{ __('Maschinenliste')}}  
-                     </x-nav-link>          
-                    @endif 
+                        {{ __('messages.listMachines')}}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -78,30 +78,33 @@ $user = User::ROLE_USER;
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('messages.profile') }}
                         </x-dropdown-link>
 
-                        @if(Auth::check() && (Auth::user()->role == $gamemaster || Auth::user()->role == $admin))
+                        @if(Auth::check() && (Auth::user()->role == $gamemaster || Auth::user()->role == $admin) && !(Auth::user()->isImpersonating()))
                         <x-dropdown-link :href="route('impersonate.view')">
-                            {{ __('Imitieren') }}
+                            {{ __('messages.impersonate') }}
                         </x-dropdown-link>
                         @endif
                         @if(Auth::user()->isImpersonating())
-                            <x-dropdown-link href="{{ route('impersonate.stop') }}">
-                                {{ __('Imitieren beenden') }}
-                            </x-dropdown-link>
+                        <x-dropdown-link href="{{ route('impersonate.stop') }}">
+                            {{ __('messages.impersonateStop') }}
+                        </x-dropdown-link>
                         @endif
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                            <x-dropdown-link :href="route('logout')" class="border-b border-b-1" style="border-color: rgba(128, 128, 128, 0.5);"
+                                onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('messages.logOut') }}
                             </x-dropdown-link>
                         </form>
+
+                        @include('components/language-switcher')
+
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -143,9 +146,9 @@ $user = User::ROLE_USER;
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                        onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('messages.logOut') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

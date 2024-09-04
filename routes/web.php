@@ -8,6 +8,8 @@ use App\Http\Controllers\MachineController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Route;
 
 $admin = User::ROLE_ADMIN;
@@ -17,39 +19,44 @@ $user = User::ROLE_USER;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'de'])) {
+        App::setLocale($locale);
+        Session::put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('lang');
+
 /*
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 */
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['localization', 'auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 /**Impersonating routes **/
-Route::get('/users/impersonate', [UserController::class, 'impersonate'])
-->name('impersonate.view')
-->middleware('check_role:' . $admin . ',' . $gamemaster);
+Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])->group(function(){
+    Route::get('/users/impersonate', [UserController::class, 'impersonate'])->name('impersonate.view');
+    Route::post('/users/impersonate/start', [UserController::class, 'startImpersonate'])->name('impersonate.start');
+    Route::get('/users/stop', [UserController::class, 'stopImpersonate'])->name('impersonate.stop');
+});
 
-Route::post('/users/impersonate/start', [UserController::class, 'startImpersonate'])
-->name('impersonate.start')
-->middleware('check_role:' . $admin . ',' . $gamemaster);
-
-Route::get('/users/stop', [UserController::class, 'stopImpersonate'])
-->name('impersonate.stop');
 
 /**General user routes **/
-Route::middleware(['auth', 'verified', 'impersonate'])->get('/dashboard', [DashboardController::class, 'generalUserDashboard'])->name('dashboard');
+Route::middleware(['localization', 'auth', 'verified', 'impersonate'])->get('/dashboard', [DashboardController::class, 'generalUserDashboard'])->name('dashboard');
 
 /**Admin routes **/
-Route::middleware('admin_auth')->prefix('admin')->group(function(){
+Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('adminDashboardShow');
 });
 
-Route::middleware('check_role:' . $admin)->group(function(){
+Route::middleware(['localization', 'check_role:' . $admin])->group(function(){
     Route::get('/create_user', [UserController::class, 'create'])->name('user.create');
     Route::post('/create_user', [UserController::class, 'store'])->name('user.store');
     Route::get('create_user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
@@ -58,11 +65,11 @@ Route::middleware('check_role:' . $admin)->group(function(){
 });
 
 /**Gamemaster routes **/
-Route::middleware('gamemaster_auth')->prefix('gamemaster')->group(function(){
+Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemasterDashboardShow');
 });
 
-Route::middleware(['impersonate', 'check_role:' . $gamemaster])->group(function(){
+Route::middleware(['localization', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
     /** Machines **/
     Route::get('/create_machine', [MachineController::class, 'index'])->name('machine.index');
     Route::post('/create_machine', [MachineController::class, 'store'])->name('machine.store');
@@ -90,7 +97,7 @@ Route::middleware(['impersonate', 'check_role:' . $gamemaster])->group(function(
 
 });
 
-Route::middleware(['impersonate', 'check_role:' . $user])->group(function(){
+Route::middleware(['localization', 'impersonate', 'check_role:' . $user])->group(function(){
     Route::get('/machines', [MachineController::class, 'index'])->name('machine.list');
 });
 
