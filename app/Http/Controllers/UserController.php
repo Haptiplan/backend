@@ -34,7 +34,6 @@ class UserController extends Controller
             'gamemasters' => $gamemasters,
             'players' => $players,
             'games' => $games,
-            'companies' => $companies,
         ]);
     }
 
