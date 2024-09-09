@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Game;
+use App\Models\Gamemaster;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -37,13 +39,18 @@ class GameController extends Controller
         DB::table('games')->insert(['name' => $game_name['game_name']]);
 
         $game = Game::where('name', $game_name['game_name'])->firstOrFail();
+
         if (Session::has('impersonate')) {
-            (new GamemasterContoller)->store(Session::get('impersonate'), $game->id);
+            $id = Session::get('impersonate');
         } else {
-            (new GamemasterContoller)->store(Auth::user()->id, $game->id);
+            $id = Auth::user()->id;
         }
 
-        $games = Game::all();
+        DB::table('gamemasters')->insert([
+            'id' => $id,
+            'game_id' => $game->id,
+        ]);
+
         return redirect()->route('game.index')->with('success', 'Spiel erfolgreich erstellt!');
     }
 
@@ -60,8 +67,21 @@ class GameController extends Controller
      */
     public function edit(string $game_id)
     {
+        $id = Auth::user()->id;
+        if (Session::has('impersonate')) {
+            $id =  Session::get('impersonate');
+        }
         $game = Game::hasGamemasters()->findOrFail($game_id);
-        return view('games.edit', ['game' => $game]);
+        $gm_in_game = Gamemaster::where('game_id', $game_id)->pluck('id')->toArray();
+        $gamemasters = User::where('role', User::ROLE_GAMEMASTER)->whereNot('id', $id)->whereNotIn('id', $gm_in_game)->get();
+        $list = Gamemaster::where('game_id', $game_id)->whereNot('id', $id)->pluck('id')->toArray();
+        $list_gamemasters = User::whereIn('id', $list)->get();
+        return view('games.edit', [
+            'game' => $game,
+            'game_id' => $game_id,
+            'gamemasters' => $gamemasters,
+            'list_gamemasters' => $list_gamemasters,
+        ]);
     }
 
     /**
