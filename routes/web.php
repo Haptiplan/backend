@@ -3,6 +3,7 @@
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\GamemasterController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\MachineController;
 use App\Http\Controllers\ProfileController;
@@ -82,6 +83,10 @@ Route::middleware(['localization', 'impersonate', 'check_role:' . $gamemaster])-
     Route::get('create_game/{id}/edit', [GameController::class, 'edit'])->name('game.edit');
     Route::put('create_game/{id}', [GameController::class, 'update'])->name('game.update');
     Route::delete('/create_game/{id}', [GameController::class, 'destroy'])->name('game.delete');
+    /** Gamemaster **/
+    Route::post('/create_gamemaster', [GamemasterController::class, 'store'])->name('gamemaster.store');
+    Route::delete('/create_gamemaster/{id}/{game_id}', [GamemasterController::class, 'destroy'])->name('gamemaster.delete');
+    Route::delete('/create_gamemaster/{id}', [GamemasterController::class, 'destroyAll'])->name('gamemaster.deleteAll');
     /**Companies */
     Route::get('/create_company', [CompanyController::class, 'create'])->name('company.create');
     Route::post('/create_company', [CompanyController::class, 'store'])->name('company.store');

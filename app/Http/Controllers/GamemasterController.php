@@ -13,20 +13,27 @@ class GamemasterController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store($id, $game_id)
+    public function store(Request $request)
     {
-        if(!(DB::table('gamemasters')->where('id', $id)->where('game_id', $game_id)->exists()))
+        $validated = $request->validate([
+            'gamemaster' => 'required|exists:users,id',
+            'game_id' => 'required|exists:games,id',
+        ]);
+        if (!(DB::table('gamemasters')->where('id', $validated['gamemaster'])->where('game_id', $validated['game_id'])->exists())){
             DB::table('gamemasters')->insert([
-                'id' => $id,
-                'game_id' => $game_id,
+                'id' => $validated['gamemaster'],
+                'game_id' => $validated['game_id'],
             ]);
+        }
+        return redirect(route('game.edit', [$validated['game_id']]));
     }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id, $game_id)
     {
-        Gamemaster::where('id', $id)->where('game_id', $game_id)->firstOrFail()->delete();
+        Gamemaster::where('id', $id)->where('game_id', $game_id)->delete();
+        return redirect()->back();
     }
     /**
      * Remove the specified resources from storage.
@@ -34,5 +41,6 @@ class GamemasterController extends Controller
     public function destroyAll($id)
     {
         Gamemaster::where('id', $id)->delete();
+        return redirect()->back();
     }
 }

@@ -9,6 +9,8 @@ use App\Models\Player;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class UserController extends Controller
 {
@@ -25,15 +27,14 @@ class UserController extends Controller
      */
     public function create()
     {
-        $users = User::where('id', '!=', Auth::id())->get();
-        $players = Player::all();
+        $admins = User::where('id', '!=', Auth::id())->where('role', User::ROLE_ADMIN)->get();
+        $gamemasters = User::where('role', User::ROLE_GAMEMASTER)->get();
+        $players = User::where('role', User::ROLE_USER)->get();
         $games = Game::all();
-        $companies = Company::all();
         return view('users.create', [
-            'users' => $users,
+            'admins' => $admins,
+            'gamemasters' => $gamemasters,
             'players' => $players,
-            'games' => $games,
-            'companies' => $companies,
         ]);
     }
 
@@ -47,7 +48,6 @@ class UserController extends Controller
             'email' => 'required|unique:users,email',
             'role' => 'required',
             'password' => 'required',
-            'game' => 'required_if:role,' . User::ROLE_GAMEMASTER,
         ]);
 
         $user = User::create([
@@ -56,12 +56,6 @@ class UserController extends Controller
             'role' => $validated['role'],
             'password' => bcrypt($validated['password']),
         ]);
-
-        if ($validated['role'] == User::ROLE_GAMEMASTER) {
-            (new GamemasterController)->store($user->id, $validated['game']);
-        } else {
-            (new GamemasterController)->destroyAll($user->id);
-        }
 
         return redirect()->route('user.create');
     }
@@ -113,8 +107,12 @@ class UserController extends Controller
         $user->role = $validated['role'];
 
         if ($validated['role'] == User::ROLE_GAMEMASTER && !empty($validated['game'])) {
-            (new GamemasterController)->store($id, $validated['game']);
-        }
+            if (!(DB::table('gamemasters')->where('id', $id)->where('game_id', $validated['game'])->exists())) {
+                DB::table('gamemasters')->insert([
+                    'id' => $id,
+                    'game_id' => $validated['game'],
+                ]);
+            }        }
         $user->save();
 
         return redirect()->route('user.edit', $user->id);
@@ -138,11 +136,11 @@ class UserController extends Controller
         $user = User::findOrFail(Auth::id());
         $games = Game::all();
         $companies = Company::all();
-        if($user->role == User::ROLE_GAMEMASTER){
+        if ($user->role == User::ROLE_GAMEMASTER) {
             $game_ids = Gamemaster::where('id', $user->id)->get()->pluck('game_id')->toArray();
             $companies = Company::where('game_id', $game_ids)->get();
         }
-        
+
         return view('users.impersonate', [
             'games' => $games,
             'companies' => $companies,
@@ -161,15 +159,12 @@ class UserController extends Controller
             'game' => 'required_if:role,' . User::ROLE_GAMEMASTER . '|exists:games,id',
         ]);
 
-        if($validated['role'] == User::ROLE_USER && ($active_user->role == User::ROLE_ADMIN || $active_user->role == User::ROLE_GAMEMASTER))
-        {
+        if ($validated['role'] == User::ROLE_USER && ($active_user->role == User::ROLE_ADMIN || $active_user->role == User::ROLE_GAMEMASTER)) {
             $player = Player::where('company_id', $validated['company'])->firstOrFail();
             $user = User::where('id', $player->id)->firstOrFail();
             $active_user->setImpersonating($user->id);
             return redirect()->route('dashboard');
-        } 
-        elseif ($validated['role'] == User::ROLE_GAMEMASTER && $active_user->role == User::ROLE_ADMIN)
-        {
+        } elseif ($validated['role'] == User::ROLE_GAMEMASTER && $active_user->role == User::ROLE_ADMIN) {
             $gamemaster = Gamemaster::where('game_id', $validated['game'])->firstOrFail();
             $user = User::where('id', $gamemaster->id)->firstOrFail();
             $active_user->setImpersonating($user->id);
