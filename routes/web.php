@@ -52,11 +52,11 @@ Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])-
 Route::middleware(['localization', 'auth', 'verified', 'impersonate'])->get('/dashboard', [DashboardController::class, 'generalUserDashboard'])->name('dashboard');
 
 /**Admin routes **/
-Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(function(){
+Route::middleware(['localization', 'verified','admin_auth'])->prefix('admin')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('adminDashboardShow');
 });
 
-Route::middleware(['localization', 'check_role:' . $admin])->group(function(){
+Route::middleware(['localization', 'verified','check_role:' . $admin])->group(function(){
     Route::get('/create_user', [UserController::class, 'create'])->name('user.create');
     Route::post('/create_user', [UserController::class, 'store'])->name('user.store');
     Route::get('create_user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
@@ -65,11 +65,11 @@ Route::middleware(['localization', 'check_role:' . $admin])->group(function(){
 });
 
 /**Gamemaster routes **/
-Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->group(function(){
+Route::middleware(['localization', 'verified', 'gamemaster_auth'])->prefix('gamemaster')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemasterDashboardShow');
 });
 
-Route::middleware(['localization', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
+Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
     /** Games **/
     Route::get('/create_game', [GameController::class, 'index'])->name('game.index');
     Route::post('/create_game', [GameController::class, 'store'])->name('game.store');
@@ -95,7 +95,7 @@ Route::middleware(['localization', 'impersonate', 'check_role:' . $gamemaster])-
 
 });
 
-Route::middleware(['localization', 'impersonate', 'check_role:' . $user])->group(function(){});
+Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function(){});
 
 
 

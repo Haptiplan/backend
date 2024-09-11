@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
@@ -45,8 +46,9 @@ class AuthenticatedSessionController extends Controller
         return redirect()->route('login');
     }
 
-    public function customLogin(Request $request){
-        
+    public function customLogin(Request $request)
+    {
+
         $input = $request->all();
         $request->validate([
             'email' => 'required|email',
@@ -56,9 +58,15 @@ class AuthenticatedSessionController extends Controller
         $admin = User::ROLE_ADMIN;
         $gamemaster = User::ROLE_GAMEMASTER;
         $user = User::ROLE_USER;
-        
+
+        // remember me token
+        $remember = false;
+        if($request->has('remember')) {
+            $remember = true;
+        }
+
         // check if the given user exists in db
-        if(Auth::attempt(['email'=> $input['email'], 'password'=> $input['password']])){
+        if (Auth::attempt(['email' => $input['email'], 'password' => $input['password']], $remember)) {
             // check the user role
             if (Auth::user()->role == User::ROLE_USER) {
                 return redirect()->route('dashboard');
@@ -67,10 +75,8 @@ class AuthenticatedSessionController extends Controller
             } elseif (Auth::user()->role == User::ROLE_ADMIN) {
                 return redirect()->route('adminDashboardShow');
             }
-        }
-        else{
+        } else {
             return redirect()->route('login')->with('error', __("Falsche Anmeldeinformationen"));
         }
-        
     }
 }
