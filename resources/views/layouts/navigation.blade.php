@@ -26,7 +26,7 @@ $user = User::ROLE_USER;
                     </x-nav-link>
                     @endif
                     @if(Auth::check() && Auth::user()->role == $admin)
-                    <x-nav-link :href="route('adminDashboardShow')" :active="request()->routeIs('adminDashboardShow')">
+                    <x-nav-link :href="route('admin_dashboard_show')" :active="request()->routeIs('admin_dashboard_show')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
@@ -36,7 +36,7 @@ $user = User::ROLE_USER;
                     @endif
 
                     @if(Auth::check() && Auth::user()->role == $gamemaster)
-                    <x-nav-link :href="route('gamemasterDashboardShow')" :active="request()->routeIs('gamemasterDashboardShow')">
+                    <x-nav-link :href="route('gamemaster_dashboard_show')" :active="request()->routeIs('gamemaster_dashboard_show')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('game.index')" :active="request()->routeIs('game.index')">

@@ -50,11 +50,11 @@ Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])-
 
 
 /**General user routes **/
-Route::middleware(['localization', 'auth', 'verified', 'impersonate'])->get('/dashboard', [DashboardController::class, 'generalUserDashboard'])->name('dashboard');
+Route::middleware(['localization', 'auth', 'verified', 'impersonate'])->get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard');
 
 /**Admin routes **/
 Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(function(){
-    Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('adminDashboardShow');
+    Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin_dashboard_show');
 });
 
 Route::middleware(['localization', 'check_role:' . $admin])->group(function(){
@@ -67,7 +67,7 @@ Route::middleware(['localization', 'check_role:' . $admin])->group(function(){
 
 /**Gamemaster routes **/
 Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->group(function(){
-    Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemasterDashboardShow');
+    Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
 
 Route::middleware(['localization', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
