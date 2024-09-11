@@ -30,7 +30,6 @@ class UserController extends Controller
         $admins = User::where('id', '!=', Auth::id())->where('role', User::ROLE_ADMIN)->get();
         $gamemasters = User::where('role', User::ROLE_GAMEMASTER)->get();
         $players = User::where('role', User::ROLE_USER)->get();
-        $games = Game::all();
         return view('users.create', [
             'admins' => $admins,
             'gamemasters' => $gamemasters,
