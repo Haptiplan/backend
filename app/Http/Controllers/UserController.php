@@ -28,14 +28,13 @@ class UserController extends Controller
     public function create()
     {
         $admins = User::where('id', '!=', Auth::id())->where('role', User::ROLE_ADMIN)->get();
-        $gamemasters = User::whereHas('gamemaster')->get();
-        $players = User::whereHas('player')->get();
+        $gamemasters = User::where('role', User::ROLE_GAMEMASTER)->get();
+        $players = User::where('role', User::ROLE_USER)->get();
         $games = Game::all();
         return view('users.create', [
             'admins' => $admins,
             'gamemasters' => $gamemasters,
             'players' => $players,
-            'games' => $games,
         ]);
     }
 
@@ -49,7 +48,6 @@ class UserController extends Controller
             'email' => 'required|unique:users,email',
             'role' => 'required',
             'password' => 'required',
-            'game' => 'required_if:role,' . User::ROLE_GAMEMASTER,
         ]);
 
         $user = User::create([
@@ -58,17 +56,6 @@ class UserController extends Controller
             'role' => $validated['role'],
             'password' => bcrypt($validated['password']),
         ]);
-
-        if ($validated['role'] == User::ROLE_GAMEMASTER) {
-            if (!(DB::table('gamemasters')->where('id', $validated['id'])->where('game_id', $validated['game'])->exists())) {
-                DB::table('gamemasters')->insert([
-                    'id' => $validated['id'],
-                    'game_id' => $validated['game'],
-                ]);
-            }
-        } else {
-            Gamemaster::where('id', $validated['id'])->delete();
-        }
 
         return redirect()->route('user.create');
     }

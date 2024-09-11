@@ -38,15 +38,6 @@
                                 <option value="{{User::ROLE_GAMEMASTER}}">{{ __('messages.gamemaster') }}</option>
                                 <option value="{{User::ROLE_USER}}">{{ __('messages.player') }}</option>
                             </select>
-                            <label for="game" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
-                                {{ __('messages.listGames') }}
-                            </label>
-                            <select name="game" id="game" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
-                                <option value="" disabled hidden selected>{{ __('messages.chooseGameGamemaster') }}</option>
-                                @foreach ($games as $game)
-                                <option value="{{$game->id}}" >{{$game->name}}</option>
-                                @endforeach
-                            </select>
                         </div>
                         <div>
                             <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
