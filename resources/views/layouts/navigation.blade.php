@@ -42,9 +42,6 @@ $user = User::ROLE_USER;
                     <x-nav-link :href="route('game.index')" :active="request()->routeIs('game.index')">
                         {{ __('messages.navGame') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('machine.index')" :active="request()->routeIs('machine.index')">
-                        {{ __('messages.navMachine')}}
-                    </x-nav-link>
                     <x-nav-link :href="route('company.create')" :active="request()->routeIs('company.create')">
                         {{ __('messages.navCompany')}}
                     </x-nav-link>
@@ -54,9 +51,7 @@ $user = User::ROLE_USER;
                     @endif
 
                     @if(Auth::check() && Auth::user()->role == $user)
-                    <x-nav-link :href="route('machine.list')" :active="request()->routeIs('machine.index')">
-                        {{ __('messages.listMachines')}}
-                    </x-nav-link>
+
                     @endif
                 </div>
             </div>

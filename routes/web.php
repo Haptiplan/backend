@@ -5,7 +5,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GamemasterController;
 use App\Http\Controllers\PlayerController;
-use App\Http\Controllers\MachineController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use App\Http\Controllers\UserController;
@@ -57,7 +56,7 @@ Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(functi
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin_dashboard_show');
 });
 
-Route::middleware(['localization', 'check_role:' . $admin])->group(function(){
+Route::middleware(['localization', 'verified','check_role:' . $admin])->group(function(){
     Route::get('/create_user', [UserController::class, 'create'])->name('user.create');
     Route::post('/create_user', [UserController::class, 'store'])->name('user.store');
     Route::get('create_user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
@@ -70,13 +69,7 @@ Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->gr
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
 
-Route::middleware(['localization', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
-    /** Machines **/
-    Route::get('/create_machine', [MachineController::class, 'index'])->name('machine.index');
-    Route::post('/create_machine', [MachineController::class, 'store'])->name('machine.store');
-    Route::get('create_machine/{id}/edit', [MachineController::class, 'edit'])->name('machine.edit');
-    Route::put('create_machine/{id}', [MachineController::class, 'update'])->name('machine.update');
-    Route::delete('/create_machine/{id}', [MachineController::class, 'destroy'])->name('machine.delete');
+Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
     /** Games **/
     Route::get('/create_game', [GameController::class, 'index'])->name('game.index');
     Route::post('/create_game', [GameController::class, 'store'])->name('game.store');
@@ -102,9 +95,7 @@ Route::middleware(['localization', 'impersonate', 'check_role:' . $gamemaster])-
 
 });
 
-Route::middleware(['localization', 'impersonate', 'check_role:' . $user])->group(function(){
-    Route::get('/machines', [MachineController::class, 'index'])->name('machine.list');
-});
+Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function(){});
 
 
 
