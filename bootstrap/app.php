@@ -14,9 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'adminAuth' => \App\Http\Middleware\AdminAuth::class,
-            'gamemasterAuth' => \App\Http\Middleware\gamemasterAuth::class,
-            'check_role' => \App\Http\Middleware\check_role::class,
+            'admin_auth' => \App\Http\Middleware\AdminAuth::class,
+            'gamemaster_auth' => \App\Http\Middleware\GamemasterAuth::class,
+            'check_role' => \App\Http\Middleware\CheckRole::class,
+            'impersonate' => \App\Http\Middleware\Impersonate::class,
+            'localization' => \App\Http\Middleware\Localization::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -1,3 +1,9 @@
+@php
+use App\Models\User;
+$admin = User::ROLE_ADMIN;
+$gamemaster = User::ROLE_GAMEMASTER;
+$user = User::ROLE_USER;
+@endphp
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,15 +17,41 @@
                 </div>
 
                 <!-- Navigation Links -->
+
+
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    @if(Auth::check() && Auth::user()->role == $user)
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
-                        
                     </x-nav-link>
-                    @if(Auth::check() && (Auth::user()->role == \App\Models\User::ROLE_ADMIN || Auth::user()->role == \App\Models\User::ROLE_GAMEMASTER))
-                    <x-nav-link :href="route('game_index')" :active="request()->routeIs('game_index')">
-                        {{ __('Game erstellen') }}
+                    @endif
+                    @if(Auth::check() && Auth::user()->role == $admin)
+                    <x-nav-link :href="route('admin_dashboard_show')" :active="request()->routeIs('admin_dashboard_show')">
+                        {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('user.create')" :active="request()->routeIs('user.create')">
+                        {{ __('messages.navUser') }}
+                    </x-nav-link>
+                    @endif
+
+                    @if(Auth::check() && Auth::user()->role == $gamemaster)
+                    <x-nav-link :href="route('gamemaster_dashboard_show')" :active="request()->routeIs('gamemaster_dashboard_show')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('game.index')" :active="request()->routeIs('game.index')">
+                        {{ __('messages.navGame') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('company.create')" :active="request()->routeIs('company.create')">
+                        {{ __('messages.navCompany')}}
+                    </x-nav-link>
+                    <x-nav-link :href="route('player.create')" :active="request()->routeIs('player.create')">
+                        {{ __('messages.navPlayer')}}
+                    </x-nav-link>
+                    @endif
+
+                    @if(Auth::check() && Auth::user()->role == $user)
+
                     @endif
                 </div>
             </div>
@@ -41,19 +73,33 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('messages.profile') }}
                         </x-dropdown-link>
+
+                        @if(Auth::check() && (Auth::user()->role == $gamemaster || Auth::user()->role == $admin) && !(Auth::user()->isImpersonating()))
+                        <x-dropdown-link :href="route('impersonate.view')">
+                            {{ __('messages.impersonate') }}
+                        </x-dropdown-link>
+                        @endif
+                        @if(Auth::user()->isImpersonating())
+                        <x-dropdown-link href="{{ route('impersonate.stop') }}">
+                            {{ __('messages.impersonateStop') }}
+                        </x-dropdown-link>
+                        @endif
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                            <x-dropdown-link :href="route('logout')" class="border-b border-b-1" style="border-color: rgba(128, 128, 128, 0.5);"
+                                onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('messages.logOut') }}
                             </x-dropdown-link>
                         </form>
+
+                        @include('components/language-switcher')
+
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -95,9 +141,9 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                        onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('messages.logOut') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
