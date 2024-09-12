@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('decisions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')->constrained('companies');
+            $table->foreignId('player_id')->constrained('players');
+            $table->integer('period');
             $table->timestamps();
         });
     }
