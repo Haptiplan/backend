@@ -39,7 +39,7 @@
                     <div>
                         <h4
                             class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 border-b-2 border-indigo-600 pb-2">
-                            Aktive Spiele</h4>
+                            {{ __('messages.activeGames') }}</h4>
                         @foreach ($games as $game)
                             @if ($game->active == '1')
                                 <li>
@@ -63,7 +63,7 @@
                     <div>
                         <h4
                             class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 border-b-2 border-indigo-600 pb-2">
-                            Inaktive Spiele</h4>
+                            {{ __('messages.inactiveGames') }}</h4>
                         @foreach ($games as $game)
                             @if ($game->active == '0')
                                 <li>
