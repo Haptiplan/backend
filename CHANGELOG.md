@@ -1,6 +1,31 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/laravel/compare/v11.0.5...11.x)
+## [Unreleased](https://github.com/laravel/laravel/compare/v0.1.0...main)
+
+## [v0.1.0](https://github.com/laravel/laravel/compare/v11.0.5...v0.1.0) - 2024-09-13
+
+### What's Changed
+
+* Implemented Laravel by [@HichamElBadr](https://github.com/HichamElBadr) in https://github.com/Haptiplan/backend/pull/17
+* Feature/company by [@nimer03](https://github.com/nimer03) in https://github.com/Haptiplan/backend/pull/23
+* Feature/delete update by [@HichamElBadr](https://github.com/HichamElBadr) in https://github.com/Haptiplan/backend/pull/27
+* Feature/player by [@nimer03](https://github.com/nimer03) in https://github.com/Haptiplan/backend/pull/26
+* implemented constants for roles by [@HichamElBadr](https://github.com/HichamElBadr) in https://github.com/Haptiplan/backend/pull/33
+* Feature/error messages by [@nimer03](https://github.com/nimer03) in https://github.com/Haptiplan/backend/pull/34
+* Bump braces from 3.0.2 to 3.0.3 by [@dependabot](https://github.com/dependabot) in https://github.com/Haptiplan/backend/pull/49
+* Feature/player by [@nimer03](https://github.com/nimer03) in https://github.com/Haptiplan/backend/pull/47
+* Feature/impersonate by [@nimer03](https://github.com/nimer03) in https://github.com/Haptiplan/backend/pull/52
+* deleted register by [@HichamElBadr](https://github.com/HichamElBadr) in https://github.com/Haptiplan/backend/pull/51
+* Language files by [@nimer03](https://github.com/nimer03) in https://github.com/Haptiplan/backend/pull/55
+* Manage gamemaster by [@nimer03](https://github.com/nimer03) in https://github.com/Haptiplan/backend/pull/57
+* 0.1.0 User Management by [@HichamElBadr](https://github.com/HichamElBadr) in https://github.com/Haptiplan/backend/pull/59
+* Feature/active games by [@HichamElBadr](https://github.com/HichamElBadr) in https://github.com/Haptiplan/backend/pull/60
+
+### New Contributors
+
+* [@dependabot](https://github.com/dependabot) made their first contribution in https://github.com/Haptiplan/backend/pull/49
+
+**Full Changelog**: https://github.com/Haptiplan/backend/commits/v0.1.0
 
 ## [v11.0.5](https://github.com/laravel/laravel/compare/v11.0.4...v11.0.5) - 2024-03-26
 
