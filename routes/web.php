@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DecisionController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GamemasterController;
 use App\Http\Controllers\PlayerController;
@@ -80,7 +81,7 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $g
     Route::post('/create_gamemaster', [GamemasterController::class, 'store'])->name('gamemaster.store');
     Route::delete('/create_gamemaster/{id}/{game_id}', [GamemasterController::class, 'destroy'])->name('gamemaster.delete');
     Route::delete('/create_gamemaster/{id}', [GamemasterController::class, 'destroyAll'])->name('gamemaster.deleteAll');
-    /**Companies */
+    /** Companies **/
     Route::get('/create_company', [CompanyController::class, 'create'])->name('company.create');
     Route::post('/create_company', [CompanyController::class, 'store'])->name('company.store');
     Route::get('create_company/{id}/edit', [CompanyController::class, 'edit'])->name('company.edit');
@@ -95,7 +96,15 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $g
 
 });
 
-Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function(){});
+//** Player routes **/
+
+Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function(){
+    //** Decisions **/
+    Route::get('/decision', [DecisionController::class, 'index'])->name('decision.index');
+    Route::get('/create_decision', [DecisionController::class, 'create'])->name('decision.create');
+    Route::post('/create_decision', [DecisionController::class, 'store'])->name('decision.store');
+    Route::get('/decision/{id}', [DecisionController::class, 'show'])->name('decision.show');
+});
 
 
 

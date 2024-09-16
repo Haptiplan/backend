@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Decision;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\Game;
 use App\Models\Player;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class DecisionController extends Controller
@@ -17,7 +20,26 @@ class DecisionController extends Controller
      */
     public function index()
     {
-        //
+        $id = Auth::user()->id;
+        if (Session::has('impersonate')) {
+            $id = Session::get('impersonate');
+        }
+
+        $player = Player::find($id);
+        $company = Company::where('id', $player->company_id)->first();
+
+        $game = Game::where('id', $company->game_id)->first();
+
+        $player_ids = Player::where('company_id', $company->id)->pluck('id')->toArray();
+        $decisions = Decision::whereIn('player_id', $player_ids)->get();
+
+        if (($decisions->max('period') < $game->current_period_number) || $decisions->isEmpty()){
+            return redirect()->route('decision.create');
+        }
+
+        return view('decisions.index', [
+            'decisions' => $decisions,
+        ]);
     }
 
     /**
@@ -26,15 +48,26 @@ class DecisionController extends Controller
     public function create()
     {
         $id = Auth::user()->id;
-        if(Session::has('impersonate')) $id = Session::get('impersonate');
+        if (Session::has('impersonate')) {
+            $id = Session::get('impersonate');
+        }
 
         $player = Player::find($id);
-        $company = Company::whereHas('players', function($query) use ($id) {
-            $query->where('id', $id);
-        })->get();
+        $company = Company::where('id', $player->company_id)->first();
+        $game = Game::where('id', $company->game_id)->first();
 
-        $player_ids = $company->players->pluck('id')->toArray();
-        $decisions = Decision::whereIn('player_id', $player_ids)->get();
+        $player_ids = Player::where('company_id', $company->id)->pluck('id')->toArray();
+        $decisions = Decision::whereIn('player_id', $player_ids)->orderByDesc('id')->get();
+
+        if ($decisions->isNotEmpty() && ($decisions->max('period') >= $game->current_period_number)){
+            return redirect()->route('decision.index');
+        }
+
+        return view('decisions.create', [
+            'decisions' => $decisions,
+            'period' => $game->current_period_number,
+            'player' => $player,
+        ]);
     }
 
     /**
@@ -42,15 +75,32 @@ class DecisionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'approve' => 'required',
+            'player_id' => 'required | exists:players,id',
+            'period' => 'digits_between:1,8',
+        ]);
+
+        DB::table('decisions')->insert([
+            'player_id' => $validated['player_id'],
+            'period' => $validated['period'],
+        ]);
+        
+        return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Decision $decision)
+    public function show($id)
     {
-        //
+        $decision = Decision::findOrFail($id);
+        $decision_maker = User::where('id', $decision->player_id)->first();
+
+        return view('decisions.show', [
+            'decision' => $decision,
+            'decision_maker' => $decision_maker,
+        ]);
     }
 
     /**
