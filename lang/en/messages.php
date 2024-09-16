@@ -12,6 +12,7 @@ return [
 
     'admin' => 'Admin',
     'adminDashboard' => 'This is the admin dashboard!',
+    'activeGames' => 'Active games',
     'cancel' => 'Cancel',
     'chooseCompany' => 'Choose a company!',
     'chooseGame' => 'Choose a game!',
@@ -51,6 +52,7 @@ return [
     'impersonateGM' => 'Impersonate gamemaster',
     'impersonatePlayer' => 'Impersonate player',
     'impersonateStop' => 'Stop impersonating',
+    'inactiveGames' => 'Inactive games',
     'listGamemasters' => 'Gamemasters',
     'listGames' => 'Games',
     'listMachines' => 'Machines',
