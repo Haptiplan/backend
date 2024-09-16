@@ -11,9 +11,14 @@ class Company extends Model
 {
     use HasFactory;
   
-    public function player(): HasMany
+    public function players(): HasMany
     {
         return $this->hasMany(Player::class, 'id');
+    }
+
+    public function decisions(): HasMany
+    {
+        return $this->hasMany(Decision::class);
     }
   
     public function game(): BelongsTo

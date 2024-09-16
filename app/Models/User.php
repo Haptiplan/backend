@@ -17,11 +17,11 @@ class User extends Authenticatable
     const ROLE_USER = 2;
 
 
-    public function player(): HasMany
+    public function players(): HasMany
     {
         return $this->hasMany(Player::class, 'id');
     }
-    public function gamemaster(): HasMany
+    public function gamemasters(): HasMany
     {
         return $this->hasMany(Gamemaster::class, 'id');
     }
