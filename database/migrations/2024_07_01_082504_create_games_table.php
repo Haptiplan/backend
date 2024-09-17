@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('current_period_number')->default(0);
+            $table->integer('max_period_number')->default(8);
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

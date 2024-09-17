@@ -104,10 +104,33 @@ class DecisionController extends Controller
     }
 
     /**
+     * Display all decisions the players made for the gamemaster.
+     */
+    public function check($id, $period)
+    {
+        $game = game::find($id);
+        $companies = Company::where('game_id', $id)->get();
+        $players = Player::whereIn('company_id', $companies->pluck('id')->toArray())->get();
+
+        $decisions = Decision::whereIn('player_id', $players->pluck('id')->toArray())->where('period', $period)->get();
+        $decision_makers = User::select('users.*', 'players.company_id')->join('players', 'users.id', '=', 'players.id')->whereIn('users.id', $decisions->pluck('player_id')->toArray())->get();
+
+        return view('decisions.check', [
+            'period' => $period,
+            'game' => $game,
+            'companies' => $companies,
+            'decisions' => $decisions,
+            'decision_makers' => $decision_makers,
+        ]);
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Decision $decision)
+    public function destroy($id)
     {
-        //
+        Decision::findOrFail($id)->delete();
+
+        return redirect()->back();
     }
 }

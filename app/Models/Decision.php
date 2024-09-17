@@ -10,8 +10,8 @@ class Decision extends Model
 {
     use HasFactory;
 
-    public function company(): BelongsTo
+    public function player():BelongsTo
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Player::class);
     }
 }

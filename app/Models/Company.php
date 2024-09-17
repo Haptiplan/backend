@@ -15,11 +15,6 @@ class Company extends Model
     {
         return $this->hasMany(Player::class, 'id');
     }
-
-    public function decisions(): HasMany
-    {
-        return $this->hasMany(Decision::class);
-    }
   
     public function game(): BelongsTo
     {

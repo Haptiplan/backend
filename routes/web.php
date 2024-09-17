@@ -77,6 +77,7 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $g
     Route::get('create_game/{id}/edit', [GameController::class, 'edit'])->name('game.edit');
     Route::put('create_game/{id}', [GameController::class, 'update'])->name('game.update');
     Route::delete('/create_game/{id}', [GameController::class, 'destroy'])->name('game.delete');
+    Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
     /** Gamemaster **/
     Route::post('/create_gamemaster', [GamemasterController::class, 'store'])->name('gamemaster.store');
     Route::delete('/create_gamemaster/{id}/{game_id}', [GamemasterController::class, 'destroy'])->name('gamemaster.delete');
@@ -93,7 +94,8 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $g
     Route::get('create_player/{id}/edit', [PlayerController::class, 'edit'])->name('player.edit');
     Route::put('create_player/{id}', [PlayerController::class, 'update'])->name('player.update');
     Route::delete('/create_player/{id}', [PlayerController::class, 'destroy'])->name('player.delete');
-
+    /** Decisions **/
+    Route::get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decision.check');
 });
 
 //** Player routes **/

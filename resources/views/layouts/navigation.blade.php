@@ -46,6 +46,9 @@ $user = User::ROLE_USER;
                     <x-nav-link :href="route('player.create')" :active="request()->routeIs('player.create')">
                         {{ __('messages.navPlayer')}}
                     </x-nav-link>
+                    <x-nav-link :href="route('decision.check', [1,0])" :active="request()->routeIs('decision.check')">
+                        {{ trans_choice('messages.decision', 2) }}
+                    </x-nav-link>
                     @endif
 
                     @if(Auth::check() && Auth::user()->role == $user)

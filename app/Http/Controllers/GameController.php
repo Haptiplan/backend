@@ -112,4 +112,20 @@ class GameController extends Controller
 
         return redirect()->route('game.index');
     }
+
+    /**
+     * Continue to next period.
+     */
+    public function continue(Request $request)
+    {
+        dd($request);
+        $validated = $request->validate([
+            'game_id' => 'required|exists:games,id',
+        ]);
+        $game = Game::find($validated['game_id']);
+        if($game->current_period_number <= $game->max_period_number){
+            $game->increment('current_period_number');
+        }
+        return redirect()->route('decision.check', [$game->id, $game->current_period_number]);
+    }
 }
