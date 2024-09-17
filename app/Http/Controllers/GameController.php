@@ -33,12 +33,16 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        $game_name = $request->validate([
-            'game_name' => 'required|unique:games,name'
+        $validated = $request->validate([
+            'game_name' => 'required|unique:games,name',
+            'period_number' => 'required',
         ]);
-        DB::table('games')->insert(['name' => $game_name['game_name']]);
+        DB::table('games')->insert([
+            'name' => $validated['game_name'],
+            'max_period_number' => $validated['period_number'],
+        ]);
 
-        $game = Game::where('name', $game_name['game_name'])->firstOrFail();
+        $game = Game::where('name', $validated['game_name'])->firstOrFail();
 
         if (Session::has('impersonate')) {
             $id = Session::get('impersonate');
@@ -91,11 +95,13 @@ class GameController extends Controller
     {
         $validated = $request->validate([
             'game_name' => 'required|string|max:255',
+            'period_number' => 'required',
         ]);
 
         $game = Game::find($game_id);
 
         $game->name = $validated['game_name'];
+        $game->max_period_number = $validated['period_number'];
         $game->save();
         $game->update();
 

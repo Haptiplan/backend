@@ -189,14 +189,18 @@ return [
     */
 
     'attributes' => [
+        'active' => 'aktiv',
         'company_id' => 'Unternehmens ID',
         'created_at' => 'erstellt am',
         'current_period_number' => 'aktuelle Perioden Nummer',
         'email' => 'E-Mail Adresse',
         'game_id' => 'Spiel ID',
         'id' => 'ID',
+        'max_period_number' => 'Perioden Anzahl',
         'name' => 'Name',
         'password' => 'Passwort',
+        'period' => 'Periode',
+        'player_id' => 'Spieler ID',
         'role' => 'Rolle',
         'updated_at' => 'aktualisiert am',
         'current_password' => 'aktuelle Passwort'
