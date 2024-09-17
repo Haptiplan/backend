@@ -175,6 +175,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'no_decision' => 'Not all decisions have been mate yet.',
+        'no_game' => 'Game not found.',
+        'unvalid_period' => 'The selected period is invalid.',
     ],
 
     /*

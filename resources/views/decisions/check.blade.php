@@ -16,22 +16,25 @@
                             @csrf
                             @foreach ($companies as $company)
                             <h2 class="text-2xl font-bold mb-6">{{ __('messages.company') . ": " . $company->name }}</h2>
-                
+
                             <input type="hidden" name="game_id" value="{{ $game->id }}">
                             <li class="ml-10">
                                 {{ __('messages.decisionMaker') . ": " }}
                                 @foreach ($decision_makers as $decision_maker)
                                 @if ($decision_maker->company_id == $company->id)
                                 {{ $decision_maker->name }}
+                                @if (!empty($decision_maker->name))
+                                <input type="hidden" name="done[]" value="1">
+                                @endif
                                 @endif
                                 @endforeach
                             </li>
                             @if ($game->current_period_number == $period)
-                            <input type="checkbox" name="{{'approve' . $company->id}}" id="{{'approve' . $company->id}}" required class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded checked:bg-green-500">
+                            <input type="checkbox" name="approve[]" required class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded checked:bg-green-500">
                             @endif
                             <br>
                             @endforeach
-                            
+
                             @if ($game->current_period_number == $period)
                             <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
                                 {{ __('messages.continue') }}
@@ -48,6 +51,9 @@
                             </ul>
                         </div>
                         @endif
+                        <!--table>
+                            Maybe a table to change period and game from view
+                        </table-->
                     </div>
                 </div>
             </div>

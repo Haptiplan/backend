@@ -42,7 +42,7 @@ Route::middleware(['localization', 'auth'])->group(function () {
 });
 
 /**Impersonating routes **/
-Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])->group(function(){
+Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])->group(function () {
     Route::get('/users/impersonate', [UserController::class, 'impersonate'])->name('impersonate.view');
     Route::post('/users/impersonate/start', [UserController::class, 'startImpersonate'])->name('impersonate.start');
     Route::get('/users/stop', [UserController::class, 'stopImpersonate'])->name('impersonate.stop');
@@ -53,11 +53,11 @@ Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])-
 Route::middleware(['localization', 'auth', 'verified', 'impersonate'])->get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard');
 
 /**Admin routes **/
-Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(function(){
+Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin_dashboard_show');
 });
 
-Route::middleware(['localization', 'verified','check_role:' . $admin])->group(function(){
+Route::middleware(['localization', 'verified', 'check_role:' . $admin])->group(function () {
     Route::get('/create_user', [UserController::class, 'create'])->name('user.create');
     Route::post('/create_user', [UserController::class, 'store'])->name('user.store');
     Route::get('create_user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
@@ -66,11 +66,11 @@ Route::middleware(['localization', 'verified','check_role:' . $admin])->group(fu
 });
 
 /**Gamemaster routes **/
-Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->group(function(){
+Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
 
-Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
+Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function () {
     /** Games **/
     Route::get('/create_game', [GameController::class, 'index'])->name('game.index');
     Route::post('/create_game', [GameController::class, 'store'])->name('game.store');
@@ -95,12 +95,13 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $g
     Route::put('create_player/{id}', [PlayerController::class, 'update'])->name('player.update');
     Route::delete('/create_player/{id}', [PlayerController::class, 'destroy'])->name('player.delete');
     /** Decisions **/
-    Route::get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decision.check');
+    Route::middleware('check_period')
+        ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decision.check');
 });
 
 //** Player routes **/
 
-Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function(){
+Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function () {
     //** Decisions **/
     Route::get('/decision', [DecisionController::class, 'index'])->name('decision.index');
     Route::get('/create_decision', [DecisionController::class, 'create'])->name('decision.create');
@@ -110,4 +111,4 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $u
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

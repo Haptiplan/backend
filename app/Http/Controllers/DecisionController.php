@@ -33,7 +33,7 @@ class DecisionController extends Controller
         $player_ids = Player::where('company_id', $company->id)->pluck('id')->toArray();
         $decisions = Decision::whereIn('player_id', $player_ids)->get();
 
-        if (($decisions->max('period') < $game->current_period_number) || $decisions->isEmpty()){
+        if (($decisions->max('period') < $game->current_period_number) || $decisions->isEmpty()) {
             return redirect()->route('decision.create');
         }
 
@@ -59,7 +59,7 @@ class DecisionController extends Controller
         $player_ids = Player::where('company_id', $company->id)->pluck('id')->toArray();
         $decisions = Decision::whereIn('player_id', $player_ids)->orderByDesc('id')->get();
 
-        if ($decisions->isNotEmpty() && ($decisions->max('period') >= $game->current_period_number)){
+        if ($decisions->isNotEmpty() && ($decisions->max('period') >= $game->current_period_number)) {
             return redirect()->route('decision.index');
         }
 
@@ -85,7 +85,7 @@ class DecisionController extends Controller
             'player_id' => $validated['player_id'],
             'period' => $validated['period'],
         ]);
-        
+
         return redirect()->back();
     }
 
@@ -108,14 +108,22 @@ class DecisionController extends Controller
      */
     public function check($id, $period)
     {
-        $game = game::find($id);
+        $all_games = Game::hasGamemasters()->get();
+        $all_companies = Company::where('game_id', $all_games->pluck('id')->toArray())->get();
+        $game = Game::find($id);
         $companies = Company::where('game_id', $id)->get();
         $players = Player::whereIn('company_id', $companies->pluck('id')->toArray())->get();
 
-        $decisions = Decision::whereIn('player_id', $players->pluck('id')->toArray())->where('period', $period)->get();
-        $decision_makers = User::select('users.*', 'players.company_id')->join('players', 'users.id', '=', 'players.id')->whereIn('users.id', $decisions->pluck('player_id')->toArray())->get();
+        $decisions = Decision::whereIn('player_id', $players->pluck('id')->toArray())
+            ->where('period', $period)->get();
+        $decision_makers = User::select('users.*', 'players.company_id')
+            ->join('players', 'users.id', '=', 'players.id')
+            ->whereIn('users.id', $decisions->pluck('player_id')->toArray())
+            ->get();
 
         return view('decisions.check', [
+            'all_games' => $all_games,
+            'all_companies' => $all_companies,
             'period' => $period,
             'game' => $game,
             'companies' => $companies,

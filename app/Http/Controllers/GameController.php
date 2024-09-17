@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Game;
 use App\Models\Gamemaster;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
+use function PHPUnit\Framework\isEmpty;
 
 class GameController extends Controller
 {
@@ -124,12 +126,23 @@ class GameController extends Controller
      */
     public function continue(Request $request)
     {
-        dd($request);
         $validated = $request->validate([
             'game_id' => 'required|exists:games,id',
         ]);
+
+        if (!$request->has('done')) {
+            return redirect()->back()->withErrors(['error' => __('validation.custom.no_decision')]);
+        }
+
+        $finished = array_sum($request['done']);
         $game = Game::find($validated['game_id']);
-        if($game->current_period_number <= $game->max_period_number){
+        $companies = Company::where('game_id', $game->id)->count();
+
+        if ($finished < $companies) {
+            return redirect()->back()->withErrors(['error' => __('validation.custom.no_decision')]);
+        }
+
+        if ($game->current_period_number <= $game->max_period_number) {
             $game->increment('current_period_number');
         }
         return redirect()->route('decision.check', [$game->id, $game->current_period_number]);
