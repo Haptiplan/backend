@@ -146,5 +146,13 @@ class GameController extends Controller
             $game->increment('current_period_number');
         }
         return redirect()->route('decision.check', [$game->id, $game->current_period_number]);
+    }  
+    public function changeStatus(string $id)
+    {
+        $game = Game::findOrFail($id);
+        $game = DB::table('games')->where('id', $id)->first();
+        $newStatus = $game->active == 1 ? 0 : 1;
+        DB::table('games')->where('id', $id)->update(['active' => $newStatus]);
+        return redirect()->route('game.index');
     }
 }

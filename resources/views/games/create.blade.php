@@ -66,6 +66,14 @@
                                     {{ __('messages.delete') }}
                                 </button>
                             </form>
+                            <form action="{{ route('game.status', $game->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('POST')
+                                <button type="submit"
+                                    class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
+                                    {{ __('messages.deactivateGame') }}
+                                </button>
+                            </form>
                         </li>
                         @endif
                         @endforeach
@@ -89,6 +97,14 @@
                                 <button type="submit"
                                     class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
                                     {{ __('messages.delete') }}
+                                </button>
+                            </form>
+                            <form action="{{ route('game.status', $game->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('POST')
+                                <button type="submit"
+                                    class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
+                                    {{ __('messages.activateGame') }}
                                 </button>
                             </form>
                         </li>

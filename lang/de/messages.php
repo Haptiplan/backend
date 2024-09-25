@@ -9,7 +9,7 @@ return [
     | The following language lines are used for individual messages in the views.
     |
     */
-
+    'activateGame' =>'Aktiviere Spiel',
     'admin' => 'Admin',
     'adminDashboard' => 'Dies ist das Dashboard des Admins!',
     'activeGames' => 'Aktive Spiele',
@@ -18,7 +18,7 @@ return [
     'chooseGame' => 'Wähle ein Spiel aus',
     'chooseGameGamemaster' => 'Wähle ein Spiel für den Spielleiter aus',
     'chooseGamemaster' => 'Wähle einen Spielleiter aus',
-    'choosePeriodLength' => 'Wähle eine Periodnlänge aus',
+    'choosePeriodLength' => 'Wähle eine Periodenlänge aus',
     'chooseRole' => 'Wähle eine Benutzerrolle aus',
     'chooseUser' => 'Wähle einen Nutzer aus',
     'company' => 'Unternehmen',
@@ -28,6 +28,7 @@ return [
     'confirm' => 'Bestätigen',
     'continue' => 'Nächste Periode',
     'create' => 'Erstellen',
+    'deactivateGame' => 'Spiel deaktivieren',
     'decision' => 'Entscheidung|Entscheidungen',
     'decisionApprove' => "Nachdem die Entscheindung abgegeben wurde, kann sie nicht zurückgenommen oder gelöscht werden. Stelle bitte sicher, dass deine Gruppenmitglieder einverstanden sind, bevor sie abgegeben wird. Bestätige dies hier.",
     'decisionMake' => 'Entscheidung treffen',

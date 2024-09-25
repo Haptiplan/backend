@@ -78,6 +78,7 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $g
     Route::put('create_game/{id}', [GameController::class, 'update'])->name('game.update');
     Route::delete('/create_game/{id}', [GameController::class, 'destroy'])->name('game.delete');
     Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
+    Route::post('/change_status/{id}', [GameController::class, 'changeStatus'])->name('game.status');
     /** Gamemaster **/
     Route::post('/create_gamemaster', [GamemasterController::class, 'store'])->name('gamemaster.store');
     Route::delete('/create_gamemaster/{id}/{game_id}', [GamemasterController::class, 'destroy'])->name('gamemaster.delete');

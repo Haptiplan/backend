@@ -9,7 +9,7 @@ return [
     | The following language lines are used for individual messages in the views.
     |
     */
-
+    'activateGame' =>'Activate Game',
     'admin' => 'Admin',
     'adminDashboard' => 'This is the admin dashboard!',
     'activeGames' => 'Active games',
@@ -28,6 +28,7 @@ return [
     'confirm' => 'Confirm',
     'continue' => 'Next period',
     'create' => 'Create',
+    'deactivateGame' => 'Deactivate game',
     'decision' =>  'Decisions',
     'decisionApprove' => 'Once you commit your decision, it cannot be undone or changed. Please ensure that everyone in your group agrees with the choices for this round before proceeding. Please confirm here.',
     'decisionMake' => 'Make a decision',
