@@ -18,6 +18,7 @@ return [
     'chooseGame' => 'Wähle ein Spiel aus',
     'chooseGameGamemaster' => 'Wähle ein Spiel für den Spielleiter aus',
     'chooseGamemaster' => 'Wähle einen Spielleiter aus',
+    'choosePeriod'=> 'Wähe eine Periode aus',
     'choosePeriodLength' => 'Wähle eine Periodenlänge aus',
     'chooseRole' => 'Wähle eine Benutzerrolle aus',
     'chooseUser' => 'Wähle einen Nutzer aus',

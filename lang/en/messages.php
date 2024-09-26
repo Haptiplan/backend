@@ -18,6 +18,7 @@ return [
     'chooseGame' => 'Choose a game',
     'chooseGameGamemaster' => 'Choose a game for the gamemaster',
     'chooseGamemaster' => 'Choose a gamemaster',
+    'choosePeriod'=> 'Choose a Period',
     'choosePeriodLength' => 'Choose a period length',
     'chooseRole' => 'Choose a user role',
     'chooseUser' => 'Choose a user',
