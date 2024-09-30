@@ -25,8 +25,7 @@ class PlayerController extends Controller
      */
     public function create()
     {
-        $users = DB::table('users')
-            ->where('role', '=', User::ROLE_USER)
+        $users = User::where('role', '=', User::ROLE_USER)
             ->whereNotIn('id', function($query) {
                 $query->select('p.id')->from('players as p');
             })
@@ -99,7 +98,7 @@ class PlayerController extends Controller
         $validated = $request->validate([ 
             'company_id' => 'required|exists:companies,id' 
         ]);
-        $player = Player::find($id);
+        $player = Player::findOrFail($id);
         $player->company_id = $validated['company_id'];
         $player->update();
 

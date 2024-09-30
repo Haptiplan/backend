@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Notifications\Notifiable;
@@ -24,6 +27,17 @@ class User extends Authenticatable
     public function gamemasters(): HasMany
     {
         return $this->hasMany(Gamemaster::class, 'id');
+    }
+
+    public function games(): BelongsToMany|HasOneThrough|Builder
+    {
+        if($this->role == User::ROLE_USER){
+            return $this->hasOneThrough(Game::class, "players");
+        }else if ($this->role == User::ROLE_GAMEMASTER){
+            return $this->belongsToMany(Game::class,"gamemasters","id");
+        }else{
+            return Game::query();
+        }
     }
 
     /**
