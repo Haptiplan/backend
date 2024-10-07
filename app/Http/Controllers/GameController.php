@@ -54,7 +54,7 @@ class GameController extends Controller
             'game_id' => $game->id,
         ]);
 
-        return redirect()->route('games.index')->with('success', 'Spiel erfolgreich erstellt!');
+        return redirect()->back()->with('success', 'Spiel erfolgreich erstellt!');
     }
 
     /**
@@ -102,7 +102,7 @@ class GameController extends Controller
         $game->save();
         $game->update();
 
-        return redirect()->route('games.index');
+        return redirect()->back();
     }
 
     /**

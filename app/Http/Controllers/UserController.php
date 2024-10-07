@@ -56,7 +56,7 @@ class UserController extends Controller
             'password' => bcrypt($validated['password']),
         ]);
 
-        return redirect()->route('users.index');
+        return redirect()->back();
     }
 
     /**
@@ -114,7 +114,7 @@ class UserController extends Controller
             }        }
         $user->save();
 
-        return redirect()->route('users.edit', $user->id);
+        return redirect()->back();
     }
 
     /**
