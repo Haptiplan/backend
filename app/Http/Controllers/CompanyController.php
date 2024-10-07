@@ -16,7 +16,10 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $games = Game::hasGamemasters()->get();
+        $game_ids = $games->pluck('id')->toArray();
+        $companies = Company::whereIn('game_id', $game_ids)->get();
+        return view('companies.index', ['companies' => $companies, 'games' => $games]);
     }
 
     /**
@@ -25,9 +28,7 @@ class CompanyController extends Controller
     public function create()
     {
         $games = Game::hasGamemasters()->get();
-        $game_ids = $games->pluck('id')->toArray();
-        $companies = Company::whereIn('game_id', $game_ids)->get();
-        return view('companies.create', ['companies' => $companies, 'games' => $games]);
+        return view('companies.create', ['games' => $games]);
     }
 
     /**

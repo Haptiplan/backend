@@ -42,10 +42,10 @@ $user = User::ROLE_USER;
                     <x-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
                         {{ __('messages.navGame') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('companies.create')" :active="request()->routeIs('companies.create')">
+                    <x-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.index')">
                         {{ __('messages.navCompany')}}
                     </x-nav-link>
-                    <x-nav-link :href="route('players.create')" :active="request()->routeIs('players.create')">
+                    <x-nav-link :href="route('players.index')" :active="request()->routeIs('players.index')">
                         {{ __('messages.navPlayer')}}
                     </x-nav-link>
                     @endif

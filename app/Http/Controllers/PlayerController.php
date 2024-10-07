@@ -17,7 +17,20 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        //
+        $user_list = User::all();
+        $games = Game::hasGamemasters()->get();
+
+        $game_ids = $games->pluck('id')->toArray();
+        $companies = Company::whereIn('game_id', $game_ids)->get();
+
+        $company_ids = $companies->pluck('id')->toArray();
+        $players = Player::whereIn('company_id', $company_ids)->get();
+        return view('players.index', [
+            'user_list' => $user_list,
+            'companies' => $companies, 
+            'players' => $players, 
+            'games' => $games,
+        ]);
     }
 
     /**
@@ -30,21 +43,15 @@ class PlayerController extends Controller
             ->whereNotIn('id', function($query) {
                 $query->select('p.id')->from('players as p');
             })
-            ->get();
-        $user_list = User::all();
+        ->get();
         $games = Game::hasGamemasters()->get();
-
         $game_ids = $games->pluck('id')->toArray();
         $companies = Company::whereIn('game_id', $game_ids)->get();
 
-        $company_ids = $companies->pluck('id')->toArray();
-        $players = Player::whereIn('company_id', $company_ids)->get();
         return view('players.create', [
-            'users' => $users, 
-            'user_list' => $user_list,
-            'companies' => $companies, 
-            'players' => $players, 
+            'users' => $users,
             'games' => $games,
+            'companies' => $companies,
         ]);
     }
 

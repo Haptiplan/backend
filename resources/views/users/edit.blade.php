@@ -49,6 +49,9 @@
                                 {{ __('messages.submit') }}
                             </button>
                     </form> 
+                    <a href="{{ route('users.index') }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
+                        {{ __('messages.back') }}
+                    </a>
                     @if ($user->role == User::ROLE_GAMEMASTER)
                     <label for="game" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
                         {{ __('messages.listGames') }}:
@@ -64,6 +67,7 @@
                     @endforeach
                     @endif
                     </div>
+                    
                 </div>
             </div>
         </div>
