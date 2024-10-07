@@ -51,7 +51,7 @@ class GameController extends Controller
             'game_id' => $game->id,
         ]);
 
-        return redirect()->route('game.index')->with('success', 'Spiel erfolgreich erstellt!');
+        return redirect()->route('games.index')->with('success', 'Spiel erfolgreich erstellt!');
     }
 
     /**
@@ -99,7 +99,7 @@ class GameController extends Controller
         $game->save();
         $game->update();
 
-        return redirect()->route('game.index');
+        return redirect()->route('games.index');
     }
 
     /**
@@ -110,6 +110,6 @@ class GameController extends Controller
         $game = Game::findOrFail($id);
         $game->delete();
 
-        return redirect()->route('game.index');
+        return redirect()->route('games.index');
     }
 }

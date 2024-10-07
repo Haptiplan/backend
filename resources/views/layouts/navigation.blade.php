@@ -30,7 +30,7 @@ $user = User::ROLE_USER;
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('user.create')" :active="request()->routeIs('user.create')">
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                         {{ __('messages.navUser') }}
                     </x-nav-link>
                     @endif
@@ -39,13 +39,13 @@ $user = User::ROLE_USER;
                     <x-nav-link :href="route('gamemaster_dashboard_show')" :active="request()->routeIs('gamemaster_dashboard_show')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('game.index')" :active="request()->routeIs('game.index')">
+                    <x-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
                         {{ __('messages.navGame') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('company.create')" :active="request()->routeIs('company.create')">
+                    <x-nav-link :href="route('companies.create')" :active="request()->routeIs('companies.create')">
                         {{ __('messages.navCompany')}}
                     </x-nav-link>
-                    <x-nav-link :href="route('player.create')" :active="request()->routeIs('player.create')">
+                    <x-nav-link :href="route('players.create')" :active="request()->routeIs('players.create')">
                         {{ __('messages.navPlayer')}}
                     </x-nav-link>
                     @endif

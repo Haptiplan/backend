@@ -25,12 +25,12 @@ class GamemasterController extends Controller
                 'game_id' => $validated['game_id'],
             ]);
         }
-        return redirect(route('game.edit', [$validated['game_id']]));
+        return redirect(route('games.edit', [$validated['game_id']]));
     }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id, $game_id)
+    public function destroyOne($id, $game_id)
     {
         Gamemaster::where('id', $id)->where('game_id', $game_id)->delete();
         return redirect()->back();
@@ -38,7 +38,7 @@ class GamemasterController extends Controller
     /**
      * Remove the specified resources from storage.
      */
-    public function destroyAll($id)
+    public function destroy($id)
     {
         Gamemaster::where('id', $id)->delete();
         return redirect()->back();

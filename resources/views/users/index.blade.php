@@ -11,7 +11,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h1 class="text-2xl font-bold mb-6">{{ __('messages.userCreate') }}</h1>
-                    <form class="space-y-4" action="{{ route('user.store') }}" method="POST">
+                    <form class="space-y-4" action="{{ route('users.store') }}" method="POST">
                         @csrf
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -50,10 +50,10 @@
                         @foreach ($admins as $admin)
                         <li class="ml-10">
                             {{$admin->name}}
-                            <a href="{{ route('user.edit', $admin->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
+                            <a href="{{ route('users.edit', $admin->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
                                 {{ __('messages.edit') }}
                             </a>
-                            <form action="{{ route('user.delete', $admin->id) }}" method="POST" class="inline">
+                            <form action="{{ route('users.destroy', $admin->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
@@ -66,10 +66,10 @@
                         @foreach ($gamemasters as $gamemaster)
                         <li class="ml-10">
                             {{$gamemaster->name}}
-                            <a href="{{ route('user.edit', $gamemaster->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
+                            <a href="{{ route('users.edit', $gamemaster->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
                                 {{ __('messages.edit') }}
                             </a>
-                            <form action="{{ route('user.delete', $gamemaster->id) }}" method="POST" class="inline">
+                            <form action="{{ route('users.destroy', $gamemaster->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
@@ -82,10 +82,10 @@
                         @foreach ($players as $player)
                         <li class="ml-10">
                             {{$player->name}}
-                            <a href="{{ route('user.edit', $player->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
+                            <a href="{{ route('users.edit', $player->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
                                 {{ __('messages.edit') }}
                             </a>
-                            <form action="{{ route('user.delete', $player->id) }}" method="POST" class="inline">
+                            <form action="{{ route('users.destroy', $player->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">

@@ -64,7 +64,7 @@ class CompanyController extends Controller
             'game_id' => $company_fk,
         ]);
     
-        return redirect()->route('company.create');
+        return redirect()->route('companies.create');
     }
 
     /**
@@ -118,7 +118,7 @@ class CompanyController extends Controller
         $company->game_id = $validated['game_id'];
         $company->save();
 
-        return redirect()->route('company.create');
+        return redirect()->route('companies.create');
     }
 
 
@@ -130,6 +130,6 @@ class CompanyController extends Controller
     {
         Company::where('id', $id)->firstOrFail()->delete();
     
-        return redirect()->route('company.create');
+        return redirect()->route('companies.create');
     }
 }

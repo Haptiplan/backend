@@ -10,7 +10,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h1 class="text-2xl font-bold mb-6">{{ __('messages.gameEdit') }}</h1>
-                    <form class="space-y-4" action="{{ route('game.update', $game->id) }}" method="POST">
+                    <form class="space-y-4" action="{{ route('games.update', $game->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div>
@@ -26,7 +26,7 @@
                         </div>
                     </form>
                     <h1 class="text-2xl font-bold mb-6">{{ __('messages.gamemasterAdd') }}</h1>
-                    <form class="space-y-4" action="{{ route('gamemaster.store') }}" method="POST">
+                    <form class="space-y-4" action="{{ route('gamemasters.store') }}" method="POST">
                         @csrf
                         <input type="hidden" name="game_id" value="{{ $game->id }}">
                         <div>
@@ -50,7 +50,7 @@
                         @foreach($list_gamemasters as $gamemaster)
                         <li>
                             {{$gamemaster->name}}
-                            <form action="{{ route('gamemaster.delete', [$gamemaster->id, $game_id]) }}" method="POST" class="inline">
+                            <form action="{{ route('gamemasters.deleteOne', [$gamemaster->id, $game_id]) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">

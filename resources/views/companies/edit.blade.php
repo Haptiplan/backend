@@ -19,7 +19,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form class="space-y-4" action="{{ route('company.update', $company->id) }}" method="POST">
+                    <form class="space-y-4" action="{{ route('companies.update', $company->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div>

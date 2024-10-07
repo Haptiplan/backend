@@ -63,7 +63,7 @@ class PlayerController extends Controller
             'company_id' => $validated['company_id'],
         ]);
     
-        return redirect()->route('player.create');
+        return redirect()->route('players.create');
     }
 
     /**
@@ -103,7 +103,7 @@ class PlayerController extends Controller
         $player->company_id = $validated['company_id'];
         $player->update();
 
-        return redirect()->route('player.create');
+        return redirect()->route('players.create');
     }
 
     /**
@@ -114,6 +114,6 @@ class PlayerController extends Controller
         $player = Player::where('id', $id)->firstOrFail();
         $player->delete();
 
-        return redirect()->route('player.create');
+        return redirect()->route('players.create');
     }
 }

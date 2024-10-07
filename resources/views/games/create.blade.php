@@ -19,7 +19,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form class="space-y-4" action="{{ route('game.store') }}" method="POST">
+                    <form class="space-y-4" action="{{ route('games.store') }}" method="POST">
                             @csrf
                         <div>
                             <label for="game_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -37,10 +37,10 @@
                         @foreach($games as $game)
                         <li>
                             {{$game->name}}
-                            <a href="{{ route('game.edit', $game->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
+                            <a href="{{ route('games.edit', $game->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
                                 {{ __('messages.edit') }}
                             </a>
-                            <form action="{{ route('game.delete', $game->id) }}" method="POST" class="inline">
+                            <form action="{{ route('games.destroy', $game->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
