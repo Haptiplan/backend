@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('gamemasters', function (Blueprint $table) {
-            $table->foreignId('id')->constrained('users')->onDelete('cascade');  
+            $table->integer('id')->primary();
             $table->foreignId('game_id')->constrained('games')->onDelete('cascade');
             $table->timestamps();
         });

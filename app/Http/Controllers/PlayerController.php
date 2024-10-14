@@ -61,7 +61,7 @@ class PlayerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id' => 'required|unique:players,id',
+            'id' => 'required|exists:players|unique:players,id',
             'company_id' => 'required',
         ]);
     
