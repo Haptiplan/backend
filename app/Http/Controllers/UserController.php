@@ -165,7 +165,7 @@ class UserController extends Controller
             return redirect()->route('dashboard');
         } elseif ($validated['role'] == User::ROLE_GAMEMASTER && $active_user->role == User::ROLE_ADMIN) {
             $gamemaster = Gamemaster::where('game_id', $validated['game'])->firstOrFail();
-            $user = User::where('id', $gamemaster->id)->firstOrFail();
+            $user = User::where('id', $gamemaster->user_id)->firstOrFail();
             $active_user->setImpersonating($user->id);
             return redirect()->route('dashboard');
         }

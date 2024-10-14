@@ -19,9 +19,9 @@ class GamemasterController extends Controller
             'gamemaster' => 'required|exists:users,id',
             'game_id' => 'required|exists:games,id',
         ]);
-        if (!(DB::table('gamemasters')->where('id', $validated['gamemaster'])->where('game_id', $validated['game_id'])->exists())){
+        if (!(DB::table('gamemasters')->where('user_id', $validated['gamemaster'])->where('game_id', $validated['game_id'])->exists())){
             DB::table('gamemasters')->insert([
-                'id' => $validated['gamemaster'],
+                'user_id' => $validated['gamemaster'],
                 'game_id' => $validated['game_id'],
             ]);
         }
@@ -32,7 +32,7 @@ class GamemasterController extends Controller
      */
     public function destroyOne($id, $game_id)
     {
-        Gamemaster::where('id', $id)->where('game_id', $game_id)->delete();
+        Gamemaster::where('user_id', $id)->where('game_id', $game_id)->delete();
         return redirect()->back();
     }
     /**
@@ -40,7 +40,7 @@ class GamemasterController extends Controller
      */
     public function destroy($id)
     {
-        Gamemaster::where('id', $id)->delete();
+        Gamemaster::where('user_id', $id)->delete();
         return redirect()->back();
     }
 }

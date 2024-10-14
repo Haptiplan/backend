@@ -50,7 +50,7 @@ class GameController extends Controller
         }
 
         DB::table('gamemasters')->insert([
-            'id' => $id,
+            'user_id' => $id,
             'game_id' => $game->id,
         ]);
 
@@ -75,7 +75,7 @@ class GameController extends Controller
             $id =  Session::get('impersonate');
         }
         $game = Game::hasGamemasters()->findOrFail($game_id);
-        $gm_in_game = Gamemaster::where('game_id', $game_id)->pluck('id')->toArray();
+        $gm_in_game = Gamemaster::where('game_id', $game_id)->pluck('user_id')->toArray();
         $gamemasters = User::where('role', User::ROLE_GAMEMASTER)->whereNot('id', $id)->whereNotIn('id', $gm_in_game)->get();
         $list = Gamemaster::where('game_id', $game_id)->whereNot('id', $id)->pluck('id')->toArray();
         $list_gamemasters = User::whereIn('id', $list)->get();

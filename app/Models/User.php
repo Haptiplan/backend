@@ -23,7 +23,7 @@ class User extends Authenticatable
     }
     public function gamemaster(): HasMany
     {
-        return $this->hasMany(Gamemaster::class, 'id');
+        return $this->hasMany(Gamemaster::class, 'user_id');
     }
 
     /**
