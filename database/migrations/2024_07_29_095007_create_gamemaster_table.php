@@ -15,6 +15,7 @@ return new class extends Migration
             $table->integer('id')->primary();
             $table->foreignId('game_id')->constrained('games')->onDelete('cascade');
             $table->timestamps();
+            $table->unique(['id', 'game_id']);
         });
     }
 
