@@ -4,6 +4,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GamemasterController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
@@ -20,13 +21,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('lang/{locale}', function ($locale) {
-    if (in_array($locale, ['en', 'de'])) {
-        App::setLocale($locale);
-        Session::put('locale', $locale);
-    }
-    return redirect()->back();
-})->name('lang');
+Route::get('lang/{locale}', [LanguageController::class, 'changeLanguage'])->name('lang');
 
 /*
 Route::get('/dashboard', function () {
