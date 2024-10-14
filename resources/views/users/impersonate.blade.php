@@ -27,9 +27,9 @@ use App\Models\User; ?>
                             <input name="role" id="role" required hidden value="{{ User::ROLE_GAMEMASTER }}"></input>
                         </div>
                         <div>
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
+                            <x-submit-button>
                                 {{ __('messages.impersonateGM') }}
-                            </button>
+                            </x-submit-button>
                         </div>
                     </form>
                     @endif
@@ -50,9 +50,9 @@ use App\Models\User; ?>
                             <input name="role" id="role" required hidden value="{{ User::ROLE_USER }}"></input>
                         </div>
                         <div>
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
+                            <x-submit-button>
                                 {{ __('messages.impersonatePlayer') }}
-                            </button>
+                            </x-submit-button>
                         </div>
                     </form>
                 </div>

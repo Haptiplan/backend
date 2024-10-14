@@ -19,9 +19,7 @@
                         </ul>
                     </div>
                     @endif
-                    <a href="{{ route('players.create') }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                        {{ __('messages.playerCreate') }}
-                    </a>
+                    <x-create-button href="{{ route('players.create') }}">{{ __('messages.playerCreate') }}</x-create-button>
                     <div>
                         @foreach ($games as $game)
                         <label class="font-bold mb-6 mt-6"><u>{{ $game->name }}:</u> </label>
@@ -36,15 +34,11 @@
                         @if ($player->id == $user->id && $player->company_id == $company->id)
                         <li class="mb-6 ml-20">
                             {{$user->name}}
-                            <a href="{{ route('players.edit', $user->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                {{ __('messages.edit') }}
-                            </a>
+                            <x-edit-button href="{{ route('players.edit', $user->id) }}"></x-edit-button>
                             <form action="{{ route('players.destroy', $user->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                    {{ __('messages.delete') }}
-                                </button>
+                                <x-delete-button></x-delete-button>
                             </form>
                         </li>
                         @endif

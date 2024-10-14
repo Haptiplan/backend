@@ -20,9 +20,7 @@
                             <input type="text" name="game_name" id="game_name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200" value={{ $game->name }}></input>
                         </div>
                         <div>
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                {{ __('messages.submit') }}
-                            </button>
+                            <x-submit-button>{{ __('messages.submit') }}</x-submit-button>
                         </div>
                     </form>
                     <h1 class="text-2xl font-bold mb-6">{{ __('messages.gamemasterAdd') }}</h1>
@@ -39,9 +37,7 @@
                             @endforeach
                         </div>
                         <div>
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                {{ __('messages.submit') }}
-                            </button>
+                            <x-submit-button>{{ __('messages.submit') }}</x-submit-button>
                         </div>
                     </form>
                     <div>
@@ -57,9 +53,7 @@
                             </form>
                         </li>
                         @endforeach
-                        <a href="{{ route('games.index') }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                            {{ __('messages.back') }}
-                        </a>
+                        <x-back-button href="{{ route('games.index') }}"></x-back-button>
                     </div>
                 </div>
             </div>
