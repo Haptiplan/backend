@@ -8,6 +8,7 @@ use App\Models\Player;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PlayerController extends Controller
@@ -60,8 +61,13 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
+        $company = Company::find($request->input('company_id'));
+    
+        if ($request->user()->cannot('store', $company)) {
+            abort(403, 'User ID: ' . Auth::user()->id . ', Gamemaster IDs: ' . $company->game->gamemasters->pluck('user_id'));
+        }
         $validated = $request->validate([
-            'id' => 'required|exists:players|unique:players,id',
+            'id' => 'required|exists:users|unique:players,id',
             'company_id' => 'required',
         ]);
     
