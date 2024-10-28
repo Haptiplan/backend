@@ -9,25 +9,20 @@ $user = User::ROLE_USER;
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
-                </div>
+
 
                 <!-- Navigation Links -->
-
-
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @if(Auth::check() && Auth::user()->role == $user)
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+                    <div class="shrink-0 flex items-center">
+                        <a href="{{ route('dashboard') }}">
+                            <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        </a>
+                    </div>
                     @endif
                     @if(Auth::check() && Auth::user()->role == $admin)
                     <x-nav-link :href="route('admin_dashboard_show')" :active="request()->routeIs('admin_dashboard_show')">
-                        {{ __('Dashboard') }}
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </x-nav-link>
 
                     <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
@@ -37,7 +32,7 @@ $user = User::ROLE_USER;
 
                     @if(Auth::check() && Auth::user()->role == $gamemaster)
                     <x-nav-link :href="route('gamemaster_dashboard_show')" :active="request()->routeIs('gamemaster_dashboard_show')">
-                        {{ __('Dashboard') }}
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </x-nav-link>
                     <x-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
                         {{ __('messages.navGame') }}

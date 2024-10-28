@@ -12,6 +12,7 @@ return [
 
     'admin' => 'Admin',
     'adminDashboard' => 'Dies ist das Dashboard des Admins!',
+    'activeGames' => 'Aktive Spiele',
     'back' => 'Zurück',
     'cancel' => 'Abbrechen',
     'chooseCompany' => 'Wähle ein Unternehmen aus!',
@@ -49,6 +50,7 @@ return [
     'impersonateGM' => 'Spielleiter imitieren',
     'impersonatePlayer' => 'Spieler imitieren',
     'impersonateStop' => 'Imitieren beenden',
+    'inactiveGames' => 'Inaktive Spiele',
     'listGamemasters' => 'Spielleiter',
     'listGames' => 'Spiele',
     'listMachines' => 'Maschinen',
