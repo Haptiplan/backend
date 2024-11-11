@@ -7,11 +7,15 @@ use App\Models\Game;
 use App\Models\Player;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Policies\PlayerPolicy;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PlayerController extends Controller
 {
+
+    //use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -23,8 +27,13 @@ class PlayerController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+
+        $company = Company::findOrFail($request->input('company_id'));
+
+        //$this->authorize('store', $company);
+
         $users = DB::table('users')
             ->where('role', '=', User::ROLE_USER)
             ->whereNotIn('id', function($query) {
