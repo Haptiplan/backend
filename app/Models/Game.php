@@ -19,9 +19,9 @@ class Game extends Model
         return $this->hasMany(Company::class);
     }
 
-    public function gamemasters(): HasOne
+    public function gamemasters(): HasMany
     {
-        return $this->hasOne(Gamemaster::class);
+        return $this->hasMany(Gamemaster::class);
     }
 
     public static function hasGamemasters()

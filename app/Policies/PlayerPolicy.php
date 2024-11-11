@@ -5,21 +5,21 @@ namespace App\Policies;
 use App\Models\Company;
 use App\Models\Player;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Session;
 
 class PlayerPolicy
 {
-    public function store(User $user, Company $company): bool
+    public function store(User $user, Company $company): Response
     {
-        // ToDo: even if user->id is in array user_ids, I get 403 page.
-
-        if (Session::has('impersonate'))
-        {
+        if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
-        $user_ids = $company->game->gamemasters->pluck('user_id');
+        $user_ids = $company->game->gamemasters->pluck('user_id')->toArray();
 
-        return $user_ids->contains($user->id);
+        return in_array($user->id, $user_ids)
+            ? Response::allow()
+            : Response::deny();
     }
     public function update(User $user, Player $player)
     {
