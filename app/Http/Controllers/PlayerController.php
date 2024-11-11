@@ -8,7 +8,9 @@ use App\Models\Player;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class PlayerController extends Controller
 {
@@ -17,7 +19,20 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        //
+        $user_list = User::all();
+        $games = Game::hasGamemasters()->get();
+
+        $game_ids = $games->pluck('id')->toArray();
+        $companies = Company::whereIn('game_id', $game_ids)->get();
+
+        $company_ids = $companies->pluck('id')->toArray();
+        $players = Player::whereIn('company_id', $company_ids)->get();
+        return view('players.index', [
+            'user_list' => $user_list,
+            'companies' => $companies, 
+            'players' => $players, 
+            'games' => $games,
+        ]);
     }
 
     /**
@@ -30,21 +45,15 @@ class PlayerController extends Controller
             ->whereNotIn('id', function($query) {
                 $query->select('p.id')->from('players as p');
             })
-            ->get();
-        $user_list = User::all();
+        ->get();
         $games = Game::hasGamemasters()->get();
-
         $game_ids = $games->pluck('id')->toArray();
         $companies = Company::whereIn('game_id', $game_ids)->get();
 
-        $company_ids = $companies->pluck('id')->toArray();
-        $players = Player::whereIn('company_id', $company_ids)->get();
         return view('players.create', [
-            'users' => $users, 
-            'user_list' => $user_list,
-            'companies' => $companies, 
-            'players' => $players, 
+            'users' => $users,
             'games' => $games,
+            'companies' => $companies,
         ]);
     }
 
@@ -53,8 +62,10 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
+        $company = Company::find($request->input('company_id'));
+    
         $validated = $request->validate([
-            'id' => 'required|unique:players,id',
+            'id' => 'required|exists:users|unique:players,id',
             'company_id' => 'required',
         ]);
     
@@ -63,7 +74,7 @@ class PlayerController extends Controller
             'company_id' => $validated['company_id'],
         ]);
     
-        return redirect()->route('player.create');
+        return redirect()->back();
     }
 
     /**
@@ -103,7 +114,7 @@ class PlayerController extends Controller
         $player->company_id = $validated['company_id'];
         $player->update();
 
-        return redirect()->route('player.create');
+        return redirect()->back();
     }
 
     /**
@@ -114,6 +125,6 @@ class PlayerController extends Controller
         $player = Player::where('id', $id)->firstOrFail();
         $player->delete();
 
-        return redirect()->route('player.create');
+        return redirect()->route('players.index');
     }
 }

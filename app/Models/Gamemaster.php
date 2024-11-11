@@ -10,11 +10,12 @@ class Gamemaster extends Model
 {
     use HasFactory;
 
-    public function game(): BelongsTo
+    public function game()
     {
-        return $this->belongsTo(Game::class, 'id');
+        return $this->belongsTo(Game::class);
     }
-    public function user(): BelongsTo
+
+    public function user()
     {
         return $this->belongsTo(User::class, 'id', 'id');
     }

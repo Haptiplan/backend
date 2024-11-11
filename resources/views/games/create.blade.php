@@ -20,8 +20,8 @@
                             </ul>
                         </div>
                     @endif
-                    <form class="space-y-4" action="{{ route('game.store') }}" method="POST">
-                        @csrf
+                    <form class="space-y-4" action="{{ route('games.store') }}" method="POST">
+                            @csrf
                         <div>
                             <label for="game_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                 {{ __('messages.gameName') }}
@@ -30,59 +30,11 @@
                                 class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
                         </div>
                         <div>
-                            <button type="submit"
-                                class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                {{ __('messages.create') }}
-                            </button>
+                            <x-submit-button>{{ __('messages.create') }}</x-submit-button>
                         </div>
-                    </form>
-                    <div>
-                        <h4
-                            class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 border-b-2 border-indigo-600 pb-2">
-                            {{ __('messages.activeGames') }}</h4>
-                        @foreach ($games as $game)
-                            @if ($game->active == '1')
-                                <li>
-                                    {{ $game->name }}
-                                    <a href="{{ route('game.edit', $game->id) }}"
-                                        class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                        {{ __('messages.edit') }}
-                                    </a>
-                                    <form action="{{ route('game.delete', $game->id) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                            {{ __('messages.delete') }}
-                                        </button>
-                                    </form>
-                                </li>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div>
-                        <h4
-                            class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 border-b-2 border-indigo-600 pb-2">
-                            {{ __('messages.inactiveGames') }}</h4>
-                        @foreach ($games as $game)
-                            @if ($game->active == '0')
-                                <li>
-                                    {{ $game->name }}
-                                    <a href="{{ route('game.edit', $game->id) }}"
-                                        class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                        {{ __('messages.edit') }}
-                                    </a>
-                                    <form action="{{ route('game.delete', $game->id) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                            {{ __('messages.delete') }}
-                                        </button>
-                                    </form>
-                                </li>
-                            @endif
-                        @endforeach
+                    </form> 
+                    <x-back-button href="{{ route('games.index') }}"></x-back-button>
+
                     </div>
                 </div>
             </div>

@@ -29,7 +29,7 @@ class GamemasterSeeder extends Seeder
             $users = User::all();
         }
         $user = $users->where('role', User::ROLE_GAMEMASTER)->pluck('id')->random();
-        $gamemasterObj->id = $user;
+        $gamemasterObj->user_id = $user;
         $gamemasterObj->game_id = $game;
         $gamemasterObj->save();
     }
