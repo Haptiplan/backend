@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\Game;
 use App\Http\Controllers\Controller;
+use App\Rules\CompanyUsedInGame;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Closure;
@@ -25,8 +26,7 @@ class CompanyController extends Controller
     public function create()
     {
         $games = Game::hasGamemasters()->get();
-        $game_ids = $games->pluck('id')->toArray();
-        $companies = Company::whereIn('game_id', $game_ids)->get();
+        $companies = Company::whereIn('game_id', Game::hasGamemasters()->pluck('id')->toArray())->get();
         return view('companies.create', ['companies' => $companies, 'games' => $games]);
     }
 
@@ -35,35 +35,22 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        $company_name = $request->input('company_name');
-        $game_id = $request->input('game_id');
-
-        $company_exists = Company::where('name', $company_name)
-            ->where('game_id', $game_id)
-            ->exists();
-
+        // Validate the request using the custom rule for `game_id`
         $validated = $request->validate([
             'company_name' => 'required',
             'game_id' => [
                 'required',
-                function (string $attribute, mixed $value, Closure $fail) use ($company_exists) 
-                {
-                    if ($company_exists) 
-                    {
-                        $fail(__('validation.companyUsedInGame'));
-                    }
-                },
+                new CompanyUsedInGame($request->input('company_name'), $request->input('game_id')),
             ],
         ]);
-    
-        $company_name = $validated['company_name'];
-        $company_fk = $validated['game_id'];
-    
-        DB::table('companies')->insert([
-            'name' => $company_name,
-            'game_id' => $company_fk,
+
+        // Insert the new company into the database using Eloquent
+        Company::create([
+            'name' => $validated['company_name'],
+            'game_id' => $validated['game_id'],
         ]);
-    
+
+        // Redirect after insertion
         return redirect()->route('company.create');
     }
 
@@ -82,7 +69,7 @@ class CompanyController extends Controller
     {
         $games = Game::hasGamemasters()->get();
         $game_ids = $games->pluck('id')->toArray();
-        $company = Company::whereIn('game_id', $game_ids)->find($id);
+        $company = Company::whereIn('game_id', $game_ids)->where('id', $id)->first();
 
         return view('companies.edit', ['company' => $company, 'games' => $games]);
     }
@@ -92,36 +79,25 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $company_name = $request->input('company_name');
-        $game_id = $request->input('game_id');
-
-        $game_id_exists = Company::where('name', $company_name)
-            ->where('game_id', $game_id)
-            ->exists();
-
         $validated = $request->validate([
             'company_name' => 'required',
             'game_id' => [
                 'required',
-                function (string $attribute, mixed $value, Closure $fail) use ($game_id_exists) 
-                {
-                    if ($game_id_exists) 
-                    {
-                        $fail(__("validation.companyUsedInGame"));
-                    }
-                },
+                new CompanyUsedInGame($request->input('company_name'), $request->input('game_id'), $id),
             ],
         ]);
 
         $company = Company::find($id);
-        $company->name = $validated['company_name'];
-        $company->game_id = $validated['game_id'];
-        $company->save();
+
+        // Update the company using mass assignment
+        $company->update([
+            'name' => $validated['company_name'],
+            'game_id' => $validated['game_id'],
+        ]);
 
         return redirect()->route('company.create');
+
     }
-
-
 
     /**
      * Remove the specified resource from storage.
@@ -129,7 +105,7 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         Company::where('id', $id)->firstOrFail()->delete();
-    
+
         return redirect()->route('company.create');
     }
 }

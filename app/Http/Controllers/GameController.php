@@ -19,7 +19,7 @@ class GameController extends Controller
      */
     public function index(Game $game)
     {
-        $games = Game::hasGamemasters()->get();
+        $games = Game::hasGamemasters()->with('gamemasters')->get();
         return view('games.create', ['games' => $games]);
     }
 
@@ -33,24 +33,27 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        $game_name = $request->validate([
+        $validated = $request->validate([
             'game_name' => 'required|unique:games,name'
         ]);
-        DB::table('games')->insert(['name' => $game_name['game_name']]);
+        // Insert the game using Eloquent
+        $game = Game::create(['name' => $validated['game_name']]);
 
-        $game = Game::where('name', $game_name['game_name'])->firstOrFail();
+        $game = Game::where('name', $validated['game_name'])->first();
 
-        if (Session::has('impersonate')) {
-            $id = Session::get('impersonate');
-        } else {
-            $id = Auth::user()->id;
+        if (!$game) {
+            return redirect()->route('game.index')->with('error', 'Spiel konnte nicht gefunden werden!');
         }
 
-        DB::table('gamemasters')->insert([
+        $id = Session::get('impersonate', Auth::user()->id);
+
+        // Insert the gamemaster using Eloquent
+        Gamemaster::create([
             'id' => $id,
             'game_id' => $game->id,
         ]);
 
+        // Redirect with success message
         return redirect()->route('game.index')->with('success', 'Spiel erfolgreich erstellt!');
     }
 
@@ -93,13 +96,18 @@ class GameController extends Controller
             'game_name' => 'required|string|max:255',
         ]);
 
-        $game = Game::find($game_id);
+        // Find the game, or throw a 404 if not found
+        $game = Game::findOrFail($game_id);
 
+        // Update the game name
         $game->name = $validated['game_name'];
-        $game->save();
-        $game->update();
 
+        // Save the changes to the database
+        $game->save();
+
+        // Redirect back to the game index page
         return redirect()->route('game.index');
+
     }
 
     /**

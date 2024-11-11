@@ -25,27 +25,33 @@ class PlayerController extends Controller
      */
     public function create()
     {
-        $users = DB::table('users')
-            ->where('role', '=', User::ROLE_USER)
-            ->whereNotIn('id', function($query) {
-                $query->select('p.id')->from('players as p');
-            })
+        // Get users who are not already players
+        $users = User::where('role', User::ROLE_USER)
+            ->whereDoesntHave('players')  // Using Eloquent to avoid subquery
             ->get();
+
         $user_list = User::all();
+
+        // Get games that have gamemasters
         $games = Game::hasGamemasters()->get();
 
+        // Get companies for these games
         $game_ids = $games->pluck('id')->toArray();
         $companies = Company::whereIn('game_id', $game_ids)->get();
 
+        // Get players from the related companies
         $company_ids = $companies->pluck('id')->toArray();
         $players = Player::whereIn('company_id', $company_ids)->get();
+
         return view('players.create', [
-            'users' => $users, 
+            'users' => $users,
             'user_list' => $user_list,
-            'companies' => $companies, 
-            'players' => $players, 
+            'companies' => $companies,
+            'players' => $players,
             'games' => $games,
         ]);
+
+
     }
 
     /**
@@ -53,17 +59,20 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the request data
         $validated = $request->validate([
             'id' => 'required|unique:players,id',
-            'company_id' => 'required',
+            'company_id' => 'required|exists:companies,id', // Ensures the company exists
         ]);
-    
-        DB::table('players')->insert([
+
+        // Create the new player using Eloquent
+        Player::create([
             'id' => $validated['id'],
             'company_id' => $validated['company_id'],
         ]);
-    
-        return redirect()->route('player.create');
+
+        // Redirect with a success message
+        return redirect()->route('player.create')->with('success', 'Player successfully created!');
     }
 
     /**
@@ -79,14 +88,17 @@ class PlayerController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        $player = Player::find($id);
+        // Retrieve the user and player by ID, throw an exception if not found
+        $user = User::findOrFail($id);
+        $player = Player::findOrFail($id);
+
         $companies = Company::all();
         $games = Game::all();
+
         return view('players.edit', [
-            'user' => $user, 
+            'user' => $user,
             'player' => $player,
-            'companies' => $companies, 
+            'companies' => $companies,
             'games' => $games,
         ]);
     }
@@ -96,14 +108,19 @@ class PlayerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([ 
-            'company_id' => 'required|exists:companies,id' 
+        // Validate the company_id
+        $validated = $request->validate([
+            'company_id' => 'required|exists:companies,id'
         ]);
-        $player = Player::find($id);
-        $player->company_id = $validated['company_id'];
-        $player->update();
 
-        return redirect()->route('player.create');
+        // Find the player or fail if not found
+        $player = Player::findOrFail($id);
+
+        // Update the company_id and save the player
+        $player->company_id = $validated['company_id'];
+        $player->save(); // No need to call update(), save() is sufficient
+
+        return redirect()->route('player.create')->with('success', 'Player updated successfully');
     }
 
     /**
@@ -111,9 +128,10 @@ class PlayerController extends Controller
      */
     public function destroy($id)
     {
-        $player = Player::where('id', $id)->firstOrFail();
+        $player = Player::findOrFail($id);
+
         $player->delete();
 
-        return redirect()->route('player.create');
+        return redirect()->route('player.create')->with('success', 'Player deleted successfully');
     }
 }
