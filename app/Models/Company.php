@@ -18,6 +18,6 @@ class Company extends Model
   
     public function game(): BelongsTo
     {
-        return $this->belongsTo(Game::class, 'id');
+        return $this->belongsTo(Game::class, 'game_id');
     }
 }

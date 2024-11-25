@@ -12,10 +12,10 @@ class Gamemaster extends Model
 
     public function game(): BelongsTo
     {
-        return $this->belongsTo(Game::class, 'id');
+        return $this->belongsTo(Game::class, 'game_id');
     }
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'id');
+        return $this->belongsTo(User::class,  'user_id');
     }
 }

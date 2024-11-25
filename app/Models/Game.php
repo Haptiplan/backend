@@ -32,7 +32,7 @@ class Game extends Model
         }
 
         $game = Game::whereHas('gamemasters', function ($query) use ($user) {
-            $query->where('id', $user);
+            $query->where('user_id', $user);
         });
 
         return $game;
