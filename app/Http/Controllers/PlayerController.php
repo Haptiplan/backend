@@ -7,8 +7,8 @@ use App\Models\Game;
 use App\Models\Player;
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Policies\PlayerPolicy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PlayerController extends Controller
@@ -105,8 +105,14 @@ class PlayerController extends Controller
         $validated = $request->validate([
             'company_id' => 'required|exists:companies,id'
         ]);
+
+        $company = Company::find($validated['company_id']);
+        if ($request->user()->cannot('update', [Player::class, $company])) {
+            abort(403);
+        }
+
         $player = Player::find($id);
-        $player->company_id = $validated['company_id'];
+        $player->company_id = $company->id;
         $player->update();
 
         return redirect()->route('player.create');
@@ -115,9 +121,15 @@ class PlayerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $player = Player::where('id', $id)->firstOrFail();
+
+        $company = Company::find($player->company_id);
+        if ($request->user()->cannot('delete', [Player::class, $company])) {
+            abort(403);
+        }
+
         $player->delete();
 
         return redirect()->route('player.create');

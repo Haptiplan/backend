@@ -3,21 +3,28 @@
 namespace App\Policies;
 
 use App\Models\Company;
-use App\Models\Player;
+use App\Models\Game;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Session;
 
-class PlayerPolicy
+class CompanyPolicy
 {
-    public function store(User $user, Company $company): Response
+    /**
+     * Create a new policy instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    public function store(User $user, Game $game): Response
     {
         if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
-        $user_ids = $company->game->gamemasters->pluck('user_id')->toArray();
 
-        return in_array($user->id, $user_ids)
+        return in_array($user->id, $game->gamemasters->pluck('user_id')->toArray())
             ? Response::allow()
             : Response::deny();
     }
@@ -26,9 +33,12 @@ class PlayerPolicy
         if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
-        $user_ids = $company->game->gamemasters->pluck('user_id')->toArray();
 
-        return in_array($user->id, $user_ids)
+        $isGamemaster = $company->game->gamemasters()
+        ->where('user_id', $user->id)
+        ->exists();
+
+        return $isGamemaster
             ? Response::allow()
             : Response::deny();
     }
@@ -37,9 +47,12 @@ class PlayerPolicy
         if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
-        $user_ids = $company->game->gamemasters->pluck('user_id')->toArray();
 
-        return in_array($user->id, $user_ids)
+        $isGamemaster = $company->game->gamemasters()
+        ->where('user_id', $user->id)
+        ->exists();
+
+        return $isGamemaster
             ? Response::allow()
             : Response::deny();
     }
