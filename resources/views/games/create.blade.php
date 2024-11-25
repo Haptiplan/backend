@@ -11,7 +11,8 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h1 class="text-2xl font-bold mb-6">{{ __('messages.gameCreate') }}</h1>
                     @if ($errors->any())
-                        <div class="alert alert-danger bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div
+                            class="alert alert-danger bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                             <ul class="block text-sm font-medium text-red-600 dark:text-red-300">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -19,36 +20,20 @@
                             </ul>
                         </div>
                     @endif
-                    <form class="space-y-4" action="{{ route('game.store') }}" method="POST">
+                    <form class="space-y-4" action="{{ route('games.store') }}" method="POST">
                             @csrf
                         <div>
                             <label for="game_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                 {{ __('messages.gameName') }}
                             </label>
-                            <input type="text" name="game_name" id="game_name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
+                            <input type="text" name="game_name" id="game_name" required
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
                         </div>
                         <div>
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                {{ __('messages.create') }}
-                            </button>
+                            <x-submit-button>{{ __('messages.create') }}</x-submit-button>
                         </div>
                     </form> 
-                    <div>
-                        @foreach($games as $game)
-                        <li>
-                            {{$game->name}}
-                            <a href="{{ route('game.edit', $game->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                {{ __('messages.edit') }}
-                            </a>
-                            <form action="{{ route('game.delete', $game->id) }}" method="POST" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                    {{ __('messages.delete') }}
-                                </button>
-                            </form>
-                        </li>
-                        @endforeach
+                    <x-back-button href="{{ route('games.index') }}"></x-back-button>
 
                     </div>
                 </div>

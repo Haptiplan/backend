@@ -16,7 +16,10 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $games = Game::hasGamemasters()->get();
+        $game_ids = $games->pluck('id')->toArray();
+        $companies = Company::whereIn('game_id', $game_ids)->get();
+        return view('companies.index', ['companies' => $companies, 'games' => $games]);
     }
 
     /**
@@ -25,9 +28,7 @@ class CompanyController extends Controller
     public function create()
     {
         $games = Game::hasGamemasters()->get();
-        $game_ids = $games->pluck('id')->toArray();
-        $companies = Company::whereIn('game_id', $game_ids)->get();
-        return view('companies.create', ['companies' => $companies, 'games' => $games]);
+        return view('companies.create', ['games' => $games]);
     }
 
     /**
@@ -68,7 +69,7 @@ class CompanyController extends Controller
             'game_id' => $company_fk,
         ]);
     
-        return redirect()->route('company.create');
+        return redirect()->back();
     }
 
     /**
@@ -127,7 +128,7 @@ class CompanyController extends Controller
         $company->game_id = $validated['game_id'];
         $company->save();
 
-        return redirect()->route('company.create');
+        return redirect()->back();
     }
 
 
@@ -145,6 +146,6 @@ class CompanyController extends Controller
         
         $company->delete();
     
-        return redirect()->route('company.create');
+        return redirect()->route('companies.index');
     }
 }
