@@ -45,6 +45,7 @@
                             <x-submit-button>{{ __('messages.create') }}</x-submit-button>
                         </div>
                     </form>
+
                     <x-back-button href="{{ route('players.index') }}"></x-back-button>
                 </div>
             </div>

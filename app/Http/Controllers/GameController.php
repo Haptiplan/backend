@@ -43,6 +43,10 @@ class GameController extends Controller
 
         $game = Game::where('name', $game_name['game_name'])->firstOrFail();
 
+        if ($request->user()->cannot('store', [Game::class, $request->user()])) {
+            abort(403);
+        }
+
         if (Session::has('impersonate')) {
             $id = Session::get('impersonate');
         } else {
@@ -68,7 +72,7 @@ class GameController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $game_id)
+    public function edit(Request $request, string $game_id)
     {
         $id = Auth::user()->id;
         if (Session::has('impersonate')) {
@@ -98,6 +102,10 @@ class GameController extends Controller
 
         $game = Game::find($game_id);
 
+        if ($request->user()->cannot('update', $game)) {
+            abort(403);
+        }
+
         $game->name = $validated['game_name'];
         $game->save();
         $game->update();
@@ -108,9 +116,14 @@ class GameController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         $game = Game::findOrFail($id);
+
+        if ($request->user()->cannot('delete', $game)) {
+            abort(403);
+        }
+
         $game->delete();
 
         return redirect()->route('games.index');

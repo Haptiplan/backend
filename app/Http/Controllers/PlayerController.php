@@ -38,11 +38,11 @@ class PlayerController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $users = DB::table('users')
             ->where('role', '=', User::ROLE_USER)
-            ->whereNotIn('id', function($query) {
+            ->whereNotIn('id', function ($query) {
                 $query->select('p.id')->from('players as p');
             })
         ->get();
@@ -68,12 +68,17 @@ class PlayerController extends Controller
             'id' => 'required|exists:users|unique:players,id',
             'company_id' => 'required',
         ]);
-    
+
+        $company = Company::find($validated['company_id']);
+        if ($request->user()->cannot('store', [Player::class, $company])) {
+            abort(403);
+        }
+
         DB::table('players')->insert([
             'id' => $validated['id'],
             'company_id' => $validated['company_id'],
         ]);
-    
+
         return redirect()->back();
     }
 
@@ -95,9 +100,9 @@ class PlayerController extends Controller
         $companies = Company::all();
         $games = Game::all();
         return view('players.edit', [
-            'user' => $user, 
+            'user' => $user,
             'player' => $player,
-            'companies' => $companies, 
+            'companies' => $companies,
             'games' => $games,
         ]);
     }
@@ -107,11 +112,17 @@ class PlayerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([ 
-            'company_id' => 'required|exists:companies,id' 
+        $validated = $request->validate([
+            'company_id' => 'required|exists:companies,id'
         ]);
+
+        $company = Company::find($validated['company_id']);
+        if ($request->user()->cannot('update', [Player::class, $company])) {
+            abort(403);
+        }
+
         $player = Player::find($id);
-        $player->company_id = $validated['company_id'];
+        $player->company_id = $company->id;
         $player->update();
 
         return redirect()->back();
@@ -120,9 +131,15 @@ class PlayerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $player = Player::where('id', $id)->firstOrFail();
+
+        $company = Company::find($player->company_id);
+        if ($request->user()->cannot('delete', [Player::class, $company])) {
+            abort(403);
+        }
+
         $player->delete();
 
         return redirect()->route('players.index');

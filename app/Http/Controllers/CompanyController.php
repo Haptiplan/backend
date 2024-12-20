@@ -39,6 +39,10 @@ class CompanyController extends Controller
         $company_name = $request->input('company_name');
         $game_id = $request->input('game_id');
 
+        if ($request->user()->cannot('store', [Company::class, Game::find($game_id)])) {
+            abort(403);
+        }
+
         $company_exists = Company::where('name', $company_name)
             ->where('game_id', $game_id)
             ->exists();
@@ -115,6 +119,11 @@ class CompanyController extends Controller
         ]);
 
         $company = Company::find($id);
+
+        if ($request->user()->cannot('update', $company)) {
+            abort(403);
+        }
+
         $company->name = $validated['company_name'];
         $company->game_id = $validated['game_id'];
         $company->save();
@@ -127,9 +136,15 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Company::where('id', $id)->firstOrFail()->delete();
+        $company = Company::where('id', $id)->firstOrFail();
+
+        if ($request->user()->cannot('delete', $company)) {
+            abort(403);
+        }
+        
+        $company->delete();
     
         return redirect()->route('companies.index');
     }
