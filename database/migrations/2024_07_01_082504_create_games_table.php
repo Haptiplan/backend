@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
+            $table->string('name');
             $table->integer('current_period_number')->default(0);
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

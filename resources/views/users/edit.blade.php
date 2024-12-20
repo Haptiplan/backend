@@ -13,9 +13,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h1 class="text-2xl font-bold mb-6">{{ __('messages.userEdit') }}</h1>       
+                    <h1 class="text-2xl font-bold mb-6">{{ __('messages.userEdit') }}</h1>
                     <x-success-message></x-success-message>
-                    <form class="space-y-4" action="{{ route('user.update', $user->id) }}" method="POST">
+                    <form class="space-y-4" action="{{ route('users.update', $user->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div>
@@ -29,28 +29,28 @@
                             </label>
                             <input type="email" name="email" id="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200" value="{{ $user->email }}">
 
-                            <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            {{ __('messages.role') }}
+                            <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
+                                {{ __('messages.role') }}
                             </label>
-                            <select name="role" id="role" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
-                                <option value="" disabled hidden selected>{{ __('messages.chooseRole') }}</option>
-                                <option value="{{User::ROLE_ADMIN}}" @if ($user->role == User::ROLE_ADMIN) selected @endif>{{ __('messages.admin') }}</option>
-                                <option value="{{User::ROLE_GAMEMASTER}}" @if ($user->role == User::ROLE_GAMEMASTER) selected @endif>{{ __('messages.gamemaster') }}</option>
-                                <option value="{{User::ROLE_USER}}" @if ($user->role == User::ROLE_USER) selected @endif>{{ __('messages.player') }}</option>
-                            </select>
+                            <input type="radio" name="role" id="{{User::ROLE_ADMIN}}" value="{{User::ROLE_ADMIN}}">
+                            <label for="{{User::ROLE_ADMIN}}">{{ __('messages.admin') }}</label><br>
+                            <input type="radio" name="role" id="{{User::ROLE_GAMEMASTER}}" value="{{User::ROLE_GAMEMASTER}}">
+                            <label for="{{User::ROLE_GAMEMASTER}}">{{ __('messages.gamemaster') }}</label><br>
+                            <input type="radio" name="role" id="{{User::ROLE_USER}}" value="{{User::ROLE_USER}}">
+                            <label for="{{User::ROLE_USER}}">{{ __('messages.player') }}</label><br>
+                       
                             @if ($user->role == User::ROLE_GAMEMASTER)
-                            <select name="game" id="game" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
-                                <option value="" disabled hidden selected>{{ __('messages.chooseGame') }}</option>
-                                @foreach ($games_free as $game)
-                                <option value="{{$game->id}}">{{$game->name}}</option>
-                                @endforeach
-                            </select>
+                            <label for="game" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
+                                {{ __('messages.chooseGame') }}
+                            </label>
+                            @foreach ($games_free as $game)
+                            <input type="radio" name="game" id="{{$game->id}}" value="{{$game->id}}">
+                            <label for="{{$game->id}}">{{$game->name}}</label><br>
+                            @endforeach
                             @endif
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                {{ __('messages.submit') }}
-                            </button>
+                            <x-submit-button>{{ __('messages.submit') }}</x-submit-button>
                     </form> 
-            
+                    <x-back-button href="{{ route('users.index') }}"></x-back-button>
                     @if ($user->role == User::ROLE_GAMEMASTER)
                     <label for="game" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
                         {{ __('messages.listGames') }}:
@@ -66,6 +66,7 @@
                     @endforeach
                     @endif
                     </div>
+                    
                 </div>
             </div>
         </div>

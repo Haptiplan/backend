@@ -20,49 +20,26 @@
                         </div>
                     @endif
                     <x-success-message></x-success-message>
-                    <form class="space-y-4" action="{{ route('company.store') }}" method="POST">
-                            @csrf
+                    <form class="space-y-4" action="{{ route('companies.store') }}" method="POST">
+                        @csrf
                         <div>
                             <label for="company_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                 {{ __('messages.companyName') }}
                             </label>
                             <input type="text" name="company_name" id="company_name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
-                            <select  name="game_id" id="game_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
-                                <option  class="block text-sm font-medium text-gray-700 dark:text-gray-300" value="" disabled hidden selected>{{ __('messages.chooseGame') }}</option>
-                                @foreach ($games as $game)
-                                    <option value="{{$game->id}}">{{$game->name}}</option>
-                                @endforeach
-                            </select>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                {{ __('messages.game') }}
+                            </label>
+                            @foreach ($games as $game)
+                            <input type="radio" name="game_id" id="{{$game->id}}" value="{{$game->id}}">
+                            <label for="{{$game->id}}">{{$game->name}}</label><br>
+                            @endforeach
                         </div>
                         <div>
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                {{ __('messages.create') }}
-                            </button>
+                            <x-submit-button>{{ __('messages.create') }}</x-submit-button>
                         </div>
                     </form> 
-                    <div>
-                    @foreach ($games as $game)
-                        <label class="font-bold mb-6"><u>{{$game->name}}:</u></label> <br>
-                        @foreach($companies as $company)
-                            @if ($game->id == $company->game_id)
-                    
-                                <li class="ml-10">
-                                    {{$company->name}}
-                                    <a href="{{ route('company.edit', $company->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                        {{ __('messages.edit') }}
-                                    </a>
-                                    <form action="{{ route('company.delete', $company->id) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                            {{ __('messages.delete') }}
-                                        </button>
-                                    </form>
-                                </li>
-                            @endif
-                        @endforeach
-                    @endforeach
-                    </div>
+                    <x-back-button href="{{ route('companies.index') }}"></x-back-button>
                 </div>
             </div>
         </div>

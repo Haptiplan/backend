@@ -19,7 +19,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $admins = User::where('id', '!=', Auth::id())->where('role', User::ROLE_ADMIN)->get();
+        $gamemasters = User::where('role', User::ROLE_GAMEMASTER)->get();
+        $players = User::where('role', User::ROLE_USER)->get();
+        return view('users.index', [
+            'admins' => $admins,
+            'gamemasters' => $gamemasters,
+            'players' => $players,
+        ]);
     }
 
     /**
@@ -27,14 +34,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $admins = User::where('id', '!=', Auth::id())->where('role', User::ROLE_ADMIN)->get();
-        $gamemasters = User::where('role', User::ROLE_GAMEMASTER)->get();
-        $players = User::where('role', User::ROLE_USER)->get();
-        return view('users.create', [
-            'admins' => $admins,
-            'gamemasters' => $gamemasters,
-            'players' => $players,
-        ]);
+        return view('users.create');
     }
 
     /**
@@ -56,13 +56,13 @@ class UserController extends Controller
             'password' => bcrypt($validated['password']),
         ]);
 
-        return redirect()->route('user.create')->with('status', 'messages.successCreate');
+        return redirect()->back()->with('status', 'messages.successCreate');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show($id)
     {
         //
     }
@@ -73,8 +73,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        $player = Player::find($id);
-        $gamemasters = Gamemaster::where('id', $id)->get();
+        $player = Player::find($user->id);
+        $gamemasters = Gamemaster::where('id', $user->id)->get();
         $game_ids = $gamemasters->pluck('game_id')->toArray();
 
         $games_used = Game::whereIn('id', $game_ids)->get();
@@ -106,15 +106,15 @@ class UserController extends Controller
         $user->role = $validated['role'];
 
         if ($validated['role'] == User::ROLE_GAMEMASTER && !empty($validated['game'])) {
-            if (!(DB::table('gamemasters')->where('id', $id)->where('game_id', $validated['game'])->exists())) {
+            if (!(DB::table('gamemasters')->where('id', $user->id)->where('game_id', $validated['game'])->exists())) {
                 DB::table('gamemasters')->insert([
-                    'id' => $id,
+                    'id' => $user->id,
                     'game_id' => $validated['game'],
                 ]);
             }        }
         $user->save();
 
-        return redirect()->route('user.edit', $user->id)->with('status', 'messages.successEdit');
+        return redirect()->back()->with('status', 'messages.successEdit');
     }
 
     /**
@@ -124,7 +124,7 @@ class UserController extends Controller
     {
         User::where('id', $id)->firstOrFail()->delete();
 
-        return redirect()->route('user.create')->with('status', 'messages.successDelete');
+        return redirect()->route('users.index')->with('status', 'messages.successDelete');
     }
 
     /**
@@ -165,7 +165,7 @@ class UserController extends Controller
             return redirect()->route('dashboard');
         } elseif ($validated['role'] == User::ROLE_GAMEMASTER && $active_user->role == User::ROLE_ADMIN) {
             $gamemaster = Gamemaster::where('game_id', $validated['game'])->firstOrFail();
-            $user = User::where('id', $gamemaster->id)->firstOrFail();
+            $user = User::where('id', $gamemaster->user_id)->firstOrFail();
             $active_user->setImpersonating($user->id);
             return redirect()->route('dashboard');
         }

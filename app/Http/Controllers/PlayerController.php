@@ -8,7 +8,9 @@ use App\Models\Player;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class PlayerController extends Controller
 {
@@ -17,20 +19,6 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $users = DB::table('users')
-            ->where('role', '=', User::ROLE_USER)
-            ->whereNotIn('id', function($query) {
-                $query->select('p.id')->from('players as p');
-            })
-            ->get();
         $user_list = User::all();
         $games = Game::hasGamemasters()->get();
 
@@ -39,8 +27,7 @@ class PlayerController extends Controller
 
         $company_ids = $companies->pluck('id')->toArray();
         $players = Player::whereIn('company_id', $company_ids)->get();
-        return view('players.create', [
-            'users' => $users, 
+        return view('players.index', [
             'user_list' => $user_list,
             'companies' => $companies, 
             'players' => $players, 
@@ -49,21 +36,50 @@ class PlayerController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create(Request $request)
+    {
+        $users = DB::table('users')
+            ->where('role', '=', User::ROLE_USER)
+            ->whereNotIn('id', function ($query) {
+                $query->select('p.id')->from('players as p');
+            })
+        ->get();
+        $games = Game::hasGamemasters()->get();
+        $game_ids = $games->pluck('id')->toArray();
+        $companies = Company::whereIn('game_id', $game_ids)->get();
+
+        return view('players.create', [
+            'users' => $users,
+            'games' => $games,
+            'companies' => $companies,
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        $company = Company::find($request->input('company_id'));
+    
         $validated = $request->validate([
-            'id' => 'required|unique:players,id',
+            'id' => 'required|exists:users|unique:players,id',
             'company_id' => 'required',
         ]);
-    
+
+        $company = Company::find($validated['company_id']);
+        if ($request->user()->cannot('store', [Player::class, $company])) {
+            abort(403);
+        }
+
         DB::table('players')->insert([
             'id' => $validated['id'],
             'company_id' => $validated['company_id'],
         ]);
-    
-        return redirect()->route('player.create')->with('status', 'messages.successCreate');
+
+        return redirect()->back()->with('status', 'messages.successCreate');
     }
 
     /**
@@ -84,9 +100,9 @@ class PlayerController extends Controller
         $companies = Company::all();
         $games = Game::all();
         return view('players.edit', [
-            'user' => $user, 
+            'user' => $user,
             'player' => $player,
-            'companies' => $companies, 
+            'companies' => $companies,
             'games' => $games,
         ]);
     }
@@ -96,24 +112,36 @@ class PlayerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([ 
-            'company_id' => 'required|exists:companies,id' 
+        $validated = $request->validate([
+            'company_id' => 'required|exists:companies,id'
         ]);
+
+        $company = Company::find($validated['company_id']);
+        if ($request->user()->cannot('update', [Player::class, $company])) {
+            abort(403);
+        }
+
         $player = Player::find($id);
-        $player->company_id = $validated['company_id'];
+        $player->company_id = $company->id;
         $player->update();
 
-        return redirect()->route('player.create')->with('status', 'messages.successEdit');
+        return redirect()->back()->with('status', 'messages.successEdit');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $player = Player::where('id', $id)->firstOrFail();
+
+        $company = Company::find($player->company_id);
+        if ($request->user()->cannot('delete', [Player::class, $company])) {
+            abort(403);
+        }
+
         $player->delete();
 
-        return redirect()->route('player.create')->with('status', 'messages.successDelete');
+        return redirect()->route('players.index')->with('status', 'messages.successDelete');
     }
 }

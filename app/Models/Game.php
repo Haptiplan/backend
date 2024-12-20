@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -14,16 +13,21 @@ class Game extends Model
 {
     use HasFactory;
 
-    public function companies(): HasMany
+    public function companies()
     {
         return $this->hasMany(Company::class);
     }
 
-    public function gamemasters(): HasOne
+    public function gamemasters(): HasMany
     {
-        return $this->hasOne(Gamemaster::class);
+        return $this->hasMany(Gamemaster::class);
     }
 
+    /**
+     * Summary of hasGamemasters
+     * Function to return all games from the current gamemaster
+     * @return Builder|Game
+     */
     public static function hasGamemasters()
     {
         $user = Auth::user()->id;
@@ -32,7 +36,7 @@ class Game extends Model
         }
 
         $game = Game::whereHas('gamemasters', function ($query) use ($user) {
-            $query->where('id', $user);
+            $query->where('user_id', $user);
         });
 
         return $game;

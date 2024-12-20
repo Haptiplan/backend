@@ -16,7 +16,10 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $games = Game::hasGamemasters()->get();
+        $game_ids = $games->pluck('id')->toArray();
+        $companies = Company::whereIn('game_id', $game_ids)->get();
+        return view('companies.index', ['companies' => $companies, 'games' => $games]);
     }
 
     /**
@@ -25,9 +28,7 @@ class CompanyController extends Controller
     public function create()
     {
         $games = Game::hasGamemasters()->get();
-        $game_ids = $games->pluck('id')->toArray();
-        $companies = Company::whereIn('game_id', $game_ids)->get();
-        return view('companies.create', ['companies' => $companies, 'games' => $games]);
+        return view('companies.create', ['games' => $games]);
     }
 
     /**
@@ -37,6 +38,10 @@ class CompanyController extends Controller
     {
         $company_name = $request->input('company_name');
         $game_id = $request->input('game_id');
+
+        if ($request->user()->cannot('store', [Company::class, Game::find($game_id)])) {
+            abort(403);
+        }
 
         $company_exists = Company::where('name', $company_name)
             ->where('game_id', $game_id)
@@ -64,7 +69,7 @@ class CompanyController extends Controller
             'game_id' => $company_fk,
         ]);
     
-        return redirect()->route('company.create')->with('status', 'messages.successCreate');
+        return redirect()->back()->with('status', 'messages.successCreate');
     }
 
     /**
@@ -114,11 +119,16 @@ class CompanyController extends Controller
         ]);
 
         $company = Company::find($id);
+
+        if ($request->user()->cannot('update', $company)) {
+            abort(403);
+        }
+
         $company->name = $validated['company_name'];
         $company->game_id = $validated['game_id'];
         $company->save();
 
-        return redirect()->route('company.create')->with('status', 'messages.successEdit');
+        return redirect()->back()->with('status', 'messages.successEdit');
     }
 
 
@@ -126,10 +136,16 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Company::where('id', $id)->firstOrFail()->delete();
+        $company = Company::where('id', $id)->firstOrFail();
+
+        if ($request->user()->cannot('delete', $company)) {
+            abort(403);
+        }
+        
+        $company->delete();
     
-        return redirect()->route('company.create')->with('status', 'messages.successDelete');
+        return redirect()->route('companies.index')->with('status', 'messages.successDelete');
     }
 }

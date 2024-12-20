@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Game;
+use App\Models\User;
 use App\Models\Gamemaster;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Session;
 
 class GamemasterController extends Controller
 {
@@ -19,28 +21,51 @@ class GamemasterController extends Controller
             'gamemaster' => 'required|exists:users,id',
             'game_id' => 'required|exists:games,id',
         ]);
-        if (!(DB::table('gamemasters')->where('id', $validated['gamemaster'])->where('game_id', $validated['game_id'])->exists())){
+
+        $game = Game::find($validated['game_id']);
+        if ($request->user()->cannot('store', [Gamemaster::class, $game])) {
+            abort(403);
+        }
+
+        if (!(DB::table('gamemasters')->where('user_id', $validated['gamemaster'])->where('game_id', $validated['game_id'])->exists())){
             DB::table('gamemasters')->insert([
-                'id' => $validated['gamemaster'],
+                'user_id' => $validated['gamemaster'],
+
                 'game_id' => $validated['game_id'],
             ]);
         }
-        return redirect(route('game.edit', [$validated['game_id']]));
+        return redirect(route('games.edit', [$validated['game_id']]));
     }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id, $game_id)
+    public function destroyOne(Request $request, $id, $game_id)
     {
-        Gamemaster::where('id', $id)->where('game_id', $game_id)->delete();
+        $gamemaster = Gamemaster::where('id', $id)->where('game_id', $game_id);
+
+        $game = Game::find($game_id);
+        if ($request->user()->cannot('delete', [Gamemaster::class, $game])) {
+            abort(403);
+        }
+        
+        $gamemaster->delete();
+
         return redirect()->back();
     }
     /**
      * Remove the specified resources from storage.
      */
-    public function destroyAll($id)
+    public function destroy(Request $request, $id)
     {
-        Gamemaster::where('id', $id)->delete();
+        $gamemaster = Gamemaster::where('id', $id);
+        
+        $game = null;
+        if ($request->user()->cannot('deleteAll', [Gamemaster::class, $game])) {
+            abort(403);
+        }
+        
+        $gamemaster->delete();
+
         return redirect()->back();
     }
 }

@@ -20,13 +20,16 @@ class GameController extends Controller
     public function index(Game $game)
     {
         $games = Game::hasGamemasters()->get();
-        return view('games.create', ['games' => $games]);
+        return view('games.index', ['games' => $games]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create() 
+    {
+        return view('games.create');
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -40,6 +43,10 @@ class GameController extends Controller
 
         $game = Game::where('name', $game_name['game_name'])->firstOrFail();
 
+        if ($request->user()->cannot('store', [Game::class, $request->user()])) {
+            abort(403);
+        }
+
         if (Session::has('impersonate')) {
             $id = Session::get('impersonate');
         } else {
@@ -47,11 +54,11 @@ class GameController extends Controller
         }
 
         DB::table('gamemasters')->insert([
-            'id' => $id,
+            'user_id' => $id,
             'game_id' => $game->id,
         ]);
 
-        return redirect()->route('game.index')->with('status', 'messages.success-create');
+        return redirect()->back()->with('status', 'messages.success-create');
     }
 
     /**
@@ -65,14 +72,14 @@ class GameController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $game_id)
+    public function edit(Request $request, string $game_id)
     {
         $id = Auth::user()->id;
         if (Session::has('impersonate')) {
             $id =  Session::get('impersonate');
         }
         $game = Game::hasGamemasters()->findOrFail($game_id);
-        $gm_in_game = Gamemaster::where('game_id', $game_id)->pluck('id')->toArray();
+        $gm_in_game = Gamemaster::where('game_id', $game_id)->pluck('user_id')->toArray();
         $gamemasters = User::where('role', User::ROLE_GAMEMASTER)->whereNot('id', $id)->whereNotIn('id', $gm_in_game)->get();
         $list = Gamemaster::where('game_id', $game_id)->whereNot('id', $id)->pluck('id')->toArray();
         $list_gamemasters = User::whereIn('id', $list)->get();
@@ -95,21 +102,30 @@ class GameController extends Controller
 
         $game = Game::find($game_id);
 
+        if ($request->user()->cannot('update', $game)) {
+            abort(403);
+        }
+
         $game->name = $validated['game_name'];
         $game->save();
         $game->update();
 
-        return redirect()->route('game.index')->with('status', 'messages.successEdit');
+        return redirect()->back()->with('status', 'messages.successEdit');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         $game = Game::findOrFail($id);
+
+        if ($request->user()->cannot('delete', $game)) {
+            abort(403);
+        }
+
         $game->delete();
 
-        return redirect()->route('game.index')->with('status', 'message.successDelete');
+        return redirect()->route('games.index')->with('status', 'message.successDelete');
     }
 }
