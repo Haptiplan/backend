@@ -27,9 +27,6 @@ class GamemasterController extends Controller
             abort(403);
         }
 
-        $user = $request->user();
-        if (Session::has('impersonate')) $user = User::find(Session::get('impersonate'));
-
         if (!(DB::table('gamemasters')->where('user_id', $validated['gamemaster'])->where('game_id', $validated['game_id'])->exists())){
             DB::table('gamemasters')->insert([
                 'user_id' => $validated['gamemaster'],
