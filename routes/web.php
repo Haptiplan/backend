@@ -34,7 +34,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 */
 
-Route::middleware(['localization', 'auth'])->group(function () {
+Route::middleware(['web', 'localization', 'auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -56,7 +56,7 @@ Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(functi
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin_dashboard_show');
 });
 
-Route::middleware(['localization', 'verified','check_role:' . $admin])->group(function(){
+Route::middleware(['web', 'localization', 'verified','check_role:' . $admin])->group(function(){
     Route::get('/create_user', [UserController::class, 'create'])->name('user.create');
     Route::post('/create_user', [UserController::class, 'store'])->name('user.store');
     Route::get('create_user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
@@ -69,7 +69,7 @@ Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->gr
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
 
-Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
+Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
     /** Games **/
     Route::get('/create_game', [GameController::class, 'index'])->name('game.index');
     Route::post('/create_game', [GameController::class, 'store'])->name('game.store');

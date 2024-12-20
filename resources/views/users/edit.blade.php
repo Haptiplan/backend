@@ -13,7 +13,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h1 class="text-2xl font-bold mb-6">{{ __('messages.userEdit') }}</h1>
+                    <h1 class="text-2xl font-bold mb-6">{{ __('messages.userEdit') }}</h1>       
+                    <x-success-message></x-success-message>
                     <form class="space-y-4" action="{{ route('user.update', $user->id) }}" method="POST">
                         @csrf
                         @method('PUT')
@@ -49,6 +50,7 @@
                                 {{ __('messages.submit') }}
                             </button>
                     </form> 
+            
                     @if ($user->role == User::ROLE_GAMEMASTER)
                     <label for="game" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
                         {{ __('messages.listGames') }}:

@@ -56,7 +56,7 @@ class UserController extends Controller
             'password' => bcrypt($validated['password']),
         ]);
 
-        return redirect()->route('user.create');
+        return redirect()->route('user.create')->with('status', 'messages.successCreate');
     }
 
     /**
@@ -114,7 +114,7 @@ class UserController extends Controller
             }        }
         $user->save();
 
-        return redirect()->route('user.edit', $user->id);
+        return redirect()->route('user.edit', $user->id)->with('status', 'messages.successEdit');
     }
 
     /**
@@ -124,7 +124,7 @@ class UserController extends Controller
     {
         User::where('id', $id)->firstOrFail()->delete();
 
-        return redirect()->route('user.create');
+        return redirect()->route('user.create')->with('status', 'messages.successDelete');
     }
 
     /**
@@ -170,7 +170,7 @@ class UserController extends Controller
             return redirect()->route('dashboard');
         }
 
-        return redirect()->route('impersonate.view');
+        return redirect()->route('impersonate.view')->with('status', 'messages.fail');
     }
 
     /**

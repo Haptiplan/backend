@@ -19,6 +19,7 @@
                             </ul>
                         </div>
                     @endif
+                    <x-success-message></x-success-message>
                     <form class="space-y-4" action="{{ route('company.store') }}" method="POST">
                             @csrf
                         <div>

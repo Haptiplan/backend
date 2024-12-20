@@ -19,6 +19,7 @@
                             </ul>
                         </div>
                     @endif
+                    <x-success-message></x-success-message>
                     <form class="space-y-4" action="{{ route('company.update', $company->id) }}" method="POST">
                         @csrf
                         @method('PUT')

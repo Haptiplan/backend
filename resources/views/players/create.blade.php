@@ -19,6 +19,7 @@
                         </ul>
                     </div>
                     @endif
+                    <x-success-message></x-success-message>
                     <form class="space-y-4" action="{{ route('player.store') }}" method="POST">
                         @csrf
                         <div>
