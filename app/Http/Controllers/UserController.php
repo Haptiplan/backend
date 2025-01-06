@@ -163,7 +163,7 @@ class UserController extends Controller
     /**
      * Show the form for impersonating a user  in a specified game.
      */
-    public function impersonate(Request $request)
+    public function impersonate(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $user = User::findOrFail(Auth::id());
         $games = Game::all();
