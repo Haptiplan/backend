@@ -16,8 +16,8 @@ class Player extends Model
         return $this->belongsTo(User::class, 'id', 'id');
     }
 
-    public function company(): BelongsTo
+    public function company()
     {
-        return $this->belongsTo(Company::class, 'id');
+        return $this->belongsTo(Company::class);
     }
 }

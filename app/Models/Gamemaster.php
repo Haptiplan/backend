@@ -12,12 +12,13 @@ class Gamemaster extends Model
     protected $fillable = ['id', 'game_id'];
 
 
-    public function game(): BelongsTo
+    public function game()
     {
-        return $this->belongsTo(Game::class, 'id');
+        return $this->belongsTo(Game::class);
     }
-    public function user(): BelongsTo
+
+    public function user()
     {
-        return $this->belongsTo(User::class, 'id', 'id');
+        return $this->belongsTo(User::class,  'user_id');
     }
 }

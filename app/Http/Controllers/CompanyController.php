@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\Game;
 use App\Http\Controllers\Controller;
-use App\Rules\CompanyUsedInGame;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Closure;
 
@@ -17,7 +17,10 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $games = Game::hasGamemasters()->get();
+        $companies = Company::whereIn('game_id', $games->pluck('id'))->get();
+
+        return view('companies.index', ['companies' => $companies, 'games' => $games]);
     }
 
     /**
@@ -26,8 +29,7 @@ class CompanyController extends Controller
     public function create()
     {
         $games = Game::hasGamemasters()->get();
-        $companies = Company::whereIn('game_id', Game::hasGamemasters()->pluck('id')->toArray())->get();
-        return view('companies.create', ['companies' => $companies, 'games' => $games]);
+        return view('companies.create', ['games' => $games]);
     }
 
     /**
@@ -35,23 +37,32 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request using the custom rule for `game_id`
         $validated = $request->validate([
-            'company_name' => 'required',
+            'company_name' => 'required|string|max:255',
             'game_id' => [
                 'required',
-                new CompanyUsedInGame($request->input('company_name'), $request->input('game_id')),
+                'exists:games,id',
+                function (string $attribute, mixed $value, $fail) {
+                    if (Company::where('name', $request->input('company_name'))
+                        ->where('game_id', $value)
+                        ->exists()) {
+                        $fail(__('validation.companyUsedInGame'));
+                    }
+                },
             ],
         ]);
 
-        // Insert the new company into the database using Eloquent
+        $game = Game::findOrFail($validated['game_id']);
+        if ($request->user()->cannot('store', [Company::class, $game])) {
+            abort(403);
+        }
+
         Company::create([
             'name' => $validated['company_name'],
             'game_id' => $validated['game_id'],
         ]);
 
-        // Redirect after insertion
-        return redirect()->route('company.create');
+        return redirect()->back();
     }
 
     /**
@@ -69,7 +80,7 @@ class CompanyController extends Controller
     {
         $games = Game::hasGamemasters()->get();
         $game_ids = $games->pluck('id')->toArray();
-        $company = Company::whereIn('game_id', $game_ids)->where('id', $id)->first();
+        $company = Company::whereIn('game_id', $game_ids)->find($id);
 
         return view('companies.edit', ['company' => $company, 'games' => $games]);
     }
@@ -79,33 +90,52 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $company = Company::findOrFail($id);
+
         $validated = $request->validate([
-            'company_name' => 'required',
+            'company_name' => 'required|string|max:255',
             'game_id' => [
                 'required',
-                new CompanyUsedInGame($request->input('company_name'), $request->input('game_id'), $id),
+                'exists:games,id',
+                function (string $attribute, mixed $value, $fail) use ($company) {
+                    if (Company::where('name', $request->input('company_name'))
+                        ->where('game_id', $value)
+                        ->where('id', '!=', $company->id)
+                        ->exists()) {
+                        $fail(__('validation.companyUsedInGame'));
+                    }
+                },
             ],
         ]);
 
-        $company = Company::find($id);
 
-        // Update the company using mass assignment
+        if ($request->user()->cannot('update', $company)) {
+            abort(403);
+        }
+
         $company->update([
             'name' => $validated['company_name'],
             'game_id' => $validated['game_id'],
         ]);
 
-        return redirect()->route('company.create');
-
+        return redirect()->back();
     }
+
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Company::where('id', $id)->firstOrFail()->delete();
+        $company = Company::findOrFail($id);
 
-        return redirect()->route('company.create');
+        if (Auth::user()->cannot('delete', $company)) {
+            abort(403);
+        }
+
+        $company->delete();
+
+        return redirect()->route('companies.index');
     }
 }

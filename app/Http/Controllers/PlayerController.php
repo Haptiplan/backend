@@ -8,7 +8,9 @@ use App\Models\Player;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class PlayerController extends Controller
 {
@@ -17,41 +19,46 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        // Get users who are not already players
-        $users = User::where('role', User::ROLE_USER)
-            ->whereDoesntHave('players')  // Using Eloquent to avoid subquery
-            ->get();
-
+        // Eager load the necessary relationships to minimize the number of queries
         $user_list = User::all();
+        $games = Game::hasGamemasters()->with('gamemasters')->get();
 
-        // Get games that have gamemasters
-        $games = Game::hasGamemasters()->get();
+        // Get all companies for the games that have gamemasters
+        $companies = Company::with('players')->whereIn('game_id', $games->pluck('id'))->get();;
 
-        // Get companies for these games
-        $game_ids = $games->pluck('id')->toArray();
-        $companies = Company::whereIn('game_id', $game_ids)->get();
+        // Get the players related to these companies (eager loading done in the above query)
+        $players = Player::whereIn('company_id', $companies->pluck('id'))->get();
 
-        // Get players from the related companies
-        $company_ids = $companies->pluck('id')->toArray();
-        $players = Player::whereIn('company_id', $company_ids)->get();
-
-        return view('players.create', [
-            'users' => $users,
+        return view('players.index', [
             'user_list' => $user_list,
             'companies' => $companies,
             'players' => $players,
             'games' => $games,
         ]);
+    }
 
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(Request $request)
+    {
+        // Fetch users who do not have a player record.
+        $users = User::where('role', User::ROLE_USER)
+            ->whereNotIn('id', Player::pluck('id'))
+            ->get();
 
+        // Fetch games that have gamemasters
+        $games = Game::hasGamemasters()->get();
+
+        // Fetch companies related to these games
+        $game_ids = $games->pluck('id')->toArray();
+        $companies = Company::whereIn('game_id', $game_ids)->get();
+
+        return view('players.create', [
+            'users' => $users,
+            'games' => $games,
+            'companies' => $companies,
+        ]);
     }
 
     /**
@@ -59,20 +66,29 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request data
+        $company = Company::find($request->input('company_id'));
+
+        // Validate the input
         $validated = $request->validate([
-            'id' => 'required|unique:players,id',
-            'company_id' => 'required|exists:companies,id', // Ensures the company exists
+            'id' => 'required|exists:users,id|unique:players,id',
+            'company_id' => 'required|exists:companies,id',
         ]);
 
-        // Create the new player using Eloquent
+        // Retrieve the company
+        $company = Company::find($validated['company_id']);
+
+        // Check if the user has permission to store the player for the given company
+        if ($request->user()->cannot('store', [Player::class, $company])) {
+            abort(403);
+        }
+
+        // Use Eloquent to insert the new player into the players table
         Player::create([
             'id' => $validated['id'],
             'company_id' => $validated['company_id'],
         ]);
 
-        // Redirect with a success message
-        return redirect()->route('player.create')->with('success', 'Player successfully created!');
+        return redirect()->back();
     }
 
     /**
@@ -88,10 +104,10 @@ class PlayerController extends Controller
      */
     public function edit($id)
     {
-        // Retrieve the user and player by ID, throw an exception if not found
         $user = User::findOrFail($id);
-        $player = Player::findOrFail($id);
+        $player = Player::find($id);
 
+        // Fetch all companies and games
         $companies = Company::all();
         $games = Game::all();
 
@@ -108,30 +124,48 @@ class PlayerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validate the company_id
+        // Validate the input
         $validated = $request->validate([
             'company_id' => 'required|exists:companies,id'
         ]);
 
-        // Find the player or fail if not found
-        $player = Player::findOrFail($id);
+        // Find the company to be associated with the player
+        $company = Company::findOrFail($validated['company_id']);
 
-        // Update the company_id and save the player
-        $player->company_id = $validated['company_id'];
-        $player->save(); // No need to call update(), save() is sufficient
+        // Check if the user has permission to update the player
+        if ($request->user()->cannot('update', [Player::class, $company])) {
+            abort(403);
+        }
 
-        return redirect()->route('player.create')->with('success', 'Player updated successfully');
+        // Find the player record, and update the company_id
+        $player = Player::findOrFail($id); // Using findOrFail to handle missing players
+        $player->company_id = $company->id;
+        $player->save(); // Use save() instead of update() when updating individual attributes
+
+        // Redirect back to the previous page
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        // Find the player or throw a 404 error if not found
         $player = Player::findOrFail($id);
 
+        // Find the associated company, or throw a 404 error if not found
+        $company = Company::findOrFail($player->company_id);
+
+        // Check if the user has permission to delete this player
+        if ($request->user()->cannot('delete', [Player::class, $company])) {
+            abort(403);
+        }
+
+        // Delete the player record
         $player->delete();
 
-        return redirect()->route('player.create')->with('success', 'Player deleted successfully');
+        // Redirect to the players index page
+        return redirect()->route('players.index');
     }
 }

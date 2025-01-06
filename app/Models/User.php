@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Notifications\Notifiable;
@@ -16,14 +17,19 @@ class User extends Authenticatable
     const ROLE_GAMEMASTER = 1;
     const ROLE_USER = 2;
 
+    const ROLES = [
+        self::ROLE_ADMIN,
+        self::ROLE_USER,
+        self::ROLE_GAMEMASTER,
+    ];
 
-    public function player(): HasMany
+    public function player(): HasOne
     {
-        return $this->hasMany(Player::class, 'id');
+        return $this->hasOne(Player::class, 'id');
     }
-    public function gamemaster(): HasMany
+    public function gamemasters(): HasMany
     {
-        return $this->hasMany(Gamemaster::class, 'id');
+        return $this->hasMany(Gamemaster::class, 'user_id');
     }
 
     /**

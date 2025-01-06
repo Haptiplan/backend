@@ -194,6 +194,7 @@ return [
         'current_period_number' => 'current period number',
         'email' => 'e-mail address',
         'game_id' => 'game ID',
+        'game_name' => 'game name',
         'id' => 'ID',
         'name' => 'name',
         'password' => 'password',
