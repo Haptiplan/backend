@@ -11,13 +11,13 @@ class Company extends Model
 {
     use HasFactory;
   
-    public function player(): HasMany
+    public function game()
     {
-        return $this->hasMany(Player::class, 'id');
+        return $this->belongsTo(Game::class);
     }
-  
-    public function game(): BelongsTo
+
+    public function players()
     {
-        return $this->belongsTo(Game::class, 'id');
+        return $this->hasMany(Player::class);
     }
 }

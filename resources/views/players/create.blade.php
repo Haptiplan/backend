@@ -19,65 +19,34 @@
                         </ul>
                     </div>
                     @endif
-                    <form class="space-y-4" action="{{ route('player.store') }}" method="POST">
+                    <form class="space-y-4" action="{{ route('players.store') }}" method="POST">
                         @csrf
                         <div>
-                            <select name="id" id="id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
-                                <option class="block text-sm font-medium text-gray-700 dark:text-gray-300" value="" disabled hidden selected>{{ __('messages.chooseUser') }}</option>
-                                @foreach ($users as $user)
-                                <option value="{{$user->id}}">{{$user->name}}</option>
-                                @endforeach
-                            </select>
-                            <select name="company_id" id="company_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
-                                <option class="block text-sm font-medium text-gray-700 dark:text-gray-300" value="" disabled hidden selected>{{ __('messages.chooseCompany') }}</option>
-                                @foreach ($games as $game)
-                                <optgroup label=" {{ __('messages.game') . ': ' . $game->name}}" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    @foreach ($companies->where('game_id', $game->id) as $company)
-                                    <option value="{{$company->id}}">{{$company->name}}</option>
-                                    @endforeach
-                                </optgroup>
-                                @endforeach
-                            </select>
+                            <label for="id" class="block font-bold text-xl text-gray-700 dark:text-gray-300">
+                                {{ __('messages.player') }}
+                            </label>
+                            @foreach ($users as $user)
+                            <input type="radio" name="id" id="{{$user->id}}" value="{{$user->id}}" class="ml-5">
+                            <label for="{{$user->id}}">{{$user->name}}</label><br>
+                            @endforeach
+                            
+                            <label for="company_id" class="block font-bold text-xl text-gray-700 dark:text-gray-300">
+                                {{ __('messages.company') }}:
+                            </label>
+                            @foreach ($games as $game)
+                            <label class="text-sm font-medium ml-5 text-gray-700 dark:text-gray-300">{{ __('messages.game') }}: {{$game->name}}</label><br>
+                            @foreach ($companies->where('game_id', $game->id) as $company)
+                            <input type="radio" name="company_id" id="{{$company->id}}" value="{{$company->id}}" class="ml-10">
+                            <label for="{{$company->id}}">{{$company->name}}</label><br>
+                            @endforeach
+                            @endforeach
                         </div>
                         <div>
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                {{ __('messages.create') }}
-                            </button>
+                            <x-submit-button>{{ __('messages.create') }}</x-submit-button>
                         </div>
                     </form>
-                    <div>
-                        @foreach ($games as $game)
-                        <label class="font-bold mb-6 mt-6"><u>{{ $game->name }}:</u> </label>
-                        <br>
-                        @foreach ($companies as $company)
-                        @if ($game->id == $company->game_id)
 
-                        <label class="mb-6 ml-10">{{ $company->name }}:</label>
-                        <br>
-                        @foreach($players as $player)
-                        @foreach($user_list as $user)
-                        @if ($player->id == $user->id && $player->company_id == $company->id)
-                        <li class="mb-6 ml-20">
-                            {{$user->name}}
-                            <a href="{{ route('player.edit', $user->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                {{ __('messages.edit') }}
-                            </a>
-                            <form action="{{ route('player.delete', $user->id) }}" method="POST" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md font-semibold font-medium text-gray-700 dark:text-gray-300 tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                    {{ __('messages.delete') }}
-                                </button>
-                            </form>
-                        </li>
-                        @endif
-                        @endforeach
-                        @endforeach
-                        @endif
-
-                        @endforeach
-                        @endforeach
-                    </div>
+                    <x-back-button href="{{ route('players.index') }}"></x-back-button>
                 </div>
             </div>
         </div>

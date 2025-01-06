@@ -20,38 +20,48 @@ class GameController extends Controller
     public function index(Game $game)
     {
         $games = Game::hasGamemasters()->get();
-        return view('games.create', ['games' => $games]);
+        return view('games.index', ['games' => $games]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create()
+    {
+        return view('games.create');
+    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $game_name = $request->validate([
-            'game_name' => 'required|unique:games,name'
+        // Validate input
+        $validated = $request->validate([
+            'game_name' => 'required|unique:games,name',
         ]);
-        DB::table('games')->insert(['name' => $game_name['game_name']]);
 
-        $game = Game::where('name', $game_name['game_name'])->firstOrFail();
+        // Create the game
+        Game::create(['name' => $validated['game_name']]);
 
-        if (Session::has('impersonate')) {
-            $id = Session::get('impersonate');
-        } else {
-            $id = Auth::user()->id;
+        $game = Game::where('name', $validated['game_name'])->firstOrFail();
+
+        // Authorization check
+        if ($request->user()->cannot('store', [Game::class, $request->user()])) {
+            abort(403);
         }
 
+        // Determine the user ID for the gamemaster
+        $id = Session::has('impersonate') ? Session::get('impersonate') : Auth::id();
+
+        // Insert the gamemaster record
         DB::table('gamemasters')->insert([
-            'id' => $id,
+            'user_id' => $id,
             'game_id' => $game->id,
         ]);
 
-        return redirect()->route('game.index')->with('success', 'Spiel erfolgreich erstellt!');
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Spiel erfolgreich erstellt!');
     }
 
     /**
@@ -65,17 +75,30 @@ class GameController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $game_id)
+    public function edit(Request $request, string $game_id)
     {
-        $id = Auth::user()->id;
-        if (Session::has('impersonate')) {
-            $id =  Session::get('impersonate');
-        }
+        // Determine the user ID based on session impersonation
+        $id = Session::has('impersonate') ? Session::get('impersonate') : Auth::id();
+
+        // Get the game and its associated gamemasters
         $game = Game::hasGamemasters()->findOrFail($game_id);
-        $gm_in_game = Gamemaster::where('game_id', $game_id)->pluck('id')->toArray();
-        $gamemasters = User::where('role', User::ROLE_GAMEMASTER)->whereNot('id', $id)->whereNotIn('id', $gm_in_game)->get();
-        $list = Gamemaster::where('game_id', $game_id)->whereNot('id', $id)->pluck('id')->toArray();
-        $list_gamemasters = User::whereIn('id', $list)->get();
+
+        // Get the user IDs of the gamemasters associated with the game, excluding the current user (if impersonating)
+        $gm_in_game = Gamemaster::where('game_id', $game_id)->pluck('user_id')->toArray();
+
+        // Retrieve the users who are not already gamemasters for the game and not the current user
+        $gamemasters = User::where('role', User::ROLE_GAMEMASTER)
+            ->whereNot('id', $id)
+            ->whereNotIn('id', $gm_in_game)
+            ->get();
+
+        // Get the list of gamemasters already assigned to the game excluding the current user
+        $list_gamemasters = Gamemaster::where('game_id', $game_id)
+            ->whereNot('user_id', $id)
+            ->with('user')  // Eager load the associated User model to avoid multiple queries
+            ->get()
+            ->pluck('user'); // Pluck out the user model directly
+
         return view('games.edit', [
             'game' => $game,
             'game_id' => $game_id,
@@ -89,27 +112,43 @@ class GameController extends Controller
      */
     public function update(Request $request, string $game_id)
     {
+        // Validate the input
         $validated = $request->validate([
             'game_name' => 'required|string|max:255',
         ]);
 
-        $game = Game::find($game_id);
+        // Find the game or abort if not found
+        $game = Game::findOrFail($game_id);
 
-        $game->name = $validated['game_name'];
-        $game->save();
-        $game->update();
+        // Check if the user is authorized to update the game
+        if ($request->user()->cannot('update', $game)) {
+            abort(403);
+        }
 
-        return redirect()->route('game.index');
+        // Update the game name
+        $game->update(['name' => $validated['game_name']]);
+
+        // Redirect back with a success message
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
+        // Find the game or abort if not found
         $game = Game::findOrFail($id);
+
+        // Check if the user is authorized to delete the game
+        if ($request->user()->cannot('delete', $game)) {
+            abort(403);
+        }
+
+        // Delete the game
         $game->delete();
 
-        return redirect()->route('game.index');
+        // Redirect to the games index route with a success message
+        return redirect()->route('games.index')->with('success', 'Spiel erfolgreich gelöscht!');
     }
 }

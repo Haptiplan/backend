@@ -19,7 +19,19 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        // Fetch all users and exclude the current authenticated user
+        $users = User::where('id', '!=', Auth::id())->get();
+
+        // Group the users by their role using collection methods
+        $admins = $users->where('role', User::ROLE_ADMIN);
+        $gamemasters = $users->where('role', User::ROLE_GAMEMASTER);
+        $players = $users->where('role', User::ROLE_USER);
+
+        return view('users.index', [
+            'admins' => $admins,
+            'gamemasters' => $gamemasters,
+            'players' => $players,
+        ]);
     }
 
     /**
@@ -27,14 +39,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $admins = User::where('id', '!=', Auth::id())->where('role', User::ROLE_ADMIN)->get();
-        $gamemasters = User::where('role', User::ROLE_GAMEMASTER)->get();
-        $players = User::where('role', User::ROLE_USER)->get();
-        return view('users.create', [
-            'admins' => $admins,
-            'gamemasters' => $gamemasters,
-            'players' => $players,
-        ]);
+        return view('users.create');
     }
 
     /**
@@ -43,12 +48,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required',
-            'email' => 'required|unique:users,email',
-            'role' => 'required',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email|max:255',
+            'role' => 'required|in:' . implode(',', User::ROLES),
             'password' => 'required',
         ]);
 
+        // Create the user
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -56,13 +62,14 @@ class UserController extends Controller
             'password' => bcrypt($validated['password']),
         ]);
 
-        return redirect()->route('user.create');
+        // Redirect with success message
+        return redirect()->back()->with('success', 'User created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show($id)
     {
         //
     }
@@ -72,13 +79,25 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        // Retrieve the user with the given ID
         $user = User::findOrFail($id);
-        $player = Player::find($id);
-        $gamemasters = Gamemaster::where('id', $id)->get();
+
+        // Find the associated player (if exists)
+        $player = Player::find($user->id);
+
+        // Retrieve all gamemasters associated with this user (based on user_id, not id)
+        $gamemasters = Gamemaster::where('id', $user->id)->get();
+
+        // Collect the game IDs that the gamemaster is associated with
         $game_ids = $gamemasters->pluck('game_id')->toArray();
 
+        // Retrieve the games that the user is already involved with (used games)
         $games_used = Game::whereIn('id', $game_ids)->get();
+
+        // Retrieve the games that the user is not involved with (free games)
         $games_free = Game::whereNotIn('id', $game_ids)->get();
+
+        // Return the view with the necessary data
         return view('users.edit', [
             'user' => $user,
             'player' => $player,
@@ -93,28 +112,42 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Find the user with the given ID or fail
         $user = User::findOrFail($id);
+
+        // Validate incoming data
         $validated = $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users,email,' . $user->id,
             'role' => 'required',
-            'game' => ''
+            'game' => 'nullable|exists:games,id'
         ]);
 
+        // Update the user fields
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->role = $validated['role'];
 
+        // If the user is a Gamemaster and a game is selected, add the relationship if it doesn't exist
         if ($validated['role'] == User::ROLE_GAMEMASTER && !empty($validated['game'])) {
-            if (!(DB::table('gamemasters')->where('id', $id)->where('game_id', $validated['game'])->exists())) {
-                DB::table('gamemasters')->insert([
-                    'id' => $id,
-                    'game_id' => $validated['game'],
+            $gameId = $validated['game'];
+
+            // Check if the gamemaster relationship already exists
+            $existingGamemaster = Gamemaster::where('user_id', $user->id)->where('game_id', $gameId)->first();
+
+            // If the relationship doesn't exist, create a new one
+            if (!$existingGamemaster) {
+                Gamemaster::create([
+                    'user_id' => $user->id,
+                    'game_id' => $gameId,
                 ]);
-            }        }
+            }
+        }
+        // Save the updated user
         $user->save();
 
-        return redirect()->route('user.edit', $user->id);
+        // Redirect back to the previous page
+        return redirect()->back();
     }
 
     /**
@@ -124,7 +157,7 @@ class UserController extends Controller
     {
         User::where('id', $id)->firstOrFail()->delete();
 
-        return redirect()->route('user.create');
+        return redirect()->route('users.index');
     }
 
     /**
@@ -165,7 +198,7 @@ class UserController extends Controller
             return redirect()->route('dashboard');
         } elseif ($validated['role'] == User::ROLE_GAMEMASTER && $active_user->role == User::ROLE_ADMIN) {
             $gamemaster = Gamemaster::where('game_id', $validated['game'])->firstOrFail();
-            $user = User::where('id', $gamemaster->id)->firstOrFail();
+            $user = User::where('id', $gamemaster->user_id)->firstOrFail();
             $active_user->setImpersonating($user->id);
             return redirect()->route('dashboard');
         }

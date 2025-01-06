@@ -9,14 +9,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Player extends Model
 {
     use HasFactory;
+    protected $fillable = ['id', 'company_id'];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'id', 'id');
     }
 
-    public function company(): BelongsTo
+    public function company()
     {
-        return $this->belongsTo(Company::class, 'id');
+        return $this->belongsTo(Company::class);
     }
 }
