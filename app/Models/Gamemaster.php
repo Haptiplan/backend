@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class Gamemaster extends Model
 {
     use HasFactory;
+    protected $fillable = ['id', 'game_id'];
+
 
     public function game()
     {

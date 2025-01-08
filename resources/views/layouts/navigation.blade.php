@@ -13,14 +13,14 @@ $user = User::ROLE_USER;
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    @if(Auth::check() && Auth::user()->role == $user)
+                    @if(Auth::check() && Auth::user()->role->name == $user)
                     <div class="shrink-0 flex items-center">
                         <a href="{{ route('dashboard') }}">
                             <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                         </a>
                     </div>
                     @endif
-                    @if(Auth::check() && Auth::user()->role == $admin)
+                    @if(Auth::check() && Auth::user()->role->name == $admin)
                     <x-nav-link :href="route('admin_dashboard_show')" :active="request()->routeIs('admin_dashboard_show')">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </x-nav-link>
@@ -30,7 +30,7 @@ $user = User::ROLE_USER;
                     </x-nav-link>
                     @endif
 
-                    @if(Auth::check() && Auth::user()->role == $gamemaster)
+                    @if(Auth::check() && Auth::user()->role->name == $gamemaster)
                     <x-nav-link :href="route('gamemaster_dashboard_show')" :active="request()->routeIs('gamemaster_dashboard_show')">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </x-nav-link>
@@ -45,7 +45,7 @@ $user = User::ROLE_USER;
                     </x-nav-link>
                     @endif
 
-                    @if(Auth::check() && Auth::user()->role == $user)
+                    @if(Auth::check() && Auth::user()->role->name == $user)
 
                     @endif
                 </div>
@@ -71,7 +71,7 @@ $user = User::ROLE_USER;
                             {{ __('messages.profile') }}
                         </x-dropdown-link>
 
-                        @if(Auth::check() && (Auth::user()->role == $gamemaster || Auth::user()->role == $admin) && !(Auth::user()->isImpersonating()))
+                        @if(Auth::check() && (Auth::user()->role->name == $gamemaster || Auth::user()->role->name == $admin) && !(Auth::user()->isImpersonating()))
                         <x-dropdown-link :href="route('impersonate.view')">
                             {{ __('messages.impersonate') }}
                         </x-dropdown-link>

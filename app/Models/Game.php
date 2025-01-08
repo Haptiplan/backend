@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 class Game extends Model
 {
     use HasFactory;
+    protected $fillable = ['name'];
 
     public function companies()
     {

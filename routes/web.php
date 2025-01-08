@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Route;
 
@@ -78,11 +79,10 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
     Route::resource('players', PlayerController::class)->parameters([
         'players' => 'id'
     ]);
-    
+
 });
 
 Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function(){});
-
 
 
 require __DIR__.'/auth.php';
