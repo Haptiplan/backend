@@ -19,6 +19,7 @@
                         </ul>
                     </div>
                     @endif
+                    <x-success-message></x-success-message>
                     <x-create-button href="{{ route('players.create') }}">{{ __('messages.playerCreate') }}</x-create-button>
                     <div>
                         @foreach ($games as $game)

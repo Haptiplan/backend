@@ -58,7 +58,7 @@ class GameController extends Controller
             'game_id' => $game->id,
         ]);
 
-        return redirect()->back()->with('status', 'messages.success-create');
+        return redirect()->back()->with('status', 'messages.successCreate');
     }
 
     /**
@@ -126,6 +126,6 @@ class GameController extends Controller
 
         $game->delete();
 
-        return redirect()->route('games.index')->with('status', 'message.successDelete');
+        return redirect()->route('games.index')->with('status', 'messages.successDelete');
     }
 }

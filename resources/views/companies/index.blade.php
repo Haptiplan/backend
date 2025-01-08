@@ -19,6 +19,7 @@
                             </ul>
                         </div>
                     @endif
+                    <x-success-message></x-success-message>
 
                     <x-create-button href="{{ route('companies.create') }}">{{ __('messages.companyCreate') }}</x-create-button>
                     
