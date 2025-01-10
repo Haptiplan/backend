@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Game;
 use App\Models\Gamemaster;
 use App\Models\Player;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +40,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+
+        $roles = Role::all();
+        return view('users.create',['roles' => $roles]);
     }
 
     /**
@@ -50,7 +53,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email|max:255',
-            'role' => 'required|in:' . implode(',', User::ROLES),
+            'role' => 'required',
             'password' => 'required',
         ]);
 
@@ -58,7 +61,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'role' => $validated['role'],
+            'role_id' => $validated['role'],
             'password' => bcrypt($validated['password']),
         ]);
 
@@ -168,8 +171,8 @@ class UserController extends Controller
         $user = User::findOrFail(Auth::id());
         $games = Game::all();
         $companies = Company::all();
-        if ($user->role == User::ROLE_GAMEMASTER) {
-            $game_ids = Gamemaster::where('id', $user->id)->get()->pluck('game_id')->toArray();
+        if ($user->role->name == User::ROLE_GAMEMASTER) {
+            $game_ids = Gamemaster::where('user_id', $user->id)->get()->pluck('game_id')->toArray();
             $companies = Company::where('game_id', $game_ids)->get();
         }
 
