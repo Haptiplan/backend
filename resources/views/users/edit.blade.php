@@ -38,7 +38,7 @@
                             <input type="radio" name="role" id="{{User::ROLE_USER}}" value="{{User::ROLE_USER}}">
                             <label for="{{User::ROLE_USER}}">{{ __('messages.player') }}</label><br>
                        
-                            @if ($user->role == User::ROLE_GAMEMASTER)
+                            @if ($user->role->id == User::ROLE_GAMEMASTER)
                             <label for="game" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
                                 {{ __('messages.chooseGame') }}
                             </label>
@@ -50,7 +50,7 @@
                             <x-submit-button>{{ __('messages.submit') }}</x-submit-button>
                     </form> 
                     <x-back-button href="{{ route('users.index') }}"></x-back-button>
-                    @if ($user->role == User::ROLE_GAMEMASTER)
+                    @if ($user->role->id == User::ROLE_GAMEMASTER)
                     <label for="game" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
                         {{ __('messages.listGames') }}:
                     </label>

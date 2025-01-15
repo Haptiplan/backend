@@ -129,7 +129,7 @@ class UserController extends Controller
         // Update the user fields
         $user->name = $validated['name'];
         $user->email = $validated['email'];
-        $user->role = $validated['role'];
+        $user->role->id = $validated['role_id'];
 
         // If the user is a Gamemaster and a game is selected, add the relationship if it doesn't exist
         if ($validated['role_id'] == User::ROLE_GAMEMASTER && !empty($validated['game'])) {
@@ -171,7 +171,7 @@ class UserController extends Controller
         $user = User::findOrFail(Auth::id());
         $games = Game::all();
         $companies = Company::all();
-        if ($user->role->name == User::ROLE_GAMEMASTER) {
+        if ($user->role->id->name == User::ROLE_GAMEMASTER) {
             $game_ids = Gamemaster::where('user_id', $user->id)->get()->pluck('game_id')->toArray();
             $companies = Company::where('game_id', $game_ids)->get();
         }
