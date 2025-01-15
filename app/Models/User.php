@@ -13,9 +13,9 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    const ROLE_ADMIN = 0;
-    const ROLE_GAMEMASTER = 1;
-    const ROLE_USER = 2;
+    const ROLE_ADMIN = 1;
+    const ROLE_GAMEMASTER = 2;
+    const ROLE_USER = 3;
 
     const ROLES = [
         self::ROLE_ADMIN,
