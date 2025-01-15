@@ -55,10 +55,6 @@ class AuthenticatedSessionController extends Controller
             'password' => 'required',
         ]);
 
-        $admin = User::ROLE_ADMIN;
-        $gamemaster = User::ROLE_GAMEMASTER;
-        $user = User::ROLE_USER;
-
         // remember me token
         $remember = false;
         if($request->has('remember')) {

@@ -24,9 +24,9 @@ class UserController extends Controller
         $users = User::where('id', '!=', Auth::id())->get();
 
         // Group the users by their role using collection methods
-        $admins = $users->where('role', User::ROLE_ADMIN);
-        $gamemasters = $users->where('role', User::ROLE_GAMEMASTER);
-        $players = $users->where('role', User::ROLE_USER);
+        $admins = $users->where('role_id', User::ROLE_ADMIN);
+        $gamemasters = $users->where('role_id', User::ROLE_GAMEMASTER);
+        $players = $users->where('role_id', User::ROLE_USER);
 
         return view('users.index', [
             'admins' => $admins,
@@ -53,7 +53,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email|max:255',
-            'role' => 'required',
+            'role_id' => 'required',
             'password' => 'required',
         ]);
 
@@ -122,7 +122,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users,email,' . $user->id,
-            'role' => 'required',
+            'role_id' => 'required',
             'game' => 'nullable|exists:games,id'
         ]);
 
@@ -132,7 +132,7 @@ class UserController extends Controller
         $user->role = $validated['role'];
 
         // If the user is a Gamemaster and a game is selected, add the relationship if it doesn't exist
-        if ($validated['role'] == User::ROLE_GAMEMASTER && !empty($validated['game'])) {
+        if ($validated['role_id'] == User::ROLE_GAMEMASTER && !empty($validated['game'])) {
             $gameId = $validated['game'];
 
             // Check if the gamemaster relationship already exists
@@ -189,17 +189,17 @@ class UserController extends Controller
     {
         $active_user = User::findOrFail(Auth::id());
         $validated = $request->validate([
-            'role' => 'required',
-            'company' => 'required_if:role,' . User::ROLE_USER . '|exists:companies,id',
-            'game' => 'required_if:role,' . User::ROLE_GAMEMASTER . '|exists:games,id',
+            'role_id' => 'required',
+            'company' => 'required_if:role_id,' . User::ROLE_USER . '|exists:companies,id',
+            'game' => 'required_if:role_id,' . User::ROLE_GAMEMASTER . '|exists:games,id',
         ]);
 
-        if ($validated['role'] == User::ROLE_USER && ($active_user->role == User::ROLE_ADMIN || $active_user->role == User::ROLE_GAMEMASTER)) {
+        if ($validated['role_id'] == User::ROLE_USER && ($active_user->role == User::ROLE_ADMIN || $active_user->role == User::ROLE_GAMEMASTER)) {
             $player = Player::where('company_id', $validated['company'])->firstOrFail();
             $user = User::where('id', $player->id)->firstOrFail();
             $active_user->setImpersonating($user->id);
             return redirect()->route('dashboard');
-        } elseif ($validated['role'] == User::ROLE_GAMEMASTER && $active_user->role == User::ROLE_ADMIN) {
+        } elseif ($validated['role_id'] == User::ROLE_GAMEMASTER && $active_user->role == User::ROLE_ADMIN) {
             $gamemaster = Gamemaster::where('game_id', $validated['game'])->firstOrFail();
             $user = User::where('id', $gamemaster->user_id)->firstOrFail();
             $active_user->setImpersonating($user->id);
