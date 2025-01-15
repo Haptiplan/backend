@@ -12,7 +12,7 @@ use App\Models\User; ?>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-gradient-to-r from-blue-500 to-purple-600 dark:from-gray-800 dark:to-gray-900 shadow-xl sm:rounded-lg">
                 <div class="p-8 text-white">
-                    @if (Auth::check() && Auth::user()->role->name == User::ROLE_ADMIN)
+                    @if (Auth::check() && Auth::user()->role->id == User::ROLE_ADMIN)
                         <!-- Impersonate GM Section -->
                         <h1 class="text-3xl font-extrabold mb-8">{{ __('messages.impersonateGM') }}</h1>
                         <form action="{{ route('impersonate.start') }}" method="POST" class="space-y-6">
