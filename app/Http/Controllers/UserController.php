@@ -53,12 +53,12 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email|max:255',
-            'role_id' => 'required',
+            'role' => 'required',
             'password' => 'required',
         ]);
 
         // Create the user
-        $user = User::create([
+        User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'role_id' => $validated['role'],
@@ -122,17 +122,17 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users,email,' . $user->id,
-            'role_id' => 'required',
+            'role' => 'required',
             'game' => 'nullable|exists:games,id'
         ]);
 
         // Update the user fields
         $user->name = $validated['name'];
         $user->email = $validated['email'];
-        $user->role->id = $validated['role_id'];
+        $user->role_id = $validated['role'];
 
         // If the user is a Gamemaster and a game is selected, add the relationship if it doesn't exist
-        if ($validated['role_id'] == User::ROLE_GAMEMASTER && !empty($validated['game'])) {
+        if ($validated['role'] == User::ROLE_GAMEMASTER && !empty($validated['game'])) {
             $gameId = $validated['game'];
 
             // Check if the gamemaster relationship already exists
