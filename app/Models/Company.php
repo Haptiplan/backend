@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Company extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name','game_id'];
   
     public function game()
     {
