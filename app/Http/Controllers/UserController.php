@@ -189,17 +189,17 @@ class UserController extends Controller
     {
         $active_user = User::findOrFail(Auth::id());
         $validated = $request->validate([
-            'role_id' => 'required',
+            'role' => 'required',
             'company' => 'required_if:role_id,' . User::ROLE_USER . '|exists:companies,id',
             'game' => 'required_if:role_id,' . User::ROLE_GAMEMASTER . '|exists:games,id',
         ]);
 
-        if ($validated['role_id'] == User::ROLE_USER && ($active_user->role == User::ROLE_ADMIN || $active_user->role == User::ROLE_GAMEMASTER)) {
+        if ($validated['role'] == User::ROLE_USER && ($active_user->role_id == User::ROLE_ADMIN || $active_user->role_id == User::ROLE_GAMEMASTER)) {
             $player = Player::where('company_id', $validated['company'])->firstOrFail();
             $user = User::where('id', $player->id)->firstOrFail();
             $active_user->setImpersonating($user->id);
             return redirect()->route('dashboard');
-        } elseif ($validated['role_id'] == User::ROLE_GAMEMASTER && $active_user->role == User::ROLE_ADMIN) {
+        } elseif ($validated['role'] == User::ROLE_GAMEMASTER && $active_user->role_id == User::ROLE_ADMIN) {
             $gamemaster = Gamemaster::where('game_id', $validated['game'])->firstOrFail();
             $user = User::where('id', $gamemaster->user_id)->firstOrFail();
             $active_user->setImpersonating($user->id);
