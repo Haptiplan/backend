@@ -31,7 +31,7 @@
                             <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
                                 {{ __('messages.role') }}
                             </label>
-                            <input type="radio" name="role" id="{{User::ROLE_ADMIN}}" value="{{User::ROLE_ADMIN}}">
+                            <input type="radio" name="role" id="{{User::ROLE_ADMIN}}" value="{{User::ROLE_ADMIN}}" required>
                             <label for="{{User::ROLE_ADMIN}}">{{ __('messages.admin') }}</label><br>
                             <input type="radio" name="role" id="{{User::ROLE_GAMEMASTER}}" value="{{User::ROLE_GAMEMASTER}}">
                             <label for="{{User::ROLE_GAMEMASTER}}">{{ __('messages.gamemaster') }}</label><br>
