@@ -171,7 +171,7 @@ class UserController extends Controller
         $user = User::findOrFail(Auth::id());
         $games = Game::all();
         $companies = Company::all();
-        if ($user->role->id->name == User::ROLE_GAMEMASTER) {
+        if ($user->role_id == User::ROLE_GAMEMASTER) {
             $game_ids = Gamemaster::where('user_id', $user->id)->get()->pluck('game_id')->toArray();
             $companies = Company::where('game_id', $game_ids)->get();
         }
