@@ -62,7 +62,7 @@ class CompanyController extends Controller
             'game_id' => $validated['game_id'],
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('status', 'messages.successCreate');
     }
 
     /**
@@ -118,7 +118,7 @@ class CompanyController extends Controller
             'game_id' => $validated['game_id'],
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('status', 'messages.successEdit');
     }
 
 
@@ -136,6 +136,6 @@ class CompanyController extends Controller
 
         $company->delete();
 
-        return redirect()->route('companies.index');
+        return redirect()->route('companies.index')->with('status', 'messages.successDelete');
     }
 }

@@ -22,8 +22,9 @@
                             </ul>
                         </div>
                     @endif
-
+                    
                     <!-- Game Creation Form -->
+                    <x-success-message></x-success-message>
                     <form class="space-y-8" action="{{ route('games.store') }}" method="POST">
                         @csrf
 

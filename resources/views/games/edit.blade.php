@@ -11,6 +11,7 @@
                 <div class="p-8 text-gray-900 dark:text-gray-100">
                     <!-- Game Edit Form -->
                     <h1 class="text-3xl font-semibold mb-8 text-center text-gray-900 dark:text-gray-100">{{ __('messages.gameEdit') }}</h1>
+                    <x-success-message></x-success-message>
                     <form class="space-y-8" action="{{ route('games.update', $game->id) }}" method="POST">
                         @csrf
                         @method('PUT')

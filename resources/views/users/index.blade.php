@@ -13,7 +13,7 @@ use App\Models\User; ?>
             <div class="bg-gradient-to-r from-blue-500 to-purple-600 dark:from-gray-800 dark:to-gray-900 shadow-xl sm:rounded-lg">
                 <div class="p-8 text-white">
                     <h1 class="text-4xl font-extrabold mb-8">{{ __('messages.userIndex') }}</h1>
-
+                    <x-success-message></x-success-message>
                     <div class="flex justify-end mb-6">
                         <x-create-button class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold py-2 px-4 rounded shadow-lg transition duration-300" href="{{ route('users.create') }}">
                             {{ __('messages.userCreate') }}

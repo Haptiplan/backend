@@ -22,6 +22,7 @@
                             </ul>
                         </div>
                     @endif
+                    <x-success-message></x-success-message>
 
                     <!-- Create Company Button with Gradient Background and Hover Effect -->
                     <div class="text-center mb-6">

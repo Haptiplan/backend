@@ -24,12 +24,14 @@
                     @endif
 
                     <!-- Company Creation Form -->
+                     <x-success-message></x-success-message>
                     <form class="space-y-8" action="{{ route('companies.store') }}" method="POST">
                         @csrf
 
                         <!-- Company Name Input -->
                         <div class="space-y-4">
                             <label for="company_name" class="block text-lg font-medium text-gray-700 dark:text-gray-300">
+
                                 {{ __('messages.companyName') }}
                             </label>
                             <input type="text" name="company_name" id="company_name" required

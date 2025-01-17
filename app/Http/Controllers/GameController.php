@@ -61,7 +61,7 @@ class GameController extends Controller
         ]);
 
         // Redirect back with a success message
-        return redirect()->back()->with('success', 'Spiel erfolgreich erstellt!');
+        return redirect()->back()->with('status', 'messages.successCreate');
     }
 
     /**
@@ -131,7 +131,7 @@ class GameController extends Controller
         $game->update(['name' => $validated['game_name']]);
 
         // Redirect back with a success message
-        return redirect()->back();
+        return redirect()->back()->with('status', 'messages.successEdit');
     }
 
     /**
@@ -151,6 +151,6 @@ class GameController extends Controller
         $game->delete();
 
         // Redirect to the games index route with a success message
-        return redirect()->route('games.index')->with('success', 'Spiel erfolgreich gelöscht!');
+        return redirect()->route('games.index')->with('status', 'messages.successDelete');
     }
 }

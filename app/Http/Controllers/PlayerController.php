@@ -90,7 +90,7 @@ class PlayerController extends Controller
             'company_id' => $validated['company_id'],
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('status', 'messages.successCreate');
     }
 
     /**
@@ -145,7 +145,7 @@ class PlayerController extends Controller
         $player->save(); // Use save() instead of update() when updating individual attributes
 
         // Redirect back to the previous page
-        return redirect()->back();
+        return redirect()->back()->with('status', 'messages.successEdit');
     }
 
     /**
@@ -168,6 +168,6 @@ class PlayerController extends Controller
         $player->delete();
 
         // Redirect to the players index page
-        return redirect()->route('players.index');
+        return redirect()->route('players.index')->with('status', 'messages.successDelete');
     }
 }

@@ -23,6 +23,7 @@
                     @endif
 
                     <!-- Edit Company Form -->
+                    <x-success-message></x-success-message>
                     <form class="space-y-8" action="{{ route('companies.update', $company->id) }}" method="POST">
                         @csrf
                         @method('PUT')

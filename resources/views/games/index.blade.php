@@ -21,6 +21,20 @@
                             </ul>
                         </div>
                     @endif
+                    <x-success-message></x-success-message>
+                    <x-create-button href="{{ route('games.create') }}">{{ __('messages.gameCreate') }}</x-create-button>
+                    <div>
+                        @foreach($games as $game)
+                        <li>
+                            {{$game->name}}
+                            <x-edit-button href="{{ route('games.edit', $game->id) }}"></x-edit-button>
+                            <form action="{{ route('games.destroy', $game->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <x-delete-button></x-delete-button>
+                            </form>
+                        </li>
+                        @endforeach
 
                     <!-- Create Game Button with Gradient and Hover Effect -->
                     <div class="text-center mb-6">

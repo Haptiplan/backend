@@ -10,8 +10,9 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg">
                 <div class="p-8 text-gray-900 dark:text-gray-100">
                     <h1 class="text-3xl font-semibold text-center mb-8 text-gray-900 dark:text-gray-100">{{ __('messages.playerEdit') }}</h1>
-
+                    <x-success-message></x-success-message>
                     <form action="{{ route('players.update', $player->id) }}" method="POST" class="space-y-10">
+
                         @csrf
                         @method('PUT')
 

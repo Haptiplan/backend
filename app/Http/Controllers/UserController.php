@@ -66,7 +66,7 @@ class UserController extends Controller
         ]);
 
         // Redirect with success message
-        return redirect()->back()->with('success', 'User created successfully!');
+        return redirect()->back()->with('status', 'messages.successCreate');
     }
 
     /**
@@ -150,7 +150,7 @@ class UserController extends Controller
         $user->save();
 
         // Redirect back to the previous page
-        return redirect()->back();
+        return redirect()->back()->with('status', 'messages.successEdit');
     }
 
     /**
@@ -160,7 +160,7 @@ class UserController extends Controller
     {
         User::where('id', $id)->firstOrFail()->delete();
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('status', 'messages.successDelete');
     }
 
     /**
@@ -206,7 +206,7 @@ class UserController extends Controller
             return redirect()->route('dashboard');
         }
 
-        return redirect()->route('impersonate.view');
+        return redirect()->route('impersonate.view')->with('status', 'messages.fail');
     }
 
     /**

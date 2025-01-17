@@ -30,7 +30,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 */
 
-Route::middleware(['localization', 'auth'])->group(function () {
+Route::middleware(['web', 'localization', 'auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -52,7 +52,7 @@ Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(functi
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin_dashboard_show');
 });
 
-Route::middleware(['localization', 'verified','check_role:' . $admin])->group(function(){
+Route::middleware(['web', 'localization', 'verified','check_role:' . $admin])->group(function(){
     Route::resource('users', UserController::class)->parameters(['users' => 'id']);
 });
 
@@ -61,7 +61,7 @@ Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->gr
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
 
-Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
+Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
     /** Games **/
     Route::resource('games', GameController::class)->parameters([
         'games' => 'id'

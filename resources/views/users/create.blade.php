@@ -13,7 +13,9 @@ use App\Models\User; ?>
             <div class="bg-gradient-to-r from-blue-500 to-purple-600 dark:from-gray-800 dark:to-gray-900 shadow-xl sm:rounded-lg">
                 <div class="p-8 text-white">
                     <h1 class="text-3xl font-extrabold mb-8">{{ __('messages.userCreate') }}</h1>
+                    <x-success-message></x-success-message>
                     <form class="space-y-6" action="{{ route('users.store') }}" method="POST">
+
                         @csrf
                         <!-- Username -->
                         <div>
