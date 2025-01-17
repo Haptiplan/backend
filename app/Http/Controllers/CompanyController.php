@@ -42,7 +42,7 @@ class CompanyController extends Controller
             'game_id' => [
                 'required',
                 'exists:games,id',
-                function (string $attribute, mixed $value, $fail) {
+                function (string $attribute, mixed $value, $fail) use($request) {
                     if (Company::where('name', $request->input('company_name'))
                         ->where('game_id', $value)
                         ->exists()) {
@@ -62,7 +62,7 @@ class CompanyController extends Controller
             'game_id' => $validated['game_id'],
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('status', 'messages.successCreate');
     }
 
     /**
@@ -97,7 +97,7 @@ class CompanyController extends Controller
             'game_id' => [
                 'required',
                 'exists:games,id',
-                function (string $attribute, mixed $value, $fail) use ($company) {
+                function (string $attribute, mixed $value, $fail) use ($company, $request) {
                     if (Company::where('name', $request->input('company_name'))
                         ->where('game_id', $value)
                         ->where('id', '!=', $company->id)
@@ -118,7 +118,7 @@ class CompanyController extends Controller
             'game_id' => $validated['game_id'],
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('status', 'messages.successEdit');
     }
 
 
@@ -136,6 +136,6 @@ class CompanyController extends Controller
 
         $company->delete();
 
-        return redirect()->route('companies.index');
+        return redirect()->route('companies.index')->with('status', 'messages.successDelete');
     }
 }

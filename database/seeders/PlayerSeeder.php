@@ -28,7 +28,7 @@ class PlayerSeeder extends Seeder
             (new UserSeeder)->run();
             $users = User::all();
         }
-        $user = $users->where('role', User::ROLE_USER)->pluck('id')->random();
+        $user = $users->where('role_id', User::ROLE_USER)->pluck('id')->random();
         $playerObj->id = $user;
         $playerObj->company_id = $company;
         $playerObj->save();

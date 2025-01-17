@@ -61,7 +61,7 @@ class GameController extends Controller
         ]);
 
         // Redirect back with a success message
-        return redirect()->back()->with('success', 'Spiel erfolgreich erstellt!');
+        return redirect()->back()->with('status', 'messages.successCreate');
     }
 
     /**
@@ -87,8 +87,10 @@ class GameController extends Controller
         $gm_in_game = Gamemaster::where('game_id', $game_id)->pluck('user_id')->toArray();
 
         // Retrieve the users who are not already gamemasters for the game and not the current user
-        $gamemasters = User::where('role', User::ROLE_GAMEMASTER)
-            ->whereNot('id', $id)
+        $gamemasters = User::whereHas('role', function ($query) {
+            $query->where('name', 'gamemaster');
+        })
+            ->where('id', '!=', $id)
             ->whereNotIn('id', $gm_in_game)
             ->get();
 
@@ -129,7 +131,7 @@ class GameController extends Controller
         $game->update(['name' => $validated['game_name']]);
 
         // Redirect back with a success message
-        return redirect()->back();
+        return redirect()->back()->with('status', 'messages.successEdit');
     }
 
     /**
@@ -149,6 +151,6 @@ class GameController extends Controller
         $game->delete();
 
         // Redirect to the games index route with a success message
-        return redirect()->route('games.index')->with('success', 'Spiel erfolgreich gelöscht!');
+        return redirect()->route('games.index')->with('status', 'messages.successDelete');
     }
 }

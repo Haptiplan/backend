@@ -23,9 +23,9 @@ class GamemasterPolicy
             $user = User::find(Session::get('impersonate'));
         }
 
-        if ($user->role == User::ROLE_ADMIN) return Response::allow();
+        if ($user->role->id == User::ROLE_ADMIN) return Response::allow();
 
-        return ($user->role == User::ROLE_GAMEMASTER)
+        return ($user->role->id == User::ROLE_GAMEMASTER)
             ? Response::allow()
             : Response::deny();
     }
@@ -36,7 +36,7 @@ class GamemasterPolicy
             $user = User::find(Session::get('impersonate'));
         }
 
-        if ($user->role == User::ROLE_ADMIN) return Response::allow();
+        if ($user->role->id == User::ROLE_ADMIN) return Response::allow();
 
         return in_array($game->id, $game->hasGamemasters()->pluck('id')->toArray())
             ? Response::allow()
@@ -49,7 +49,7 @@ class GamemasterPolicy
             $user = User::find(Session::get('impersonate'));
         }
 
-        return $user->role == User::ROLE_ADMIN
+        return $user->role->id == User::ROLE_ADMIN
             ? Response::allow()
             : Response::deny();
     }

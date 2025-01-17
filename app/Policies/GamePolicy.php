@@ -24,7 +24,7 @@ class GamePolicy
             $user = User::find(Session::get('impersonate'));
         }
 
-        return $user->role == User::ROLE_GAMEMASTER
+        return $user->role->id == User::ROLE_GAMEMASTER
             ? Response::allow()
             : Response::deny();
     }

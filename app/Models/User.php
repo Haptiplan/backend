@@ -13,14 +13,14 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    const ROLE_ADMIN = 0;
-    const ROLE_GAMEMASTER = 1;
-    const ROLE_USER = 2;
+    const ROLE_ADMIN = 1;
+    const ROLE_GAMEMASTER = 2;
+    const ROLE_USER = 3;
 
     const ROLES = [
         self::ROLE_ADMIN,
-        self::ROLE_USER,
         self::ROLE_GAMEMASTER,
+        self::ROLE_USER
     ];
 
     public function player(): HasOne
@@ -41,7 +41,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'role_id',
     ];
 
     /**
@@ -67,18 +67,23 @@ class User extends Authenticatable
         ];
     }
 
-    public function setImpersonating($id)
+    public function setImpersonating($id): void
     {
         Session::put('impersonate', $id);
     }
 
-    public function stopImpersonating()
+    public function stopImpersonating(): void
     {
         Session::forget('impersonate');
     }
 
-    public function isImpersonating()
+    public function isImpersonating(): bool
     {
         return Session::has('impersonate');
+    }
+
+    public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'role_id');
     }
 }
