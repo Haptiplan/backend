@@ -13,14 +13,14 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    const ROLE_ADMIN = 'admin';
-    const ROLE_GAMEMASTER = 'gamemaster';
-    const ROLE_USER = 'user';
+    const ROLE_ADMIN = 1;
+    const ROLE_GAMEMASTER = 2;
+    const ROLE_USER = 3;
 
     const ROLES = [
         self::ROLE_ADMIN,
-        self::ROLE_USER,
         self::ROLE_GAMEMASTER,
+        self::ROLE_USER
     ];
 
     public function player(): HasOne
@@ -41,7 +41,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'role_id',
     ];
 
     /**

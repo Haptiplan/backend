@@ -87,8 +87,10 @@ class GameController extends Controller
         $gm_in_game = Gamemaster::where('game_id', $game_id)->pluck('user_id')->toArray();
 
         // Retrieve the users who are not already gamemasters for the game and not the current user
-        $gamemasters = User::where('role', User::ROLE_GAMEMASTER)
-            ->whereNot('id', $id)
+        $gamemasters = User::whereHas('role', function ($query) {
+            $query->where('name', 'gamemaster');
+        })
+            ->where('id', '!=', $id)
             ->whereNotIn('id', $gm_in_game)
             ->get();
 

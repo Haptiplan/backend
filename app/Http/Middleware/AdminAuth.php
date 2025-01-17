@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminAuth
@@ -17,7 +18,7 @@ class AdminAuth
     public function handle(Request $request, Closure $next): Response
     {
         $admin = \App\Models\User::ROLE_ADMIN;
-        if(Auth()->user()->role == $admin ){
+        if(Auth::user()->role->id == $admin ){
             return $next($request);
         }else{
             return redirect()->route('login')->with('error', 'You do not have permission to access this page !');

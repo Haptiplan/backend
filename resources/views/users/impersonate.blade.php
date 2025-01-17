@@ -10,53 +10,67 @@ use App\Models\User; ?>
     </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @if (Auth::check() && Auth::user()->role == User::ROLE_ADMIN)
-                    <h1 class="text-2xl font-bold mb-6">{{ __('messages.impersonateGM') }}</h1>
-                    <form class="space-y-4" action="{{ route('impersonate.start') }}" method="POST">
-                        @csrf
-                        <div>
-                            <label for="game" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ __('messages.chooseGame') }}
-                            </label>
-                            @foreach ($games as $game)
-                            <input type="radio" name="game" id="{{$game->id}}" value="{{$game->id}}" class="ml-10">
-                            <label for="{{$game->id}}">{{$game->name}}</label><br>
-                            @endforeach
-                            <input name="role" id="role" required hidden value="{{ User::ROLE_GAMEMASTER }}"></input>
-                        </div>
-                        <div>
-                            <x-submit-button>
-                                {{ __('messages.impersonateGM') }}
-                            </x-submit-button>
-                        </div>
-                    </form>
+            <div class="bg-gradient-to-r from-blue-500 to-purple-600 dark:from-gray-800 dark:to-gray-900 shadow-xl sm:rounded-lg">
+                <div class="p-8 text-white">
+                    @if (Auth::check() && Auth::user()->role->id == User::ROLE_ADMIN)
+                        <!-- Impersonate GM Section -->
+                        <h1 class="text-3xl font-extrabold mb-8">{{ __('messages.impersonateGM') }}</h1>
+                        <form action="{{ route('impersonate.start') }}" method="POST" class="space-y-6">
+                            @csrf
+                            <div>
+                                <label for="game" class="block text-lg font-medium mb-2">
+                                    {{ __('messages.chooseGame') }}
+                                </label>
+                                @foreach ($games as $game)
+                                    <div class="flex items-center space-x-3">
+                                        <input type="radio" name="game" id="game-{{$game->id}}" value="{{$game->id}}" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500">
+                                        <label for="game-{{$game->id}}" class="text-lg">
+                                            {{$game->name}}
+                                        </label>
+                                    </div>
+                                @endforeach
+                                <input name="role" id="role" required hidden value="{{ User::ROLE_GAMEMASTER }}">
+                            </div>
+                            <div>
+                                <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 px-6 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                                    {{ __('messages.impersonateGM') }}
+                                </button>
+                            </div>
+                        </form>
                     @endif
-                    <h1 class="text-2xl font-bold mb-6">{{ __('messages.impersonatePlayer') }}</h1>
-                    <form class="space-y-4" action="{{ route('impersonate.start') }}" method="POST">
+
+                    <!-- Impersonate Player Section -->
+                    <h1 class="text-3xl font-extrabold mt-12 mb-8">{{ __('messages.impersonatePlayer') }}</h1>
+                    <form action="{{ route('impersonate.start') }}" method="POST" class="space-y-6">
                         @csrf
                         <div>
-                            <label for="company" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <label for="company" class="block text-lg font-medium mb-2">
                                 {{ __('messages.company') }}
                             </label>
                             @foreach ($games as $game)
-                            <label class="text-sm font-medium ml-5 text-gray-700 dark:text-gray-300">{{ __('messages.game') }}: {{$game->name}}</label><br>
-                            @foreach ($companies->where('game_id', $game->id) as $company)
-                            <input type="radio" name="company" id="{{$company->id}}" value="{{$company->id}}" class="ml-10">
-                            <label for="{{$company->id}}">{{$company->name}}</label><br>
+                                <div class="mb-4">
+                                    <p class="text-lg font-bold mb-2">{{ __('messages.game') }}: {{$game->name}}</p>
+                                    @foreach ($companies->where('game_id', $game->id) as $company)
+                                        <div class="flex items-center space-x-3">
+                                            <input type="radio" name="company" id="company-{{$company->id}}" value="{{$company->id}}" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500">
+                                            <label for="company-{{$company->id}}" class="text-lg">
+                                                {{$company->name}}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
                             @endforeach
-                            @endforeach
-                            <input name="role" id="role" required hidden value="{{ User::ROLE_USER }}"></input>
+                            <input name="role" id="role" required hidden value="{{ User::ROLE_USER }}">
                         </div>
                         <div>
-                            <x-submit-button>
+                            <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 px-6 rounded-full shadow-lg transition-transform transform hover:scale-105">
                                 {{ __('messages.impersonatePlayer') }}
-                            </x-submit-button>
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
 </x-app-layout>

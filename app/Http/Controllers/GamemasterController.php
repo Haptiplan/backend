@@ -50,7 +50,7 @@ class GamemasterController extends Controller
     public function destroyOne(Request $request, $id, $game_id)
     {
         // Retrieve the Gamemaster record
-        $gamemaster = Gamemaster::where('id', $id)->where('game_id', $game_id);
+        $gamemaster = Gamemaster::where('user_id', $id)->where('game_id', $game_id);
 
         // If Gamemaster doesn't exist, abort with 404
         if (!$gamemaster) {

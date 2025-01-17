@@ -43,7 +43,9 @@ class PlayerController extends Controller
     public function create(Request $request)
     {
         // Fetch users who do not have a player record.
-        $users = User::where('role', User::ROLE_USER)
+        $users = User::whereHas('role', function ($query) {
+            $query->where('name', 'user');
+        })
             ->whereNotIn('id', Player::pluck('id'))
             ->get();
 

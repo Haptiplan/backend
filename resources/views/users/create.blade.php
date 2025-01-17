@@ -10,45 +10,82 @@ use App\Models\User; ?>
     </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h1 class="text-2xl font-bold mb-6">{{ __('messages.userCreate') }}</h1>
+            <div class="bg-gradient-to-r from-blue-500 to-purple-600 dark:from-gray-800 dark:to-gray-900 shadow-xl sm:rounded-lg">
+                <div class="p-8 text-white">
+                    <h1 class="text-3xl font-extrabold mb-8">{{ __('messages.userCreate') }}</h1>
                     <x-success-message></x-success-message>
-                    <form class="space-y-4" action="{{ route('users.store') }}" method="POST">
+                    <form class="space-y-6" action="{{ route('users.store') }}" method="POST">
+
                         @csrf
+                        <!-- Username -->
                         <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <label for="name" class="block text-lg font-medium mb-2">
                                 {{ __('messages.username') }}
                             </label>
-                            <input type="text" name="name" id="name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
+                            <input type="text" name="name" id="name" required
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm
+                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
+                        </div>
 
-                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-lg font-medium mb-2">
                                 {{ __('messages.email') }}
                             </label>
-                            <input type="email" name="email" id="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
+                            <input type="email" name="email" id="email" required
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm
+                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
+                        </div>
 
-                            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
+                        <!-- Password -->
+                        <div>
+                            <label for="password" class="block text-lg font-medium mb-2">
                                 {{ __('messages.password') }}
                             </label>
-                            <input type="password" name="password" id="password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
+                            <input type="password" name="password" id="password" required
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm
+                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">
+                        </div>
 
-                            <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">
+                        <!-- Roles -->
+                        <div>
+                            <label for="role" class="block text-lg font-medium mb-4">
                                 {{ __('messages.role') }}
                             </label>
-                            <input type="radio" name="role" id="{{User::ROLE_ADMIN}}" value="{{User::ROLE_ADMIN}}">
-                            <label for="{{User::ROLE_ADMIN}}">{{ __('messages.admin') }}</label><br>
-                            <input type="radio" name="role" id="{{User::ROLE_GAMEMASTER}}" value="{{User::ROLE_GAMEMASTER}}">
-                            <label for="{{User::ROLE_GAMEMASTER}}">{{ __('messages.gamemaster') }}</label><br>
-                            <input type="radio" name="role" id="{{User::ROLE_USER}}" value="{{User::ROLE_USER}}">
-                            <label for="{{User::ROLE_USER}}">{{ __('messages.player') }}</label><br>
+                            <div class="space-y-2">
+                                @foreach($roles as $role)
+                                    <div class="flex items-center space-x-3">
+                                        <input type="radio" name="role" id="role_{{ $role->id }}" value="{{ $role->id }}" required
+                                               class="w-5 h-5 text-indigo-600 focus:ring-indigo-500">
+                                        <label for="role_{{ $role->id }}" class="text-lg">
+                                            {{ $role->name }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
+
+                        <!-- Submit Button -->
                         <div>
-                            <x-submit-button>{{ __('messages.create') }}</x-submit-button>
+                            <button type="submit"
+                                    class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 px-6 rounded-lg shadow-lg
+                                transition-transform transform hover:scale-105">
+                                {{ __('messages.create') }}
+                            </button>
                         </div>
                     </form>
-                    <x-back-button href="{{ route('users.index') }}"></x-back-button>
+
+                    <!-- Back Button -->
+                    <div class="mt-6">
+                        <x-back-button href="{{ route('users.index') }}"
+                                       class="w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg
+                                   transition-transform transform hover:scale-105">
+                            {{ __('messages.back') }}
+                        </x-back-button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </x-app-layout>
