@@ -24,35 +24,35 @@ class UserSeeder extends Seeder
         $userObj->name = 'User Hicham';
         $userObj->email = 'uh@gmail.com';
         $userObj->password = Hash::make('123');
-        $userObj->role = $user;
+        $userObj->role_id = $user;
         $userObj->save();
 
         $userObj2 = new User();
         $userObj2->name = 'Test User';
         $userObj2->email = 'test@test.com';
         $userObj2->password = Hash::make('123');
-        $userObj2->role = $user;
+        $userObj2->role_id = $user;
         $userObj2->save();
 
         $gamemasterObj = new User();
         $gamemasterObj->name = 'Gamemaster Hicham';
         $gamemasterObj->email = 'gh@gmail.com';
         $gamemasterObj->password = Hash::make('123');
-        $gamemasterObj->role = $gamemaster;
+        $gamemasterObj->role_id = $gamemaster;
         $gamemasterObj->save();
 
         $gamemasterObj2 = new User();
         $gamemasterObj2->name = 'Test Gamemaster';
         $gamemasterObj2->email = 'gt@test.com';
         $gamemasterObj2->password = Hash::make('123');
-        $gamemasterObj2->role = $gamemaster;
+        $gamemasterObj2->role_id = $gamemaster;
         $gamemasterObj2->save();
 
         $adminObj = new User();
         $adminObj->name = 'Admin Hicham';
         $adminObj->email = 'ah@gmail.com';
         $adminObj->password = Hash::make('123');
-        $adminObj->role = $admin;
+        $adminObj->role_id = $admin;
         $adminObj->save();
     }
 }

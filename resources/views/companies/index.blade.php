@@ -45,7 +45,7 @@
                                                         <span class="text-gray-800 dark:text-gray-200 text-lg">{{ $company->name }}</span>
                                                         <div class="flex items-center space-x-2">
                                                             <!-- Edit Button with Elegant Hover Effect -->
-                                                            <x-edit-button href="{{ route('games.edit', $game->id) }}" class="text-white hover:text-blue-800 dark:hover:text-blue-200 transition duration-300 ease-in-out transform hover:scale-110"></x-edit-button>
+                                                            <x-edit-button href="{{ route('companies.edit', $company->id) }}" class="text-white hover:text-blue-800 dark:hover:text-blue-200 transition duration-300 ease-in-out transform hover:scale-110"></x-edit-button>
 
                                                             <!-- Delete Button with Confirmation and Smooth Hover Effect -->
                                                             <form action="{{ route('companies.destroy', $company->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this company?');">

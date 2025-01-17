@@ -53,7 +53,7 @@ use App\Models\User; ?>
                             <div class="space-y-2">
                                 @foreach($roles as $role)
                                     <div class="flex items-center space-x-3">
-                                        <input type="radio" name="role" id="role_{{ $role->id }}" value="{{ $role->id }}"
+                                        <input type="radio" name="role" id="role_{{ $role->id }}" value="{{ $role->id }}" required
                                                class="w-5 h-5 text-indigo-600 focus:ring-indigo-500">
                                         <label for="role_{{ $role->id }}" class="text-lg">
                                             {{ $role->name }}
