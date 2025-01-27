@@ -2,13 +2,17 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DecisionController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GamemasterController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
+
+
 use App\Models\User;
 use App\Http\Controllers\UserController;
+use App\Models\Decision;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -57,7 +61,9 @@ Route::middleware(['web', 'localization', 'verified','check_role:' . $admin])->g
 });
 
 /**Gamemaster routes **/
-Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->group(function(){
+Route::middleware(['localization', 'gamemaster_auth'])
+->prefix('gamemaster')
+->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
 
@@ -79,6 +85,9 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
     Route::resource('players', PlayerController::class)->parameters([
         'players' => 'id'
     ]);
+     /** Decision **/
+    Route::resource('decisions', DecisionController::class)->only(
+        ['index', 'destroy']);
 
 });
 

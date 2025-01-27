@@ -62,6 +62,7 @@ return [
     'machineName' => 'Maschinenname',
     'name' => 'Name',
     'navCompany' => 'Unternehmen',
+    'navDecision' => 'Entscheidungen',
     'navGame' => 'Spiele',
     'navMachine' => 'Maschinen',
     'navPlayer' => 'Spieler',

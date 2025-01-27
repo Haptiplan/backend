@@ -62,6 +62,7 @@ return [
     'machineName' => 'Machine name',
     'name' => 'Name',
     'navCompany' => 'Create Company',
+    'navDecision' => 'Decision',
     'navGame' => 'Create Game',
     'navMachine' => 'Create Machine',
     'navPlayer' => 'Assign Player',
