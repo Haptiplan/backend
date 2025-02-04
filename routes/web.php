@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DecisionController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GamemasterController;
 use App\Http\Controllers\LanguageController;
@@ -61,6 +62,9 @@ Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->gr
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
 
+Route::middleware('check_period')
+        ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decision.check');
+
 Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
     /** Games **/
     Route::resource('games', GameController::class)->parameters([
@@ -80,6 +84,15 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
         'players' => 'id'
     ]);
 
+});
+
+//todo ::resource
+Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function () {
+    //** Decisions **/
+    Route::get('/decision', [DecisionController::class, 'index'])->name('decision.index');
+    Route::get('/create_decision', [DecisionController::class, 'create'])->name('decision.create');
+    Route::post('/create_decision', [DecisionController::class, 'store'])->name('decision.store');
+    Route::get('/decision/{id}', [DecisionController::class, 'show'])->name('decision.show');
 });
 
 Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function(){});
