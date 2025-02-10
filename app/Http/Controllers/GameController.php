@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Game;
 use App\Models\Gamemaster;
 use App\Models\User;
@@ -153,4 +154,37 @@ class GameController extends Controller
         // Redirect to the games index route with a success message
         return redirect()->route('games.index')->with('status', 'messages.successDelete');
     }
+
+    public function continue(Request $request)
+    {
+        $validated = $request->validate([
+            'game_id' => 'required|exists:games,id',
+        ]);
+
+        if (!$request->has('done')) {
+            return redirect()->back()->withErrors(['error' => __('validation.custom.no_decision')]);
+        }
+
+        $finished = array_sum($request['done']);
+        $game = Game::find($validated['game_id']);
+        $companies = Company::where('game_id', $game->id)->count();
+
+        if ($finished < $companies) {
+            return redirect()->back()->withErrors(['error' => __('validation.custom.no_decision')]);
+        }
+
+        if ($game->current_period_number <= $game->max_period_number) {
+            $game->increment('current_period_number');
+        }
+        return redirect()->route('decision.check', [$game->id, $game->current_period_number]);
+    }  
+    public function changeStatus(string $id)
+    {
+        $game = Game::findOrFail($id);
+        $game = DB::table('games')->where('id', $id)->first();
+        $newStatus = $game->active == 1 ? 0 : 1;
+        DB::table('games')->where('id', $id)->update(['active' => $newStatus]);
+        return redirect()->route('game.index');
+    }
 }
+
