@@ -175,6 +175,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'no_decision' => 'Not all decisions have been mate yet.',
+        'no_game' => 'Game not found.',
+        'unvalid_period' => 'The selected period is invalid.',
     ],
 
     /*
@@ -189,18 +192,22 @@ return [
     */
 
     'attributes' => [
+        'active' => 'active',
         'company_id' => 'company ID',
         'created_at' => 'created at',
+        'current_password' => 'current password',
         'current_period_number' => 'current period number',
         'email' => 'e-mail address',
         'game_id' => 'game ID',
         'game_name' => 'game name',
         'id' => 'ID',
+        'max_period_number' => 'period length',
         'name' => 'name',
         'password' => 'password',
+        'period' => 'period',
         'role' => 'role',
         'updated_at' => 'updated at',
-        'current_password' => 'current password'
+        
     ],
 
 ];
