@@ -62,7 +62,7 @@ Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->gr
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
 
-Route::middleware('check_period')
+Route::middleware(['localization', 'verified', 'impersonate', 'check_period'])
         ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decision.check');
         
 Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
