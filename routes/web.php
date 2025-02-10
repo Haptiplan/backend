@@ -64,6 +64,9 @@ Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->gr
 
 Route::middleware('check_period')
         ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decision.check');
+        
+Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
+Route::post('/change_status/{id}', [GameController::class, 'changeStatus'])->name('game.status');
 
 Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
     /** Games **/
