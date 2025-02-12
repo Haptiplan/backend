@@ -21,7 +21,7 @@ class GameController extends Controller
     public function index(Game $game)
     {
         $games = Game::hasGamemasters()->get();
-        return view('games.index', ['games' => $games]);
+        return view('gamemaster.games.index', ['games' => $games]);
     }
 
     /**
@@ -29,7 +29,7 @@ class GameController extends Controller
      */
     public function create()
     {
-        return view('games.create');
+        return view('gamemaster.games.create');
     }
 
     /**
@@ -102,7 +102,7 @@ class GameController extends Controller
             ->get()
             ->pluck('user'); // Pluck out the user model directly
 
-        return view('games.edit', [
+        return view('gamemaster.games.edit', [
             'game' => $game,
             'game_id' => $game_id,
             'gamemasters' => $gamemasters,
@@ -152,7 +152,7 @@ class GameController extends Controller
         $game->delete();
 
         // Redirect to the games index route with a success message
-        return redirect()->route('games.index')->with('status', 'messages.successDelete');
+        return redirect()->route('gamemaster.games.index')->with('status', 'messages.successDelete');
     }
 
     public function continue(Request $request)
@@ -184,7 +184,7 @@ class GameController extends Controller
         $game = DB::table('games')->where('id', $id)->first();
         $newStatus = $game->active == 1 ? 0 : 1;
         DB::table('games')->where('id', $id)->update(['active' => $newStatus]);
-        return redirect()->route('game.index');
+        return redirect()->route('gamemaster.game.index');
     }
 }
 

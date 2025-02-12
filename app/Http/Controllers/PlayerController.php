@@ -29,7 +29,7 @@ class PlayerController extends Controller
         // Get the players related to these companies (eager loading done in the above query)
         $players = Player::whereIn('company_id', $companies->pluck('id'))->get();
 
-        return view('players.index', [
+        return view('gamemaster.players.index', [
             'user_list' => $user_list,
             'companies' => $companies,
             'players' => $players,
@@ -56,7 +56,7 @@ class PlayerController extends Controller
         $game_ids = $games->pluck('id')->toArray();
         $companies = Company::whereIn('game_id', $game_ids)->get();
 
-        return view('players.create', [
+        return view('gamemaster.players.create', [
             'users' => $users,
             'games' => $games,
             'companies' => $companies,
@@ -113,7 +113,7 @@ class PlayerController extends Controller
         $companies = Company::all();
         $games = Game::all();
 
-        return view('players.edit', [
+        return view('gamemaster.players.edit', [
             'user' => $user,
             'player' => $player,
             'companies' => $companies,
@@ -168,6 +168,6 @@ class PlayerController extends Controller
         $player->delete();
 
         // Redirect to the players index page
-        return redirect()->route('players.index')->with('status', 'messages.successDelete');
+        return redirect()->route('gamemaster.players.index')->with('status', 'messages.successDelete');
     }
 }
