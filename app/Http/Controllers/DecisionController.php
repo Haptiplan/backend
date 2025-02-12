@@ -34,10 +34,10 @@ class DecisionController extends Controller
         $decisions = Decision::whereIn('player_id', $player_ids)->get();
 
         if (($decisions->max('period') < $game->current_period_number) || $decisions->isEmpty()) {
-            return redirect()->route('decision.create');
+            return redirect()->route('gamemaster.decision.create');
         }
 
-        return view('decisions.index', [
+        return view('user.decision.index', [
             'decisions' => $decisions,
         ]);
     }
@@ -60,10 +60,10 @@ class DecisionController extends Controller
         $decisions = Decision::whereIn('player_id', $player_ids)->orderByDesc('id')->get();
 
         if ($decisions->isNotEmpty() && ($decisions->max('period') >= $game->current_period_number)) {
-            return redirect()->route('decision.index');
+            return redirect()->route('user.decision.index');
         }
 
-        return view('decisions.create', [
+        return view('gamemaster.decisions.create', [
             'decisions' => $decisions,
             'period' => $game->current_period_number,
             'player' => $player,
@@ -97,7 +97,7 @@ class DecisionController extends Controller
         $decision = Decision::findOrFail($id);
         $decision_maker = User::where('id', $decision->player_id)->first();
 
-        return view('decisions.show', [
+        return view('gamemaster.decisions.show', [
             'decision' => $decision,
             'decision_maker' => $decision_maker,
         ]);
@@ -121,7 +121,7 @@ class DecisionController extends Controller
             ->whereIn('users.id', $decisions->pluck('player_id')->toArray())
             ->get();
 
-        return view('decisions.check', [
+        return view('gamemaster.decisions.check', [
             'all_games' => $all_games,
             'all_companies' => $all_companies,
             'period' => $period,
