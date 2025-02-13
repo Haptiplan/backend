@@ -115,19 +115,28 @@ class GameController extends Controller
      */
     public function update(Request $request, string $game_id)
     {
-        // Validate the input
-        $validated = $request->validate([
-            'game_name' => 'required|string|max:255',
-        ]);
-
         // Find the game or abort if not found
         $game = Game::findOrFail($game_id);
+        $validated = $request->validate([
+            'game_name' => [
+                'required',
+                'string',
+                'max:255',
+                function (string $attribute, mixed $value, $fail) use ($game) {
+                    if (Game::where('name', $value)
+                        ->where('id', '!=', $game->id)
+                        ->exists()) {
+                        $fail(__('validation.gameNameTaken'));
+                        //dd("test");
+                    }
+                },
+            ],
+        ]);
 
         // Check if the user is authorized to update the game
         if ($request->user()->cannot('update', $game)) {
             abort(403);
         }
-
         // Update the game name
         $game->update(['name' => $validated['game_name']]);
 
