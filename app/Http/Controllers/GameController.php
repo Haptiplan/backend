@@ -127,7 +127,6 @@ class GameController extends Controller
                         ->where('id', '!=', $game->id)
                         ->exists()) {
                         $fail(__('validation.gameNameTaken'));
-                        //dd("test");
                     }
                 },
             ],

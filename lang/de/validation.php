@@ -56,6 +56,7 @@ return [
     'extensions' => 'Das :attribute Feld muss eine der folgenden Erwiterungen haben: :values.',
     'file' => 'Das :attribute Feld muss eine Datei sein.',
     'filled' => 'Das :attribute Feld muss einen Wert haben.',
+    'gameNameTaken' => 'Der Name des Spiels ist bereits vergeben!.',
     'gt' => [
         'array' => 'Das :attribute Feld muss mehr als :value Einheiten haben.',
         'file' => 'Die :attribute Datei muss größer als :value Kilobytes sein.',
