@@ -174,6 +174,9 @@ return [
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
+            'no_decision' => 'Es sind noch nicht alle Entscheidungen vorhanden.',
+            'no_game' => 'Kein Spiel gefunden.',
+            'unvalid_period' => 'Die ausgewählte Periode ist ungültig.',
         ],
     ],
 
@@ -189,18 +192,22 @@ return [
     */
 
     'attributes' => [
+        'active' => 'aktiv',
         'company_id' => 'Unternehmens ID',
         'created_at' => 'erstellt am',
+        'current_password' => 'aktuelle Passwort',
         'current_period_number' => 'aktuelle Perioden Nummer',
         'email' => 'E-Mail Adresse',
         'game_id' => 'Spiel ID',
         'game_name' => 'Spiel Name',
         'id' => 'ID',
+        'max_period_number' => 'Perioden Anzahl',
         'name' => 'Name',
         'password' => 'Passwort',
+        'period' => 'Periode',
         'role' => 'Rolle',
         'updated_at' => 'aktualisiert am',
-        'current_password' => 'aktuelle Passwort'
+        
     ],
 
 ];

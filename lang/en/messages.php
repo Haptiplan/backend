@@ -9,7 +9,7 @@ return [
     | The following language lines are used for individual messages in the views.
     |
     */
-
+    'activateGame' => 'Activate Game',
     'admin' => 'Admin',
     'adminDashboard' => 'This is the admin dashboard!',
     'activeGames' => 'Active games',
@@ -19,6 +19,8 @@ return [
     'chooseGame' => 'Choose a game!',
     'chooseGameGamemaster' => 'Choose a game for the gamemaster!',
     'chooseGamemaster' => 'Choose a gamemaster!',
+    'choosePeriod'=> 'Choose a Period',
+    'choosePeriodLength' => 'Choose a period length',
     'chooseRole' => 'Choose a user role!',
     'chooseUser' => 'Choose a user!',
     'company' => 'Company',
@@ -27,7 +29,14 @@ return [
     'companyIndex' => 'List companies',
     'companyName' => 'Company name',
     'confirm' => 'Confirm',
+    'continue' => 'Next period',
     'create' => 'Create',
+    'deactivateGame' => 'Deactivate game',
+    'decision' =>  'Decisions',
+    'decisionApprove' => 'Once you commit your decision, it cannot be undone or changed. Please ensure that everyone in your group agrees with the choices for this round before proceeding. Please confirm here.',
+    'decisionMake' => 'Make a decision',
+    'decisionMaker' => 'Submitted decision',
+    'decisionName' => 'Decision in round',
     'delete' => 'Delete',
     'deleteAcc' => 'Delete account',
     'deleteAccConfirm' => 'Are you sure you want to delete your account?',
@@ -38,6 +47,7 @@ return [
     'emailVerify' => 'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.',
     'emailVerifyLink' => 'A new verification link was sent to your email address',
     'emailVerifyNew' => 'Send new verification link',
+    'fromGame' => 'from the game',
     'game' => 'Game',
     'gameCreate' => 'Create game',
     'gameEdit' => 'Edit game',

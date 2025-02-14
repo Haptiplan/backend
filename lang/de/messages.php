@@ -9,7 +9,7 @@ return [
     | The following language lines are used for individual messages in the views.
     |
     */
-
+    'activateGame' => 'Aktiviere Spiel',
     'admin' => 'Admin',
     'adminDashboard' => 'Dies ist das Dashboard des Admins!',
     'activeGames' => 'Aktive Spiele',
@@ -19,6 +19,8 @@ return [
     'chooseGame' => 'Wähle ein Spiel aus!',
     'chooseGameGamemaster' => 'Wähle ein Spiel für den Spielleiter aus!',
     'chooseGamemaster' => 'Wähle einen Spielleiter aus!',
+    'choosePeriod'=> 'Wähle Periode',
+    'choosePeriodLength' => 'Wähle die Periodenlänge',
     'chooseRole' => 'Wähle eine Benutzerrolle aus!',
     'chooseUser' => 'Wähle einen Nutzer aus!',
     'company' => 'Unternehmen',
@@ -27,7 +29,14 @@ return [
     'companyIndex' => 'Unternehmensliste',
     'companyName' => 'Unternehmensname',
     'confirm' => 'Bestätigen',
+    'continue' => 'Nächste Periode',
     'create' => 'Erstellen',
+    'deactivateGame' => 'Spiel deaktivieren',
+    'decision' => 'Entscheidung|Entscheidungen',
+    'decisionApprove' => "Nachdem die Entscheindung abgegeben wurde, kann sie nicht zurückgenommen oder gelöscht werden. Stelle bitte sicher, dass deine Gruppenmitglieder einverstanden sind, bevor sie abgegeben wird. Bestätige dies hier.",
+    'decisionMake' => 'Entscheidung treffen',
+    'decisionMaker' => 'Hat die Entscheidung abgegeben',
+    'decisionName' => 'Entscheidung der Runde',
     'delete' => 'Löschen',
     'deleteAcc' => 'Account löschen',
     'deleteAccConfirm' => 'Wollen Sie Ihren Account wirklich löschen?',
@@ -38,6 +47,7 @@ return [
     'emailVerify' => 'Bitte bestätigen Sie Ihre E-Mail-Adresse, indem Sie auf den Link klicken, den wir Ihnen per E-Mail gesendet haben. Falls Sie die E-Mail nicht erhalten haben, senden wir Ihnen gerne eine neue zu.',
     'emailVerifyLink' => 'Ein neuer Verifizierungslink wurde an Ihre angegebene Email gesendet.',
     'emailVerifyNew' => 'Verifizierungsemail erneut senden',
+    'fromGame' => 'vom Spiel',
     'game' => 'Spiel',
     'gameCreate' => 'Spiel erstellen',
     'gameEdit' => 'Spiel bearbeiten',
