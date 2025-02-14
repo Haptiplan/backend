@@ -28,7 +28,7 @@ class UserController extends Controller
         $gamemasters = $users->where('role_id', User::ROLE_GAMEMASTER);
         $players = $users->where('role_id', User::ROLE_USER);
 
-        return view('users.index', [
+        return view('admin.users.index', [
             'admins' => $admins,
             'gamemasters' => $gamemasters,
             'players' => $players,
@@ -42,7 +42,7 @@ class UserController extends Controller
     {
 
         $roles = Role::all();
-        return view('users.create',['roles' => $roles]);
+        return view('admin.users.create',['roles' => $roles]);
     }
 
     /**
@@ -101,7 +101,7 @@ class UserController extends Controller
         $games_free = Game::whereNotIn('id', $game_ids)->get();
 
         // Return the view with the necessary data
-        return view('users.edit', [
+        return view('admin.users.edit', [
             'user' => $user,
             'player' => $player,
             'gamemasters' => $gamemasters,
@@ -176,7 +176,7 @@ class UserController extends Controller
             $companies = Company::where('game_id', $game_ids)->get();
         }
 
-        return view('users.impersonate', [
+        return view('admin.users.impersonate', [
             'games' => $games,
             'companies' => $companies,
         ]);

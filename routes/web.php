@@ -53,7 +53,8 @@ Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(functi
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin_dashboard_show');
 });
 
-Route::middleware(['web', 'localization', 'verified','check_role:' . $admin])->group(function(){
+Route::middleware(['web', 'localization', 'verified','check_role:' . $admin])
+    ->group(function(){
     Route::resource('users', UserController::class)->parameters(['users' => 'id']);
 });
 
