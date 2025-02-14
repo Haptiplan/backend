@@ -168,6 +168,6 @@ class PlayerController extends Controller
         $player->delete();
 
         // Redirect to the players index page
-        return redirect()->route('gamemaster.players.index')->with('status', 'messages.successDelete');
+        return redirect()->route('players.index')->with('status', 'messages.successDelete');
     }
 }

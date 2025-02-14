@@ -152,7 +152,7 @@ class GameController extends Controller
         $game->delete();
 
         // Redirect to the games index route with a success message
-        return redirect()->route('gamemaster.games.index')->with('status', 'messages.successDelete');
+        return redirect()->route('games.index')->with('status', 'messages.successDelete');
     }
 
     public function continue(Request $request)
