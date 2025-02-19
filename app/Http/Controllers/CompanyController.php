@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Closure;
 
 class CompanyController extends Controller
@@ -37,18 +38,17 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
-            'company_name' => 'required|string|max:255',
+            'company_name' => [
+                'required',
+                'string',
+                'max:255',  
+                Rule::unique('companies', 'name'),
+            ],
             'game_id' => [
                 'required',
                 'exists:games,id',
-                function (string $attribute, mixed $value, $fail) use($request) {
-                    if (Company::where('name', $request->input('company_name'))
-                        ->where('game_id', $value)
-                        ->exists()) {
-                        $fail(__('validation.companyUsedInGame'));
-                    }
-                },
             ],
         ]);
 
@@ -93,18 +93,15 @@ class CompanyController extends Controller
         $company = Company::findOrFail($id);
 
         $validated = $request->validate([
-            'company_name' => 'required|string|max:255',
+            'company_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('companies','name')->ignore($company->id),
+            ],
             'game_id' => [
                 'required',
                 'exists:games,id',
-                function (string $attribute, mixed $value, $fail) use ($company, $request) {
-                    if (Company::where('name', $request->input('company_name'))
-                        ->where('game_id', $value)
-                        ->where('id', '!=', $company->id)
-                        ->exists()) {
-                        $fail(__('validation.companyUsedInGame'));
-                    }
-                },
             ],
         ]);
 
