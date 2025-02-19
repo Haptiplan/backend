@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Session;
 
 
@@ -122,13 +123,7 @@ class GameController extends Controller
                 'required',
                 'string',
                 'max:255',
-                function (string $attribute, mixed $value, $fail) use ($game) {
-                    if (Game::where('name', $value)
-                        ->where('id', '!=', $game->id)
-                        ->exists()) {
-                        $fail(__('validation.gameNameTaken'));
-                    }
-                },
+                Rule::unique('games', 'name')->ignore($game->id),
             ],
         ]);
 
