@@ -195,6 +195,7 @@ return [
     'attributes' => [
         'active' => 'aktiv',
         'company_id' => 'Unternehmens ID',
+        'company_name' => 'Name des Unternehmens',
         'created_at' => 'erstellt am',
         'current_password' => 'aktuelle Passwort',
         'current_period_number' => 'aktuelle Perioden Nummer',
