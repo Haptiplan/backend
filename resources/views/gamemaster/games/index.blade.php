@@ -22,7 +22,6 @@
                         </div>
                     @endif
                     <x-success-message></x-success-message>
-                    <x-create-button href="{{ route('games.create') }}">{{ __('messages.gameCreate') }}</x-create-button>
                     <div>
                         @foreach($games as $game)
                         <li>
@@ -32,6 +31,11 @@
                                 @csrf
                                 @method('DELETE')
                                 <x-delete-button></x-delete-button>
+                            </form>
+                            <form action="{{ route('games.deactivate', $game->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('POST')
+                                <x-deactivate-button></x-deactivate-button>
                             </form>
                         </li>
                         @endforeach
@@ -68,8 +72,4 @@
             </div>
         </div>
     </div>
-
-
-
-
 </x-app-layout>

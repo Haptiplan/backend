@@ -186,5 +186,12 @@ class GameController extends Controller
         DB::table('games')->where('id', $id)->update(['active' => $newStatus]);
         return redirect()->route('gamemaster.game.index');
     }
-}
 
+    public function deactivate(Request $request, int $game_id)
+    {
+        $game = Game::findOrFail($game_id);
+        $game->active = 0;
+        $game->save();
+        return redirect()->route('games.index');
+    }
+}

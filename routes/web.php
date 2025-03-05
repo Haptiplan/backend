@@ -74,6 +74,8 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
     Route::resource('games', GameController::class)->parameters([
         'games' => 'id'
     ]);
+    Route::post('/games/{id}/deactivate', [GameController::class, 'deactivate'])->name('games.deactivate');
+
     /** Gamemaster **/
     Route::resource('gamemasters', GamemasterController::class)->only([
         'store', 'destroy'
