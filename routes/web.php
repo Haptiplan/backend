@@ -53,8 +53,7 @@ Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(functi
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin_dashboard_show');
 });
 
-Route::middleware(['web', 'localization', 'verified','check_role:' . $admin])
-    ->group(function(){
+Route::middleware(['web', 'localization', 'verified','check_role:' . $admin])->group(function(){
     Route::resource('users', UserController::class)->parameters(['users' => 'id']);
 });
 
@@ -64,7 +63,7 @@ Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->gr
 });
 
 Route::middleware(['localization', 'verified', 'impersonate', 'check_period'])
-        ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decision.check');
+        ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decisions.check');
         
 Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
 Route::post('/change_status/{id}', [GameController::class, 'changeStatus'])->name('game.status');
@@ -90,16 +89,13 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
 
 });
 
-//todo ::resource
-Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function () {
+/** Player routes **/
+Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function(){
     //** Decisions **/
-    Route::get('/decision', [DecisionController::class, 'index'])->name('decision.index');
-    Route::get('/create_decision', [DecisionController::class, 'create'])->name('decision.create');
-    Route::post('/create_decision', [DecisionController::class, 'store'])->name('decision.store');
-    Route::get('/decision/{id}', [DecisionController::class, 'show'])->name('decision.show');
+    Route::resource('decisions', DecisionController::class)->except([
+        'edit', 'update', 'destroy'
+    ]);
 });
-
-Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function(){});
 
 
 require __DIR__.'/auth.php';

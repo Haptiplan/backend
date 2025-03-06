@@ -34,7 +34,7 @@ class DecisionController extends Controller
         $decisions = Decision::whereIn('player_id', $player_ids)->get();
 
         if (($decisions->max('period') < $game->current_period_number) || $decisions->isEmpty()) {
-            return redirect()->route('decision.create');
+            return redirect()->route('decisions.create');
         }
 
         return view('user.decision.index', [
@@ -60,7 +60,7 @@ class DecisionController extends Controller
         $decisions = Decision::whereIn('player_id', $player_ids)->orderByDesc('id')->get();
 
         if ($decisions->isNotEmpty() && ($decisions->max('period') >= $game->current_period_number)) {
-            return redirect()->route('decision.index');
+            return redirect()->route('decisions.index');
         }
 
         return view('gamemaster.decisions.create', [

@@ -57,7 +57,7 @@
                                 </div>
                             @endif
                     @endif
-                    <form id="periodForm" action="{{ route('decision.check', ['id' => 1, 'period' => 0]) }}"
+                    <form id="periodForm" action="{{ route('decisions.check', ['id' => 1, 'period' => 0]) }}"
                         method="GET">
                         <label for="periods">{{ __('messages.choosePeriod') }}</label>
                         <select name="period" id="periods" onchange="updateFormAction()">
