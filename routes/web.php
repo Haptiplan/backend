@@ -26,8 +26,8 @@ Route::get('/', function () {
 });
 
 /** Localization route 
- * To change languages 
-*/
+ * To change languages.
+ */
 Route::get('lang/{locale}', [LanguageController::class, 'changeLanguage'])->name('lang');
 
 /* TODO: do we still need this??
@@ -38,8 +38,8 @@ Route::get('/dashboard', function () {
 
 /** 
  * Basic routes 
- * Configure the account the user owns 
-*/
+ * Configure the account the user owns.
+ */
 Route::middleware(['web', 'localization', 'auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -48,9 +48,9 @@ Route::middleware(['web', 'localization', 'auth'])->group(function () {
 
 /** 
  * Impersonating routes 
- * Imitate a user
-*/
-Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])->group(function(){
+ * Imitate a user.
+ */
+Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])->group(function () {
     Route::get('/users/impersonate', [UserController::class, 'impersonate'])->name('impersonate.view');
     Route::post('/users/impersonate/start', [UserController::class, 'startImpersonate'])->name('impersonate.start');
     Route::get('/users/stop', [UserController::class, 'stopImpersonate'])->name('impersonate.stop');
@@ -60,60 +60,60 @@ Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])-
 /** Admin routes */
 
 // Dashboard:
-Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(function(){
+Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin_dashboard_show');
 });
 // CRUD to manage all users (including admins, gamemasters and players, exept yourself):
-Route::middleware(['web', 'localization', 'verified','check_role:' . $admin])
-    ->group(function(){
-    Route::resource('users', UserController::class)->parameters(['users' => 'id']);
-});
+Route::middleware(['web', 'localization', 'verified', 'check_role:' . $admin])
+    ->group(function () {
+        Route::resource('users', UserController::class)->parameters(['users' => 'id']);
+    });
 
-/**Gamemaster routes */
+/** Gamemaster routes */
 
 // Dashboard:
-Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->group(function(){
+Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
-// Show desicion of players in a game periode:
+// Show desicion of players in a game period:
 Route::middleware(['localization', 'verified', 'impersonate', 'check_period'])
-        ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decision.check');
-// Update game to next periode:
+    ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decision.check');
+// Update game to next period:
 Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
 // Change status of game (active or inactive):
 Route::post('/change_status/{id}', [GameController::class, 'changeStatus'])->name('game.status');
 
-//CRUD of various models the gamemaster has access to:
-Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
+// CRUD of various models the gamemaster has access to:
+Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function () {
     /** 
      * Games 
-     * Doesn't use the model in url but the id, thus the parameters-function is used
-    */
+     * Doesn't use the model in url but the id, thus the parameters-function is used.
+     */
     Route::resource('games', GameController::class)->parameters([
         'games' => 'id'
     ]);
     /** 
      * Gamemaster 
-     * Only need to be able to add a gamemaster to a game or delete them
-     * Deleting either all gamemaster entries for a user (destroy) or one entry in a specific game (destroyOne)
-    */
+     * Only need to be able to add a gamemaster to a game or delete them.
+     * Deleting either all gamemaster entries for a user (destroy) or one entry in a specific game (destroyOne).
+     */
     Route::resource('gamemasters', GamemasterController::class)->only([
-        'store', 'destroy'
+        'store',
+        'destroy'
     ]);
     Route::delete('/gamemaster/{id}/{game_id}', [GamemasterController::class, 'destroyOne'])->name('gamemasters.deleteOne');
     /** 
      * Companies 
-    */
+     */
     Route::resource('companies', CompanyController::class)->parameters([
         'companies' => 'id'
     ]);
     /** 
      * User 
-    */
+     */
     Route::resource('players', PlayerController::class)->parameters([
         'players' => 'id'
     ]);
-
 });
 
 /** Player routes */
@@ -121,14 +121,14 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
 Route::middleware(['localization', 'auth', 'verified', 'impersonate'])->get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard');
 //todo ::resource
 Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function () {
-    //** Decisions **/
+    //** Decisions */
     Route::get('/decision', [DecisionController::class, 'index'])->name('decision.index');
     Route::get('/create_decision', [DecisionController::class, 'create'])->name('decision.create');
     Route::post('/create_decision', [DecisionController::class, 'store'])->name('decision.store');
     Route::get('/decision/{id}', [DecisionController::class, 'show'])->name('decision.show');
 });
+//todo: do we need this?
+Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function () {});
 
-Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function(){});
 
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
