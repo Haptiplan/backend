@@ -120,7 +120,7 @@ class UserController extends Controller
 
         // Validate incoming data
         $validated = $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:users,name,' . $user->id,
             'email' => 'required|unique:users,email,' . $user->id,
             'role' => 'required',
             'game' => 'nullable|exists:games,id'

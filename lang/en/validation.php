@@ -56,6 +56,7 @@ return [
     'extensions' => 'The :attribute field must have one of the following extensions: :values.',
     'file' => 'The :attribute field must be a file.',
     'filled' => 'The :attribute field must have a value.',
+    'gameNameTaken' => 'Game name is already taken.',
     'gt' => [
         'array' => 'The :attribute field must have more than :value items.',
         'file' => 'The :attribute field must be greater than :value kilobytes.',

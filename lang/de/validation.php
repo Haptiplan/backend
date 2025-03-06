@@ -56,6 +56,7 @@ return [
     'extensions' => 'Das :attribute Feld muss eine der folgenden Erwiterungen haben: :values.',
     'file' => 'Das :attribute Feld muss eine Datei sein.',
     'filled' => 'Das :attribute Feld muss einen Wert haben.',
+    'gameNameTaken' => 'Der Name des Spiels ist bereits vergeben!.',
     'gt' => [
         'array' => 'Das :attribute Feld muss mehr als :value Einheiten haben.',
         'file' => 'Die :attribute Datei muss größer als :value Kilobytes sein.',
@@ -194,6 +195,7 @@ return [
     'attributes' => [
         'active' => 'aktiv',
         'company_id' => 'Unternehmens ID',
+        'company_name' => 'Name des Unternehmens',
         'created_at' => 'erstellt am',
         'current_password' => 'aktuelle Passwort',
         'current_period_number' => 'aktuelle Perioden Nummer',

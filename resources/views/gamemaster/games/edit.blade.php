@@ -11,6 +11,16 @@
                 <div class="p-8 text-gray-900 dark:text-gray-100">
                     <!-- Game Edit Form -->
                     <h1 class="text-3xl font-semibold mb-8 text-center text-gray-900 dark:text-gray-100">{{ __('messages.gameEdit') }}</h1>
+                     <!-- Error Alert -->
+                     @if ($errors->any())
+                     <div class="alert alert-danger bg-red-100">
+                         <ul class="block text-sm font-medium text-red-600 dark:text-red-300">
+                             @foreach ($errors->all() as $error)
+                                 <li>{{ $error }}</li>
+                             @endforeach
+                         </ul>
+                     </div>
+                 @endif
                     <x-success-message></x-success-message>
                     <form class="space-y-8" action="{{ route('games.update', $game->id) }}" method="POST">
                         @csrf
