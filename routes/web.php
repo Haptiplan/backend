@@ -72,7 +72,7 @@ Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->gr
 });
 // Show desicion of players in a game period:
 Route::middleware(['localization', 'verified', 'impersonate', 'check_period'])
-    ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decision.check');
+    ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decisions.check');
 // Update game to next period:
 Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
 // Change status of game (active or inactive):
