@@ -30,12 +30,6 @@ Route::get('/', function () {
  */
 Route::get('lang/{locale}', [LanguageController::class, 'changeLanguage'])->name('lang');
 
-/* TODO: do we still need this??
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-*/
-
 /** 
  * Basic routes 
  * Configure the account the user owns.
@@ -127,8 +121,5 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $u
     Route::post('/create_decision', [DecisionController::class, 'store'])->name('decision.store');
     Route::get('/decision/{id}', [DecisionController::class, 'show'])->name('decision.show');
 });
-//todo: do we need this?
-Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function () {});
-
 
 require __DIR__ . '/auth.php';
