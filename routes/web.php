@@ -25,7 +25,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/** Localization route 
+/** 
+ * Localization route 
  * To change languages.
  */
 Route::get('lang/{locale}', [LanguageController::class, 'changeLanguage'])->name('lang');
@@ -111,15 +112,19 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
 });
 
 /** Player routes */
+
 // Dashboard:
 Route::middleware(['localization', 'auth', 'verified', 'impersonate'])->get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard');
-//todo ::resource
-Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function () {
-    //** Decisions */
-    Route::get('/decision', [DecisionController::class, 'index'])->name('decision.index');
-    Route::get('/create_decision', [DecisionController::class, 'create'])->name('decision.create');
-    Route::post('/create_decision', [DecisionController::class, 'store'])->name('decision.store');
-    Route::get('/decision/{id}', [DecisionController::class, 'show'])->name('decision.show');
+// CRUD of various models the players have access to.
+Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function(){
+    /** 
+     * Decisions 
+     * Players shouldn't be able to edit or delete a decision.
+     */
+    Route::resource('decisions', DecisionController::class)->except([
+        'edit', 'update', 'destroy'
+    ]);
 });
 
-require __DIR__ . '/auth.php';
+
+require __DIR__.'/auth.php';

@@ -179,7 +179,7 @@ class GameController extends Controller
         if ($game->current_period_number <= $game->max_period_number) {
             $game->increment('current_period_number');
         }
-        return redirect()->route('decision.check', [$game->id, $game->current_period_number]);
+        return redirect()->route('decisions.check', [$game->id, $game->current_period_number]);
     }  
     public function changeStatus(string $id)
     {
