@@ -19,6 +19,11 @@ class Game extends Model
         return $this->hasMany(Company::class);
     }
 
+    public function machinetypes()
+    {
+        return $this->hasMany(Company::class);
+    }
+
     public function gamemasters(): HasMany
     {
         return $this->hasMany(Gamemaster::class);
