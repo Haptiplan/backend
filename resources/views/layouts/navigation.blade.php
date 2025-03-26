@@ -46,7 +46,7 @@ $user = User::ROLE_USER;
                     <x-nav-link :href="route('players.index')" :active="request()->routeIs('players.index')">
                         {{ __('messages.navPlayer')}}
                     </x-nav-link>
-                    <x-nav-link :href="route('decisions.check', [1,0])" :active="request()->routeIs('decision.check')">
+                    <x-nav-link :href="route('decisions.check', [1,0])" :active="request()->routeIs('decisions.check')">
                         {{ trans_choice('messages.decision', 2) }}
                     </x-nav-link>
                     @endif
