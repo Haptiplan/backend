@@ -8,14 +8,14 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     public function gamemasterDashboard(){
-        return view('gamemaster_dashboard');
+        return view('gamemaster.dashboard');
     }
 
     public function adminDashboard(){
-        return view('admin_dashboard');
+        return view('admin.dashboard');
     }
 
     public function userDashboard(){
-        return view('dashboard');
+        return view('user.dashboard');
     }
 }

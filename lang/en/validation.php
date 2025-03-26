@@ -56,6 +56,7 @@ return [
     'extensions' => 'The :attribute field must have one of the following extensions: :values.',
     'file' => 'The :attribute field must be a file.',
     'filled' => 'The :attribute field must have a value.',
+    'gameNameTaken' => 'Game name is already taken.',
     'gt' => [
         'array' => 'The :attribute field must have more than :value items.',
         'file' => 'The :attribute field must be greater than :value kilobytes.',
@@ -175,6 +176,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'no_decision' => 'Not all decisions have been made yet.',
+        'no_game' => 'Game not found.',
+        'unvalid_period' => 'The selected period is invalid.',
     ],
 
     /*
@@ -189,18 +193,22 @@ return [
     */
 
     'attributes' => [
+        'active' => 'active',
         'company_id' => 'company ID',
         'created_at' => 'created at',
+        'current_password' => 'current password',
         'current_period_number' => 'current period number',
         'email' => 'e-mail address',
         'game_id' => 'game ID',
         'game_name' => 'game name',
         'id' => 'ID',
+        'max_period_number' => 'period length',
         'name' => 'name',
         'password' => 'password',
+        'period' => 'period',
         'role' => 'role',
         'updated_at' => 'updated at',
-        'current_password' => 'current password'
+        
     ],
 
 ];

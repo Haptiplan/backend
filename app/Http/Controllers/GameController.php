@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Game;
 use App\Models\Gamemaster;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Session;
 
 
@@ -20,7 +22,7 @@ class GameController extends Controller
     public function index(Game $game)
     {
         $games = Game::hasGamemasters()->get();
-        return view('games.index', ['games' => $games]);
+        return view('gamemaster.games.index', ['games' => $games]);
     }
 
     /**
@@ -28,7 +30,7 @@ class GameController extends Controller
      */
     public function create()
     {
-        return view('games.create');
+        return view('gamemaster.games.create');
     }
 
     /**
@@ -101,7 +103,7 @@ class GameController extends Controller
             ->get()
             ->pluck('user'); // Pluck out the user model directly
 
-        return view('games.edit', [
+        return view('gamemaster.games.edit', [
             'game' => $game,
             'game_id' => $game_id,
             'gamemasters' => $gamemasters,
@@ -114,19 +116,21 @@ class GameController extends Controller
      */
     public function update(Request $request, string $game_id)
     {
-        // Validate the input
-        $validated = $request->validate([
-            'game_name' => 'required|string|max:255',
-        ]);
-
         // Find the game or abort if not found
         $game = Game::findOrFail($game_id);
+        $validated = $request->validate([
+            'game_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('games', 'name')->ignore($game->id),
+            ],
+        ]);
 
         // Check if the user is authorized to update the game
         if ($request->user()->cannot('update', $game)) {
             abort(403);
         }
-
         // Update the game name
         $game->update(['name' => $validated['game_name']]);
 
@@ -153,4 +157,37 @@ class GameController extends Controller
         // Redirect to the games index route with a success message
         return redirect()->route('games.index')->with('status', 'messages.successDelete');
     }
+
+    public function continue(Request $request)
+    {
+        $validated = $request->validate([
+            'game_id' => 'required|exists:games,id',
+        ]);
+
+        if (!$request->has('done')) {
+            return redirect()->back()->withErrors(['error' => __('validation.custom.no_decision')]);
+        }
+
+        $finished = array_sum($request['done']);
+        $game = Game::find($validated['game_id']);
+        $companies = Company::where('game_id', $game->id)->count();
+
+        if ($finished < $companies) {
+            return redirect()->back()->withErrors(['error' => __('validation.custom.no_decision')]);
+        }
+
+        if ($game->current_period_number <= $game->max_period_number) {
+            $game->increment('current_period_number');
+        }
+        return redirect()->route('decisions.check', [$game->id, $game->current_period_number]);
+    }  
+    public function changeStatus(string $id)
+    {
+        $game = Game::findOrFail($id);
+        $game = DB::table('games')->where('id', $id)->first();
+        $newStatus = $game->active == 1 ? 0 : 1;
+        DB::table('games')->where('id', $id)->update(['active' => $newStatus]);
+        return redirect()->route('gamemaster.game.index');
+    }
 }
+
