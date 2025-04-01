@@ -14,6 +14,16 @@ use App\Models\User; ?>
                 <div class="p-8 text-white">
                     <h1 class="text-3xl font-extrabold mb-8">{{ __('messages.userCreate') }}</h1>
                     <x-success-message></x-success-message>
+                    <!-- Error Messages -->
+                    @if ($errors->any())
+                        <div class="bg-red-100 dark:bg-red-600 p-4 mb-6 rounded-md">
+                            <ul class="text-sm font-medium text-red-600 dark:text-red-300">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form class="space-y-6" action="{{ route('users.store') }}" method="POST">
 
                         @csrf
