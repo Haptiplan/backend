@@ -84,6 +84,9 @@ class DecisionController extends Controller
         DB::table('decisions')->insert([
             'player_id' => $validated['player_id'],
             'period' => $validated['period'],
+            'created_at' => now(),
+            'updated_at' => now(),
+
         ]);
 
         return redirect()->back();
