@@ -9,6 +9,12 @@ class Machine extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'machinetype_id',
+        'company_id',
+        'period',
+    ];
+
     public function machinetype()
     {
         return $this->belongsTo(MachineType::class);

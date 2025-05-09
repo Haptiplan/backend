@@ -10,6 +10,8 @@ class MachineDecision extends Model
     use HasFactory;
 
     protected $fillable = [
+        'decision_id',
+        'machine_type_id',
         'buy',
         'sell'
     ];

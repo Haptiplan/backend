@@ -49,7 +49,7 @@ class MachineDecisionController extends Controller
             $validated['sell'] = 0;
         }
 
-        //dd($validated);
+        dd($validated);
 
         $machinedecision = MachineDecision::create([
             'decision_id' => $validated['decision_id'],
