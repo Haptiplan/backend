@@ -22,4 +22,9 @@ class Company extends Model
     {
         return $this->hasMany(Player::class);
     }
+
+    public function machines()
+    {
+        return $this->hasMany(Machine::class);
+    }
 }

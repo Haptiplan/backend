@@ -21,7 +21,7 @@ class Game extends Model
 
     public function machinetypes()
     {
-        return $this->hasMany(Company::class);
+        return $this->hasMany(MachineType::class);
     }
 
     public function gamemasters(): HasMany

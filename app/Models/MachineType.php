@@ -23,4 +23,14 @@ class MachineType extends Model
     {
         return $this->belongsTo(Game::class);
     }
+
+    public function machines()
+    {
+        return $this->hasMany(Machine::class);
+    }
+
+    public function machinedecisions()
+    {
+        return $this->hasMany(MachineDecision::class);
+    }
 }

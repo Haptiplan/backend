@@ -10,8 +10,18 @@ class Decision extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'player_id',
+        'period'
+    ];
+
     public function player():BelongsTo
     {
         return $this->belongsTo(Player::class);
+    }
+
+    public function machinedecisions()
+    {
+        return $this->hasMany(MachineDecision::class);
     }
 }

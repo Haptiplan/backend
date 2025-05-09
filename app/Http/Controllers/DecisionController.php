@@ -55,6 +55,8 @@ class DecisionController extends Controller
         $player = Player::find($id);
         $company = Company::where('id', $player->company_id)->first();
         $game = Game::where('id', $company->game_id)->first();
+        $machinetypes = $game->machinetypes()->get();
+        $machines = $company->machines()->get();
 
         $player_ids = Player::where('company_id', $company->id)->pluck('id')->toArray();
         $decisions = Decision::whereIn('player_id', $player_ids)->orderByDesc('id')->get();
@@ -67,6 +69,8 @@ class DecisionController extends Controller
             'decisions' => $decisions,
             'period' => $game->current_period_number,
             'player' => $player,
+            'machinetypes' => $machinetypes,
+            'machines' => $machines
         ]);
     }
 
@@ -75,16 +79,21 @@ class DecisionController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
         $validated = $request->validate([
             'approve' => 'required',
             'player_id' => 'required | exists:players,id',
             'period' => 'digits_between:1,8',
         ]);
 
-        DB::table('decisions')->insert([
+        $decision = Decision::create([
             'player_id' => $validated['player_id'],
             'period' => $validated['period'],
         ]);
+
+        $request->request->add(['decision_id' => $decision->id]);
+        $machinedecision = new MachineDecisionController();
+        $machinedecision->store($request);
 
         return redirect()->back();
     }
