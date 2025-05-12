@@ -22,7 +22,6 @@
                         </div>
                     @endif
                     <x-success-message></x-success-message>
-                    <x-create-button href="{{ route('games.create') }}">{{ __('messages.gameCreate') }}</x-create-button>
                     <div>
                         @foreach($games as $game)
                         <li>
