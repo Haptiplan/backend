@@ -6,12 +6,17 @@ use App\Models\Decision;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Game;
+use App\Models\Machine;
+use App\Models\MachineDecision;
 use App\Models\Player;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+
+use function PHPUnit\Framework\isEmpty;
+
 
 class DecisionController extends Controller
 {
@@ -55,6 +60,8 @@ class DecisionController extends Controller
         $player = Player::find($id);
         $company = Company::where('id', $player->company_id)->first();
         $game = Game::where('id', $company->game_id)->first();
+        $machinetypes = $game->machinetypes()->get();
+        $machines = $company->machines()->get();
 
         $player_ids = Player::where('company_id', $company->id)->pluck('id')->toArray();
         $decisions = Decision::whereIn('player_id', $player_ids)->orderByDesc('id')->get();
@@ -67,6 +74,8 @@ class DecisionController extends Controller
             'decisions' => $decisions,
             'period' => $game->current_period_number,
             'player' => $player,
+            'machinetypes' => $machinetypes,
+            'machines' => $machines
         ]);
     }
 
@@ -75,19 +84,46 @@ class DecisionController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
         $validated = $request->validate([
             'approve' => 'required',
             'player_id' => 'required | exists:players,id',
             'period' => 'digits_between:1,8',
+            'machinetype_id' => 'required|exists:machine_types,id',
+            'buy' => 'integer|nullable',
+            'sell' => 'array|nullable'
         ]);
 
-        DB::table('decisions')->insert([
+        $decision = Decision::create([
             'player_id' => $validated['player_id'],
             'period' => $validated['period'],
             'created_at' => now(),
             'updated_at' => now(),
 
         ]);
+
+        $machinedecision = MachineDecision::create([
+            'decision_id' => $decision->id,
+            'machine_type_id' => $validated['machinetype_id'],
+            'buy' => $validated['buy'] ?? 0,
+            'sell' => $validated['sell'] ?? 0
+        ]);
+
+        if($machinedecision->buy != 0) {
+            for($i = 0; $i < $validated['buy']; $i++){
+                $company = $decision->player->company;
+                Machine::create([
+                    'machinetype_id' => $validated['machinetype_id'],
+                    'company_id' => $company->id,
+                    'period' => $decision->period
+                ]);
+            }
+        }
+        if($machinedecision->sell != 0) {
+            foreach($validated['sell'] as $sell){
+                Machine::destroy($sell);
+            }
+        }
 
         return redirect()->back();
     }
