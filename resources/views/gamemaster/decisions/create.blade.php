@@ -29,31 +29,30 @@
                                 {{ __('messages.buyMachinetype')}}
                             </label>
                             @foreach ($machinetypes as $machinetype)
-                                <div class="flex items-center">
-                                    <input type="radio" name="machinetype_id" id="{{$machinetype->id}}" value="{{$machinetype->id}}" class="mr-2">
-                                    <label for="{{$machinetype->id}}" class="text-gray-800 dark:text-gray-200">{{ $machinetype->name }}</label>
-                                    <label for="buy" class="text-gray-800 dark:text-gray-200">{{ __(' ' . 'messages.selectAmount') }}</label>
-                                    <input type="number" name="buy" id="buy" min="0" max="3" value="0" step="1"
-                                        class="border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200 transition duration-300 ease-in-out transform hover:scale-105"><br>
-                                    
-                                </div>
+                            <div class="flex items-center">
+                                <input type="radio" name="machinetype_id" id="{{$machinetype->id}}" value="{{$machinetype->id}} " class="mr-2">
+                                <label for="buy" class="text-gray-800 dark:text-gray-200">{{ $machinetype->name }} {{ __('messages.selectAmount') }} </label>
+                                <input type="number" name="buy" id="buy" min="0" max="3" value="0" step="1"
+                                    class="border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200 transition duration-300 ease-in-out transform hover:scale-105"><br>
+
+                            </div>
                             @endforeach
                             <label for="sell" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                 {{ __('messages.sellMachine')}}
                             </label>
                             @foreach ($machines as $machine)
-                                <div class="flex items-center">
-                                    <input type="radio" name="sell" id="sell" value="{{$machine->id}}" class="mr-2">
-                                    <label for="{{$machine->id}}" class="text-gray-800 dark:text-gray-200">{{ $machine->type . $machine->id }}</label><br>
+                            <div class="flex items-center">
+                                <input type="radio" name="sell" id="sell" value="{{$machine->id}}" class="mr-2">
+                                <label for="{{$machine->id}}" class="text-gray-800 dark:text-gray-200">{{ $machine->type . $machine->id }}</label><br>
 
-                                    <label for="sell" class="text-gray-800 dark:text-gray-200">{{ __(' ' . 'messages.sellMachine') }}</label>
-                                </div>
+                                <label for="sell" class="text-gray-800 dark:text-gray-200">{{ __(' ' . 'messages.sellMachine') }}</label>
+                            </div>
                             @endforeach
                             <input type="hidden" name="player_id" id="player_id" value="{{$player->id}}" required>
                             <input type="hidden" name="period" id="period" value="{{$period}}" required>
                             <br>
                             <label for="approve" class="block text-sm font-medium text-red-700 dark:text-red-300">
-                            {{ __('messages.decisionApprove') }}
+                                {{ __('messages.decisionApprove') }}
                             </label>
                             <input type="checkbox" name="approve" id="approve" required class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded checked:bg-red-500">
                         </div>
