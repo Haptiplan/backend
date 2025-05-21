@@ -6,6 +6,7 @@ use App\Http\Controllers\DecisionController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GamemasterController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\MachineTypeController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
@@ -108,6 +109,12 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
      */
     Route::resource('players', PlayerController::class)->parameters([
         'players' => 'id'
+    ]);
+    /**
+     * Machine Type
+     */
+    Route::resource('machine_types', MachineTypeController::class)->parameters([
+        'machine_types' => 'id'
     ]);
 });
 

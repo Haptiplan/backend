@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('machines', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('machinetype_id')->constrained('machine_types');
+            $table->foreignId('company_id')->constrained('companies');
+            $table->integer('period');
             $table->timestamps();
         });
     }
