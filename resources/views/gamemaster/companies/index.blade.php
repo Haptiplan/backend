@@ -39,8 +39,6 @@
                                 <div class="space-y-4">
                                     @foreach ($companies as $company)
                                         @if ($game->id == $company->game_id)
-                                            <div class="ml-10 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-lg p-4 shadow-lg mb-4">
-                                                <label class="font-semibold text-xl text-gray-800 dark:text-gray-100">{{ $company->name }}:</label>
                                                 <ul class="space-y-4 mt-2">
                                                     <li class="flex justify-between items-center bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md transition-all hover:shadow-xl transform hover:scale-105">
                                                         <span class="text-gray-800 dark:text-gray-200 text-lg">{{ $company->name }}</span>
