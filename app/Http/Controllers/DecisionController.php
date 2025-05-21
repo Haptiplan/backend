@@ -97,6 +97,9 @@ class DecisionController extends Controller
         $decision = Decision::create([
             'player_id' => $validated['player_id'],
             'period' => $validated['period'],
+            'created_at' => now(),
+            'updated_at' => now(),
+
         ]);
 
         $machinedecision = MachineDecision::create([
