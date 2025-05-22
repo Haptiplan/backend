@@ -183,11 +183,7 @@ class GameController extends Controller
     }  
     public function changeStatus(string $id)
     {
-        $game = Game::findOrFail($id);
-        $game = DB::table('games')->where('id', $id)->first();
-        $newStatus = $game->active == 1 ? 0 : 1;
-        DB::table('games')->where('id', $id)->update(['active' => $newStatus]);
-        return redirect()->route('gamemaster.game.index');
+        
     }
 }
 
