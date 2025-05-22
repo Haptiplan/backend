@@ -85,6 +85,9 @@ class GameController extends Controller
         // Get the game and its associated gamemasters
         $game = Game::hasGamemasters()->findOrFail($game_id);
 
+        //Get all games from the current gamemaster
+        $games = Game::hasGamemasters()->get();
+
         // Get the user IDs of the gamemasters associated with the game, excluding the current user (if impersonating)
         $gm_in_game = Gamemaster::where('game_id', $game_id)->pluck('user_id')->toArray();
 
@@ -105,6 +108,7 @@ class GameController extends Controller
 
         return view('gamemaster.games.edit', [
             'game' => $game,
+            'games' => $games,
             'game_id' => $game_id,
             'gamemasters' => $gamemasters,
             'list_gamemasters' => $list_gamemasters,

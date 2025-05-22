@@ -23,43 +23,30 @@
                     @endif
                     <x-success-message></x-success-message>
                     @php
-    $groupedGames = $games->groupBy('status');
-    $statusOrder = ['pending', 'active', 'completed', 'cancelled'];
-@endphp
+                    $groupedGames = $games->groupBy('status');
+                    $statusOrder = ['pending', 'active', 'completed', 'cancelled'];
+                    @endphp
 
-@foreach ($statusOrder as $status)
-    @if ($groupedGames->has($status))
-        <h2 class="text-xl font-bold mb-2 capitalize">{{ ucfirst($status) }}</h2>
-        <ul class="mb-6">
-            @foreach ($groupedGames[$status] as $game)
-            <li class="flex justify-between items-center bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-lg p-4 shadow-lg transition-transform hover:scale-105 mb-2">
-                <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $game->name }}</span>
-
-                <form action="{{ route('games.updateStatus', $game->id) }}" method="POST" class="inline">
-                    @csrf
-                    @method('PATCH')
-                    <select name="status" onchange="this.form.submit()" class="border rounded p-1 text-sm">
-                        @foreach ($statusOrder as $statusOption)
-                        <option value="{{ $statusOption }}" {{ $game->status === $statusOption ? 'selected' : '' }}>
-                            {{ ucfirst($statusOption) }}
-                        </option>
+                    @foreach ($statusOrder as $status)
+                    @if ($groupedGames->has($status))
+                    <h2 class="text-xl font-bold mb-2 capitalize">{{ ucfirst($status) }}</h2>
+                    <ul class="mb-6">
+                        @foreach ($groupedGames[$status] as $game)
+                        <li class="flex justify-between items-center bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-lg p-4 shadow-lg transition-transform hover:scale-105 mb-2">
+                            <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $game->name }}</span>
+                            <div class="flex items-center space-x-2">
+                                <x-edit-button href="{{ route('games.edit', $game->id) }}" />
+                                <form action="{{ route('games.destroy', $game->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-delete-button />
+                                </form>
+                            </div>
+                        </li>
                         @endforeach
-                    </select>
-                </form>
-
-                <div class="flex items-center space-x-2">
-                    <x-edit-button href="{{ route('games.edit', $game->id) }}" />
-                    <form action="{{ route('games.destroy', $game->id) }}" method="POST" class="inline">
-                        @csrf
-                        @method('DELETE')
-                        <x-delete-button />
-                    </form>
-                </div>
-            </li>
-            @endforeach
-        </ul>
-    @endif
-@endforeach
+                    </ul>
+                    @endif
+                    @endforeach
 
                     <!-- Create Game Button with Gradient and Hover Effect -->
                     <div class="text-center mb-6">

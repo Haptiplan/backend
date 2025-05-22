@@ -180,6 +180,7 @@ return [
             'no_game' => 'Kein Spiel gefunden.',
             'unvalid_period' => 'Die ausgewählte Periode ist ungültig.',
         ],
+        'game_not_modifiable' => 'Das Spiel kann nicht bearbeitet werden. Status muss "aktiv" oder "ausstehend" sein.',
     ],
 
     /*

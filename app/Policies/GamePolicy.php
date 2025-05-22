@@ -43,9 +43,14 @@ class GamePolicy
         if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
-        
+
         return in_array($user->id, $game->gamemasters()->pluck('user_id')->toArray())
             ? Response::allow()
             : Response::deny();
+    }
+
+    public function modify(User $user, Game $game)
+    {
+        return in_array($game->status, ['active', 'pending']);
     }
 }
