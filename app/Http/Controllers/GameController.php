@@ -181,9 +181,14 @@ class GameController extends Controller
         }
         return redirect()->route('decisions.check', [$game->id, $game->current_period_number]);
     }  
-    public function changeStatus(string $id)
-    {
-        
-    }
+    public function updateStatus(Request $request, Game $game)
+{
+    $request->validate([
+        'status' => ['required', Rule::in(['pending', 'active', 'completed', 'cancelled'])],
+    ]);
+    $game->update(['status' => $request->status]);
+
+    return redirect()->back()->with('success', 'Game status updated successfully.');
+}
 }
 
