@@ -91,7 +91,7 @@ class DecisionController extends Controller
             'player_id' => 'required | exists:players,id',
             'period' => 'digits_between:1,8',
             'machinetype_id' => 'required|exists:machine_types,id',
-            'buy' => 'integer|nullable',
+            'buy' => 'array|nullable',
             'sell' => 'array|nullable'
         ]);
 
