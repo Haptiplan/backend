@@ -7,25 +7,25 @@ use App\Models\Machine;
 
 class DecisionService
 {
-    public function createDecisionWithMachineDecision(array $data)
+    public function createDecisionWithMachineDecision(array $validated)
     {
-        // Erst Decision erstellen
         $decision = Decision::create([
-            'player_id' => $data['player_id'],
-            'period' => $data['period'],
+            'player_id' => $validated['player_id'],
+            'period' => $validated['period'],
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        // MachineDecision erstellen
+        $machineTypeId = $validated['machinetype_id'];
+        $buy = $validated['buy'][$machineTypeId] ?? 0;
+
         $machinedecision = MachineDecision::create([
             'decision_id' => $decision->id,
-            'machine_type_id' => $data['machinetype_id'],
-            'buy' => $data['buy'] ?? 0,
-            'sell' => $data['sell'] ?? 0,
+            'machine_type_id' => $validated['machinetype_id'],
+            'buy' => $buy,
+            'sell' => $validated['sell'] ?? 0,
         ]);
 
-        // Maschinen kaufen/sell Logik
         if ($machinedecision->buy != 0) {
             for ($i = 0; $i < $machinedecision->buy; $i++) {
                 $company = $decision->player->company;
@@ -41,7 +41,5 @@ class DecisionService
                 Machine::destroy($machineId);
             }
         }
-
-        return $decision;
     }
 }
