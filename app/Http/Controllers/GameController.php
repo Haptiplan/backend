@@ -180,9 +180,15 @@ class GameController extends Controller
             return redirect()->back()->withErrors(['error' => __('validation.custom.no_decision')]);
         }
 
-        if ($game->current_period_number <= $game->max_period_number) {
+        if ($game->current_period_number < $game->max_period_number) {
             $game->increment('current_period_number');
         }
+
+        if($game->current_period_number == $game->max_period_number) {
+            $game->status = 'completed';
+            $game->save();
+        }
+        
         return redirect()->route('decisions.check', [$game->id, $game->current_period_number]);
     }  
     public function updateStatus(Request $request, Game $game)
