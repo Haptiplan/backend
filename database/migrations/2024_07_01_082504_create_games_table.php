@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('current_period_number')->default(0);
-            $table->boolean('active')->default(true);
+            $table->enum('status', ['pending', 'active', 'completed', 'cancelled'])->default('pending');
             $table->timestamps();
         });
     }

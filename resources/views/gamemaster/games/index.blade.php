@@ -13,27 +13,40 @@
 
                     <!-- Error Handling with Soft Background and Styled List -->
                     @if ($errors->any())
-                        <div class="alert alert-danger bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md mb-6 transition-transform transform hover:scale-105">
-                            <ul class="block text-sm font-medium text-red-600 dark:text-red-300 space-y-2">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <div class="alert alert-danger bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md mb-6 transition-transform transform hover:scale-105">
+                        <ul class="block text-sm font-medium text-red-600 dark:text-red-300 space-y-2">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
                     <x-success-message></x-success-message>
-                    <div>
-                        @foreach($games as $game)
-                        <li>
-                            {{$game->name}}
-                            <x-edit-button href="{{ route('games.edit', $game->id) }}"></x-edit-button>
-                            <form action="{{ route('games.destroy', $game->id) }}" method="POST" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <x-delete-button></x-delete-button>
-                            </form>
+                    @php
+                    $groupedGames = $games->groupBy('status');
+                    $statusOrder = ['pending', 'active', 'completed', 'cancelled'];
+                    @endphp
+
+                    @foreach ($statusOrder as $status)
+                    @if ($groupedGames->has($status))
+                    <h2 class="text-xl font-bold mb-2 capitalize">{{ ucfirst($status) }}</h2>
+                    <ul class="mb-6">
+                        @foreach ($groupedGames[$status] as $game)
+                        <li class="flex justify-between items-center bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-lg p-4 shadow-lg transition-transform hover:scale-105 mb-2">
+                            <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $game->name }}</span>
+                            <div class="flex items-center space-x-2">
+                                <x-edit-button href="{{ route('games.edit', $game->id) }}" />
+                                <form action="{{ route('games.destroy', $game->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-delete-button />
+                                </form>
+                            </div>
                         </li>
                         @endforeach
+                    </ul>
+                    @endif
+                    @endforeach
 
                     <!-- Create Game Button with Gradient and Hover Effect -->
                     <div class="text-center mb-6">
@@ -43,26 +56,6 @@
                     </div>
 
                     <!-- Game List with Styled Items -->
-                    <div class="mt-8 space-y-8">
-                        <ul class="space-y-4">
-                            @foreach ($games as $game)
-                                <li key="{{ $game->id }}" class="flex justify-between items-center bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-lg p-4 shadow-lg mb-4 transition-transform hover:scale-105">
-                                    <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $game->name }}</span>
-                                    <div class="flex items-center space-x-2">
-                                        <!-- Edit Button with Smooth Hover Effect -->
-                                        <x-edit-button href="{{ route('games.edit', $game->id) }}" class="text-white hover:text-blue-800 dark:hover:text-blue-200 transition duration-300 ease-in-out transform hover:scale-110"></x-edit-button>
-
-                                        <!-- Delete Button with Confirmation and Hover Effect -->
-                                        <form action="{{ route('games.destroy', $game->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this game?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <x-delete-button class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-200 transition duration-300 ease-in-out transform hover:scale-110"></x-delete-button>
-                                        </form>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>

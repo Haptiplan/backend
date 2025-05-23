@@ -177,6 +177,7 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'game_not_modifiable' => 'This game cannot be modified. Game status must be either "active" or "pending".',
         'no_decision' => 'Not all decisions have been made yet.',
         'no_game' => 'Game not found.',
         'unvalid_period' => 'The selected period is invalid.',

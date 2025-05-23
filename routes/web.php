@@ -76,8 +76,8 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_period'])
     ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decisions.check');
 // Update game to next period:
 Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
-// Change status of game (active or inactive):
-Route::post('/change_status/{id}', [GameController::class, 'changeStatus'])->name('game.status');
+Route::patch('/games/{game}/status', [GameController::class, 'updateStatus'])->name('games.updateStatus');
+
 
 // CRUD of various models the gamemaster has access to:
 Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function () {

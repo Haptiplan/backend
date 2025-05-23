@@ -11,16 +11,16 @@
                 <div class="p-8 text-gray-900 dark:text-gray-100">
                     <!-- Game Edit Form -->
                     <h1 class="text-3xl font-semibold mb-8 text-center text-gray-900 dark:text-gray-100">{{ __('messages.gameEdit') }}</h1>
-                     <!-- Error Alert -->
-                     @if ($errors->any())
-                     <div class="alert alert-danger bg-red-100">
-                         <ul class="block text-sm font-medium text-red-600 dark:text-red-300">
-                             @foreach ($errors->all() as $error)
-                                 <li>{{ $error }}</li>
-                             @endforeach
-                         </ul>
-                     </div>
-                 @endif
+                    <!-- Error Alert -->
+                    @if ($errors->any())
+                    <div class="alert alert-danger bg-red-100">
+                        <ul class="block text-sm font-medium text-red-600 dark:text-red-300">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                     <x-success-message></x-success-message>
                     <form class="space-y-8" action="{{ route('games.update', $game->id) }}" method="POST">
                         @csrf
@@ -39,6 +39,21 @@
                             </x-submit-button>
                         </div>
                     </form>
+                    @php
+                    $groupedGames = $games->groupBy('status');
+                    $statusOrder = ['pending', 'active', 'completed', 'cancelled'];
+                    @endphp
+                    <form action="{{ route('games.updateStatus', $game->id) }}" method="POST" class="inline">
+                        @csrf
+                        @method('PATCH')
+                        <select name="status" onchange="this.form.submit()" class="border rounded p-1 text-sm">
+                            @foreach ($statusOrder as $statusOption)
+                            <option value="{{ $statusOption }}" {{ $game->status === $statusOption ? 'selected' : '' }}>
+                                {{ ucfirst($statusOption) }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </form>
 
                     <!-- Gamemaster Add Form -->
                     <h1 class="text-3xl font-semibold mb-8 text-center text-gray-900 dark:text-gray-100">{{ __('messages.gamemasterAdd') }}</h1>
@@ -52,10 +67,10 @@
                             </label>
                             <div class="space-y-4">
                                 @foreach ($gamemasters as $gamemaster)
-                                    <div class="flex items-center space-x-3">
-                                        <input type="radio" name="gamemaster" id="{{$gamemaster->id}}" value="{{$gamemaster->id}}" class="h-5 w-5 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:focus:ring-blue-500 dark:text-blue-600">
-                                        <label for="{{$gamemaster->id}}" class="text-lg text-gray-800 dark:text-gray-300">{{ $gamemaster->name }}</label>
-                                    </div>
+                                <div class="flex items-center space-x-3">
+                                    <input type="radio" name="gamemaster" id="{{$gamemaster->id}}" value="{{$gamemaster->id}}" class="h-5 w-5 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:focus:ring-blue-500 dark:text-blue-600">
+                                    <label for="{{$gamemaster->id}}" class="text-lg text-gray-800 dark:text-gray-300">{{ $gamemaster->name }}</label>
+                                </div>
                                 @endforeach
                             </div>
                         </div>
@@ -70,16 +85,16 @@
                     <!-- List of Existing Gamemasters -->
                     <div class="space-y-4 mt-8">
                         @foreach($list_gamemasters as $gamemaster)
-                            <div class="flex items-center justify-between text-gray-800 dark:text-gray-300">
-                                <span>{{ $gamemaster->name }}</span>
-                                <form action="{{ route('gamemasters.deleteOne', [$gamemaster->id, $game_id]) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md text-gray-700 dark:text-gray-300 font-semibold bg-red-500 hover:bg-red-600 focus:outline-none focus:border-red-600 focus:ring focus:ring-red-200 active:bg-red-700 transition duration-300 transform hover:scale-105">
-                                        {{ __('messages.delete') }}
-                                    </button>
-                                </form>
-                            </div>
+                        <div class="flex items-center justify-between text-gray-800 dark:text-gray-300">
+                            <span>{{ $gamemaster->name }}</span>
+                            <form action="{{ route('gamemasters.deleteOne', [$gamemaster->id, $game_id]) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md text-gray-700 dark:text-gray-300 font-semibold bg-red-500 hover:bg-red-600 focus:outline-none focus:border-red-600 focus:ring focus:ring-red-200 active:bg-red-700 transition duration-300 transform hover:scale-105">
+                                    {{ __('messages.delete') }}
+                                </button>
+                            </form>
+                        </div>
                         @endforeach
                     </div>
 
