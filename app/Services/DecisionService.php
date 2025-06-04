@@ -1,9 +1,13 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Decision;
 use App\Models\MachineDecision;
 use App\Models\Machine;
+use Illuminate\Validation\Rules\Exists;
+
+use function PHPUnit\Framework\isNull;
 
 class DecisionService
 {
@@ -16,14 +20,24 @@ class DecisionService
             'updated_at' => now(),
         ]);
 
-        $machineTypeId = $validated['machinetype_id'];
-        $buy = $validated['buy'][$machineTypeId] ?? 0;
+        if (isset($validated['machinetype_id'])) {
+            $machineTypeId = $validated['machinetype_id'];
+            $buy = $validated['buy'][$machineTypeId];
+        } else {
+            $buy = 0;
+        }
+
+        if (isset($validated['sell'])) {
+            $sell = count($validated['sell']);
+        } else {
+            $sell = 0;
+        }
 
         $machinedecision = MachineDecision::create([
             'decision_id' => $decision->id,
-            'machine_type_id' => $validated['machinetype_id'],
+            'machine_type_id' => $validated['machinetype_id'] ?? null,
             'buy' => $buy,
-            'sell' => $validated['sell'] ?? 0,
+            'sell' => $sell,
         ]);
 
         if ($machinedecision->buy != 0) {
@@ -36,9 +50,14 @@ class DecisionService
                 ]);
             }
         }
+
         if ($machinedecision->sell != 0) {
-            foreach ($machinedecision->sell as $machineId) {
-                Machine::destroy($machineId);
+            foreach ($validated['sell'] as $machineId) {
+                $machine = Machine::find($machineId);
+                if ($machine) {
+                    $machine->status = '0';
+                    $machine->save();
+                }
             }
         }
     }

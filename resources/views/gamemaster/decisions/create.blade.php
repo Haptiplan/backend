@@ -47,11 +47,17 @@
                                 {{ __('messages.sellMachine')}}
                             </label>
                             @foreach ($machines as $machine)
-                            <div class="flex items-center">
-                                <input type="radio" name="sell" id="sell" value="{{$machine->id}}" class="mr-2">
-                                <label for="{{$machine->id}}" class="text-gray-800 dark:text-gray-200">{{ $machine->type . $machine->id }}</label><br>
+                            <div class="flex items-center mb-2">
+                                <input
+                                    type="checkbox"
+                                    name="sell[]"
+                                    id="sell_{{ $machine->id }}"
+                                    value="{{ $machine->id }}"
+                                    class="mr-2">
 
-                                <label for="sell" class="text-gray-800 dark:text-gray-200">{{ __(' ' . 'messages.sellMachine') }}</label>
+                                <label for="sell_{{ $machine->id }}" class="text-gray-800 dark:text-gray-200">
+                                    {{ $machine->type }} {{ $machine->id }}
+                                </label>
                             </div>
                             @endforeach
                             <input type="hidden" name="player_id" id="player_id" value="{{$player->id}}" required>
