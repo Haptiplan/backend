@@ -78,44 +78,52 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_period'])
 Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
 Route::patch('/games/{game}/status', [GameController::class, 'updateStatus'])->name('games.updateStatus');
 
-
+//
+Route::get('/games', [GameController::class, 'index'])->name('games.index');
+Route::get('/games/create', [GameController::class, 'create'])->name('games.create');
+Route::post('/games', [GameController::class, 'store'])->name('games.store');
+Route::resource('', GameController::class)->only([
+            'show', 'edit', 'update', 'destroy'
+        ])->names([
+            'show' => 'games.show',
+            'edit' => 'games.edit', 
+            'update' => 'games.update',
+            'destroy' => 'games.destroy'
+        ]);
 // CRUD of various models the gamemaster has access to:
 Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function () {
-    /** 
-     * Games 
-     * Doesn't use the model in url but the id, thus the parameters-function is used.
-     */
-    Route::resource('games', GameController::class)->parameters([
-        'games' => 'id'
-    ]);
-    /** 
-     * Gamemaster 
-     * Only need to be able to add a gamemaster to a game or delete them.
-     * Deleting either all gamemaster entries for a user (destroy) or one entry in a specific game (destroyOne).
-     */
-    Route::resource('gamemasters', GamemasterController::class)->only([
-        'store',
-        'destroy'
-    ]);
-    Route::delete('/gamemaster/{id}/{game_id}', [GamemasterController::class, 'destroyOne'])->name('gamemasters.deleteOne');
-    /** 
-     * Companies 
-     */
-    Route::resource('companies', CompanyController::class)->parameters([
-        'companies' => 'id'
-    ]);
-    /** 
-     * User 
-     */
-    Route::resource('players', PlayerController::class)->parameters([
-        'players' => 'id'
-    ]);
-    /**
-     * Machine Type
-     */
-    Route::resource('machine_types', MachineTypeController::class)->parameters([
-        'machine_types' => 'id'
-    ]);
+   Route::prefix('games/{games}')->group(function (){
+        
+        /** 
+         * Gamemaster 
+         * Only need to be able to add a gamemaster to a game or delete them.
+         * Deleting either all gamemaster entries for a user (destroy) or one entry in a specific game (destroyOne).
+         */
+        Route::resource('gamemasters', GamemasterController::class)->only([
+            'store',
+            'destroy'
+        ]);
+        Route::delete('/gamemaster/{id}/{game_id}', [GamemasterController::class, 'destroyOne'])->name('gamemasters.deleteOne');
+        /** 
+         * Companies 
+         */
+        Route::resource('companies', CompanyController::class)->parameters([
+            'companies' => 'id'
+        ]);
+        /** 
+         * User 
+         */
+        Route::resource('players', PlayerController::class)->parameters([
+            'players' => 'id'
+        ]);
+        /**
+         * Machine Type
+         */
+        Route::resource('machine_types', MachineTypeController::class)->parameters([
+            'machine_types' => 'id'
+        ]);
+
+    });
 });
 
 /** Player routes */

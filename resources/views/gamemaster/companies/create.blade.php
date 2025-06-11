@@ -25,7 +25,7 @@
 
                     <!-- Company Creation Form -->
                      <x-success-message></x-success-message>
-                    <form class="space-y-8" action="{{ route('companies.store') }}" method="POST">
+                    <form class="space-y-8" action="{{ route('companies.store', $game) }}" method="POST">
                         @csrf
 
                         <!-- Company Name Input -->
@@ -63,7 +63,7 @@
 
                     <!-- Back Button -->
                     <div class="text-center mt-6">
-                        <x-back-button href="{{ route('companies.index') }}" class="px-8 py-3 bg-gray-300 dark:bg-gray-600 text-lg text-gray-800 dark:text-gray-200 font-semibold rounded-md shadow-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition duration-300">
+                        <x-back-button href="{{ route('companies.index', $game) }}" class="px-8 py-3 bg-gray-300 dark:bg-gray-600 text-lg text-gray-800 dark:text-gray-200 font-semibold rounded-md shadow-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition duration-300">
                             {{ __('messages.back') }}
                         </x-back-button>
                     </div>

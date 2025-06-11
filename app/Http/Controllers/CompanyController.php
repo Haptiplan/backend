@@ -17,21 +17,18 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Game $game)
     {
-        $games = Game::hasGamemasters()->get();
-        $companies = Company::whereIn('game_id', $games->pluck('id'))->get();
-
-        return view('gamemaster.companies.index', ['companies' => $companies, 'games' => $games]);
+        $companies = $game->companies;
+        return view('gamemaster.companies.index', ['companies' => $companies, 'game' => $game]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Game $game)
     {
-        $games = Game::hasGamemasters()->get();
-        return view('gamemaster.companies.create', ['games' => $games]);
+        return view('gamemaster.companies.create', ['game' => $game]);
     }
 
     /**
@@ -44,7 +41,7 @@ class CompanyController extends Controller
             'company_name' => [
                 'required',
                 'string',
-                'max:255',  
+                'max:255',
                 Rule::unique('companies', 'name'),
             ],
             'game_id' => [
@@ -59,10 +56,10 @@ class CompanyController extends Controller
         }
 
         if (Gate::denies('modify', $game)) {
-        return redirect()->back()
-            ->withErrors(['error' => __('validation.custom.game_not_modifiable')])
-            ->withInput();
-    }
+            return redirect()->back()
+                ->withErrors(['error' => __('validation.custom.game_not_modifiable')])
+                ->withInput();
+        }
 
         Company::create([
             'name' => $validated['company_name'],
@@ -104,7 +101,7 @@ class CompanyController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('companies','name')->ignore($company->id),
+                Rule::unique('companies', 'name')->ignore($company->id),
             ],
             'game_id' => [
                 'required',

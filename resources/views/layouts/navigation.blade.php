@@ -4,6 +4,7 @@ $admin = User::ROLE_ADMIN;
 $gamemaster = User::ROLE_GAMEMASTER;
 $user = User::ROLE_USER;
 @endphp
+
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,8 +41,7 @@ $user = User::ROLE_USER;
                     <x-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
                         {{ __('messages.navGame') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.index')">
-                        {{ __('messages.navCompany')}}
+                    <x-nav-link :href="route('companies.index', $game)" :active="request()->routeIs('companies.index')">                        {{ __('messages.navCompany')}}
                     </x-nav-link>
                     <x-nav-link :href="route('players.index')" :active="request()->routeIs('players.index')">
                         {{ __('messages.navPlayer')}}
