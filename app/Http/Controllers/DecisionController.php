@@ -10,6 +10,7 @@ use App\Models\Machine;
 use App\Models\MachineDecision;
 use App\Models\Player;
 use App\Models\User;
+use App\Services\DecisionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -61,7 +62,7 @@ class DecisionController extends Controller
         $company = Company::where('id', $player->company_id)->first();
         $game = Game::where('id', $company->game_id)->first();
         $machinetypes = $game->machinetypes()->get();
-        $machines = $company->machines()->get();
+        $machines = $company->machines()->where('status', '1')->get();
 
         $player_ids = Player::where('company_id', $company->id)->pluck('id')->toArray();
         $decisions = Decision::whereIn('player_id', $player_ids)->orderByDesc('id')->get();
@@ -82,48 +83,20 @@ class DecisionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, DecisionService $decisionService)
     {
         //dd($request);
         $validated = $request->validate([
             'approve' => 'required',
             'player_id' => 'required | exists:players,id',
             'period' => 'digits_between:1,8',
-            'machinetype_id' => 'required|exists:machine_types,id',
-            'buy' => 'integer|nullable',
+            'machinetype_id' => 'exists:machine_types,id|nullable',
+            'buy' => 'array|nullable',
             'sell' => 'array|nullable'
         ]);
 
-        $decision = Decision::create([
-            'player_id' => $validated['player_id'],
-            'period' => $validated['period'],
-            'created_at' => now(),
-            'updated_at' => now(),
-
-        ]);
-
-        $machinedecision = MachineDecision::create([
-            'decision_id' => $decision->id,
-            'machine_type_id' => $validated['machinetype_id'],
-            'buy' => $validated['buy'] ?? 0,
-            'sell' => $validated['sell'] ?? 0
-        ]);
-
-        if($machinedecision->buy != 0) {
-            for($i = 0; $i < $validated['buy']; $i++){
-                $company = $decision->player->company;
-                Machine::create([
-                    'machinetype_id' => $validated['machinetype_id'],
-                    'company_id' => $company->id,
-                    'period' => $decision->period
-                ]);
-            }
-        }
-        if($machinedecision->sell != 0) {
-            foreach($validated['sell'] as $sell){
-                Machine::destroy($sell);
-            }
-        }
+        
+        $decisionService->createDecisionWithMachineDecision($validated);
 
         return redirect()->back();
     }
