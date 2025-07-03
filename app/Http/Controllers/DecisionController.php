@@ -90,9 +90,10 @@ class DecisionController extends Controller
             'approve' => 'required',
             'player_id' => 'required | exists:players,id',
             'period' => 'digits_between:1,8',
-            'machinetype_id' => 'exists:machine_types,id|nullable',
             'buy' => 'array|nullable',
-            'sell' => 'array|nullable'
+            'buy.*' => 'integer|min:0',
+            'sell' => 'array|nullable',
+            'sell.*' => 'integer|exists:machines,id'
         ]);
 
         
