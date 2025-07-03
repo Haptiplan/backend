@@ -56,7 +56,7 @@
                                     class="mr-2">
 
                                 <label for="sell_{{ $machine->id }}" class="text-gray-800 dark:text-gray-200">
-                                    {{ $machine->type }} {{ $machine->id }}
+                                    {{ trans_choice('messages.machineType', 1) }}: {{ $machine->machinetype_id }}, ID: {{ $machine->id }}
                                 </label>
                             </div>
                             @endforeach
