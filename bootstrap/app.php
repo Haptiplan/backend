@@ -15,12 +15,14 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'admin_auth' => \App\Http\Middleware\AdminAuth::class,
-            'gamemaster_auth' => \App\Http\Middleware\GamemasterAuth::class,
             'check_role' => \App\Http\Middleware\CheckRole::class,
             'check_period' => \App\Http\Middleware\CheckPeriod::class,
+            'ensure.game.selected' => \App\Http\Middleware\EnsureGameIsSelected::class,
             'impersonate' => \App\Http\Middleware\Impersonate::class,
+            'gamemaster_auth' => \App\Http\Middleware\GamemasterAuth::class,
+
             'localization' => \App\Http\Middleware\Localization::class,
-            
+
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

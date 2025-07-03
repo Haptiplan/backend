@@ -201,8 +201,15 @@ class GameController extends Controller
         return redirect()->back()->with('success', 'Game status updated successfully.');
     }
 
-    public function getSelectedGame()
+    public function select()
     {
-        
+        $games = Game::all();
+        return view('gamemaster.games.select', compact('games'));
+    }
+
+    public function setSelected(Game $game)
+    {
+        session(['selected_game_id' => $game->id]);
+        return redirect()->route('gamemaster_dashboard_show');
     }
 }

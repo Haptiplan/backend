@@ -7,15 +7,20 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function gamemasterDashboard(){
-        return view('gamemaster.dashboard');
+    public function gamemasterDashboard()
+    {
+        return view('gamemaster.dashboard', [
+            'game' => session('selected_game_id')
+        ]);
     }
 
-    public function adminDashboard(){
+    public function adminDashboard()
+    {
         return view('admin.dashboard');
     }
 
-    public function userDashboard(){
+    public function userDashboard()
+    {
         return view('user.dashboard');
     }
 }

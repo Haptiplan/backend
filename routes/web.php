@@ -68,11 +68,14 @@ Route::middleware(['web', 'localization', 'verified', 'check_role:' . $admin])
 /** Gamemaster routes */
 
 // Dashboard:
-Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->group(function () {
+Route::middleware(['localization', 'gamemaster_auth','ensure.game.selected'])->prefix('gamemaster')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
+Route::get('/games/select', [GameController::class, 'select'])->name('games.select');
+Route::post('/games/select/{game}', [GameController::class, 'setSelected'])->name('games.set_selected');
+
 // Show desicion of players in a game period:
-Route::middleware(['localization', 'verified', 'impersonate', 'check_period'])
+Route::middleware(['localization', 'verified', 'impersonate', 'check_period','ensure.game.selected'])
     ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decisions.check');
 // Update game to next period:
 Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
