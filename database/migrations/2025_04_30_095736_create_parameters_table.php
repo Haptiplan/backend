@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('games', function (Blueprint $table) {
+        Schema::create('parameters', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('current_period_number')->default(0);
-            $table->enum('status', ['pending', 'active', 'completed', 'cancelled'])->default('pending');
+            $table->string('type');
+            $table->integer('foreign_id');
+            $table->integer('period');
+            $table->double('parameter_value');
             $table->timestamps();
+            $table->unique(['type','foreign_id','period']);
         });
     }
 
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('games');
+        Schema::dropIfExists('parameters');
     }
 };

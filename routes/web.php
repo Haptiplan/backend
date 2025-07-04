@@ -6,6 +6,7 @@ use App\Http\Controllers\DecisionController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GamemasterController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\MachineTypeController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
@@ -75,8 +76,8 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_period'])
     ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decisions.check');
 // Update game to next period:
 Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
-// Change status of game (active or inactive):
-Route::post('/change_status/{id}', [GameController::class, 'changeStatus'])->name('game.status');
+Route::patch('/games/{game}/status', [GameController::class, 'updateStatus'])->name('games.updateStatus');
+
 
 // CRUD of various models the gamemaster has access to:
 Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function () {
@@ -108,6 +109,12 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
      */
     Route::resource('players', PlayerController::class)->parameters([
         'players' => 'id'
+    ]);
+    /**
+     * Machine Type
+     */
+    Route::resource('machine_types', MachineTypeController::class)->parameters([
+        'machine_types' => 'id'
     ]);
 });
 

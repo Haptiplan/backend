@@ -85,6 +85,9 @@ class GameController extends Controller
         // Get the game and its associated gamemasters
         $game = Game::hasGamemasters()->findOrFail($game_id);
 
+        //Get all games from the current gamemaster
+        $games = Game::hasGamemasters()->get();
+
         // Get the user IDs of the gamemasters associated with the game, excluding the current user (if impersonating)
         $gm_in_game = Gamemaster::where('game_id', $game_id)->pluck('user_id')->toArray();
 
@@ -105,6 +108,7 @@ class GameController extends Controller
 
         return view('gamemaster.games.edit', [
             'game' => $game,
+            'games' => $games,
             'game_id' => $game_id,
             'gamemasters' => $gamemasters,
             'list_gamemasters' => $list_gamemasters,
@@ -176,18 +180,25 @@ class GameController extends Controller
             return redirect()->back()->withErrors(['error' => __('validation.custom.no_decision')]);
         }
 
-        if ($game->current_period_number <= $game->max_period_number) {
+        if ($game->current_period_number < $game->max_period_number) {
             $game->increment('current_period_number');
         }
+
+        if($game->current_period_number == $game->max_period_number) {
+            $game->status = 'completed';
+            $game->save();
+        }
+        
         return redirect()->route('decisions.check', [$game->id, $game->current_period_number]);
     }  
-    public function changeStatus(string $id)
-    {
-        $game = Game::findOrFail($id);
-        $game = DB::table('games')->where('id', $id)->first();
-        $newStatus = $game->active == 1 ? 0 : 1;
-        DB::table('games')->where('id', $id)->update(['active' => $newStatus]);
-        return redirect()->route('gamemaster.game.index');
-    }
+    public function updateStatus(Request $request, Game $game)
+{
+    $request->validate([
+        'status' => ['required', Rule::in(['pending', 'active', 'completed', 'cancelled'])],
+    ]);
+    $game->update(['status' => $request->status]);
+
+    return redirect()->back()->with('success', 'Game status updated successfully.');
+}
 }
 

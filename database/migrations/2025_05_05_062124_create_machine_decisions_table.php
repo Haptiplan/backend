@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('games', function (Blueprint $table) {
+        Schema::create('machine_decisions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('current_period_number')->default(0);
-            $table->enum('status', ['pending', 'active', 'completed', 'cancelled'])->default('pending');
+            $table->foreignId('decision_id')->constrained('decisions');
+            $table->foreignId('machine_type_id')->constrained('machine_types');
+            $table->integer('buy')->default(0);
+            $table->integer('sell')->default(0);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('games');
+        Schema::dropIfExists('machine_decisions');
     }
 };

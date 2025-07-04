@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Closure;
 
@@ -56,6 +57,12 @@ class CompanyController extends Controller
         if ($request->user()->cannot('store', [Company::class, $game])) {
             abort(403);
         }
+
+        if (Gate::denies('modify', $game)) {
+        return redirect()->back()
+            ->withErrors(['error' => __('validation.custom.game_not_modifiable')])
+            ->withInput();
+    }
 
         Company::create([
             'name' => $validated['company_name'],
