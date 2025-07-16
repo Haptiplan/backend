@@ -17,17 +17,23 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Game $game)
+    public function index()
     {
-        $companies = $game->companies;
+        $game_id = session('selected_game_id');
+        $game = Game::findOrFail($game_id);
+
+        $companies = Company::where('game_id', $game_id)->get();
         return view('gamemaster.companies.index', ['companies' => $companies, 'game' => $game]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Game $game)
+    public function create()
     {
+        $game_id = session('selected_game_id');
+        $game = Game::findOrFail($game_id);
+
         return view('gamemaster.companies.create', ['game' => $game]);
     }
 
@@ -82,11 +88,11 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        $games = Game::hasGamemasters()->get();
-        $game_ids = $games->pluck('id')->toArray();
-        $company = Company::whereIn('game_id', $game_ids)->find($id);
+        $game_id = session('selected_game_id');
+        $game = Game::findOrFail($game_id);
+        $company = Company::whereIn('game_id', $game_id)->find($id);
 
-        return view('gamemaster.companies.edit', ['company' => $company, 'games' => $games]);
+        return view('gamemaster.companies.edit', ['company' => $company, 'game' => $game]);
     }
 
     /**
