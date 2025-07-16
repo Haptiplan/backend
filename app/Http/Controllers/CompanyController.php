@@ -90,8 +90,8 @@ class CompanyController extends Controller
     {
         $game_id = session('selected_game_id');
         $game = Game::findOrFail($game_id);
-        $company = Company::whereIn('game_id', $game_id)->find($id);
-
+        $company = Company::where('game_id', $game_id)->where('id', $id)->firstOrFail();
+        
         return view('gamemaster.companies.edit', ['company' => $company, 'game' => $game]);
     }
 

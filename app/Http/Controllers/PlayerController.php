@@ -19,21 +19,22 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        // Eager load the necessary relationships to minimize the number of queries
-        $user_list = User::all();
-        $games = Game::hasGamemasters()->with('gamemasters')->get();
+        $game_id = session('selected_game_id');
+        $game = Game::findOrFail($game_id);
 
         // Get all companies for the games that have gamemasters
-        $companies = Company::with('players')->whereIn('game_id', $games->pluck('id'))->get();;
-
+        $companies = Company::where('game_id', $game_id)->get();
         // Get the players related to these companies (eager loading done in the above query)
         $players = Player::whereIn('company_id', $companies->pluck('id'))->get();
+
+        $user_ids = $players->pluck('id');
+        $user_list = User::whereIn('id', $user_ids)->get();
 
         return view('gamemaster.players.index', [
             'user_list' => $user_list,
             'companies' => $companies,
             'players' => $players,
-            'games' => $games,
+            'game' => $game,
         ]);
     }
 
@@ -49,16 +50,14 @@ class PlayerController extends Controller
             ->whereNotIn('id', Player::pluck('id'))
             ->get();
 
-        // Fetch games that have gamemasters
-        $games = Game::hasGamemasters()->get();
+        $game_id = session('selected_game_id');
+        $game = Game::findOrFail($game_id);
 
-        // Fetch companies related to these games
-        $game_ids = $games->pluck('id')->toArray();
-        $companies = Company::whereIn('game_id', $game_ids)->get();
+        $companies = Company::where('game_id', $game_id)->get();
 
         return view('gamemaster.players.create', [
             'users' => $users,
-            'games' => $games,
+            'game' => $game,
             'companies' => $companies,
         ]);
     }
@@ -108,16 +107,16 @@ class PlayerController extends Controller
     {
         $user = User::findOrFail($id);
         $player = Player::find($id);
-
-        // Fetch all companies and games
+        $game_id = session('selected_game_id');
+        $game = Game::findOrFail($game_id);
+        // Fetch all companies
         $companies = Company::all();
-        $games = Game::all();
 
         return view('gamemaster.players.edit', [
             'user' => $user,
             'player' => $player,
             'companies' => $companies,
-            'games' => $games,
+            'game' => $game,
         ]);
     }
 
