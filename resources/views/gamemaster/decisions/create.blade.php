@@ -32,13 +32,13 @@
                             <div class="flex items-center">
                                 <input type="radio" name="machinetype_id" id="machinetype_{{ $machinetype->id }}" value="{{ $machinetype->id }}" class="mr-2">
 
-                                <label for="buy_{{ $machinetype->id }}" class="text-gray-800 dark:text-gray-200">
+                                <label for="buy[{{ $machinetype->id }}]" class="text-gray-800 dark:text-gray-200">
                                     {{ $machinetype->name }} {{ __('messages.selectAmount') }}
                                 </label>
 
                                 <input type="number"
                                     name="buy[{{ $machinetype->id }}]"
-                                    id="buy_{{ $machinetype->id }}"
+                                    id="buy[{{ $machinetype->id }}]"
                                     min="0" max="3" value="0" step="1"
                                     class="border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200 transition duration-300 ease-in-out transform hover:scale-105">
                             </div>
@@ -56,7 +56,7 @@
                                     class="mr-2">
 
                                 <label for="sell_{{ $machine->id }}" class="text-gray-800 dark:text-gray-200">
-                                    {{ $machine->type }} {{ $machine->id }}
+                                    {{ trans_choice('messages.machineType', 1) }}: {{ $machine->machinetype_id }}, ID: {{ $machine->id }}
                                 </label>
                             </div>
                             @endforeach
