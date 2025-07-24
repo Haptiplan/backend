@@ -93,6 +93,7 @@ return [
         'string' => 'Der Inhalt des :attribute Feldes darf höchstens :value Zeichen haben.',
     ],
     'mac_address' => 'Das :attribute Feld muss eine gültige MAC Adresse enthalten.',
+    'machineTypeUsedInGame' => 'Der Name des Machinentypes ist in diesem Spiel schon vergeben!',
     'max' => [
         'array' => 'Das :attribute darf maximal :max Einheiten haben.',
         'file' => 'Die :attribute Datei darf maximal :max Kilobytes groß sein.',
@@ -179,6 +180,7 @@ return [
             'no_game' => 'Kein Spiel gefunden.',
             'unvalid_period' => 'Die ausgewählte Periode ist ungültig.',
         ],
+        'game_not_modifiable' => 'Das Spiel kann nicht bearbeitet werden. Status muss "aktiv" oder "ausstehend" sein.',
     ],
 
     /*

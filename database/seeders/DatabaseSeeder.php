@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([RoleSeeder::class,UserSeeder::class, GameSeeder::class, CompanySeeder::class, GamemasterSeeder::class, PlayerSeeder::class]);
+        $this->call([RoleSeeder::class,UserSeeder::class, GameSeeder::class, CompanySeeder::class, GamemasterSeeder::class, PlayerSeeder::class, MachineTypeSeeder::class]);
         // User::factory(10)->create();
     }
 }
