@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Decision;
 use App\Models\MachineDecision;
 use App\Models\Machine;
+use App\Models\MachineType;
 use Illuminate\Validation\Rules\Exists;
 
 use function PHPUnit\Framework\isNull;
@@ -24,6 +25,11 @@ class DecisionService
         if (isset($validated['buy'])) {
             foreach ($validated['buy'] as $machineTypeId => $buyMachine) {
                 $company = $decision->player->company;
+
+                // Later we must add parameters for machines here!
+                $machineType = MachineType::findOrFail($buyMachine);
+                $originalPrice = $machineType->price; // * $parameter_for_machines
+                
                 // Create MachineDecision for each Machine Type
                 if ($buyMachine > 0) {
                     MachineDecision::create([
@@ -37,6 +43,7 @@ class DecisionService
                         Machine::create([
                             'machinetype_id' => $machineTypeId,
                             'company_id' => $company->id,
+                            'original_price' => $originalPrice,
                             'period' => $decision->period,
                         ]);
                     }
