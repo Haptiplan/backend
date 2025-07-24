@@ -203,7 +203,7 @@ class GameController extends Controller
 
     public function select()
     {
-        $games = Game::all();
+        $games = Game::hasGamemasters()->get();
         return view('gamemaster.games.select', compact('games'));
     }
 

@@ -6,8 +6,6 @@
     </x-slot>
 
     <div class="p-6">
-        <p>Bitte wähle ein Spiel:</p>
-
         <div class="mt-4 space-y-2">
             @foreach($games as $game)
                 <form method="POST" action="{{ route('games.set_selected', $game) }}">
