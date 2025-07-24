@@ -119,14 +119,12 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
         Route::resource('players', PlayerController::class)->parameters([
             'players' => 'id'
         ]);
-        /**
-         * Machine Type
-         */
-        Route::resource('machine_types', MachineTypeController::class)->parameters([
-            'machine_types' => 'id'
-        ]);
 
     });
+    //Machine Type without the prefix
+    Route::resource('machine_types', MachineTypeController::class)->parameters([
+        'machine_types' => 'id'
+    ]);
 });
 
 /** Player routes */

@@ -1,9 +1,13 @@
 @php
 use App\Models\User;
+use App\Models\Game;
 $admin = User::ROLE_ADMIN;
 $gamemaster = User::ROLE_GAMEMASTER;
 $user = User::ROLE_USER;
-$game = session('selected_game_id');
+$game_Id = session('selected_game_id');
+$game = Game::findOrFail($game_Id);
+$currentPeriod = $game->currentPeriod ?? null;
+
 @endphp
 
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
@@ -42,15 +46,15 @@ $game = session('selected_game_id');
                     <x-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
                         {{ __('messages.navGame') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('companies.index', $game)" :active="request()->routeIs('companies.index')">                        {{ __('messages.navCompany')}}
+                    <x-nav-link :href="route('companies.index', $game_Id)" :active="request()->routeIs('companies.index')">                        {{ __('messages.navCompany')}}
                     </x-nav-link>
-                    <x-nav-link :href="route('players.index', $game)" :active="request()->routeIs('players.index')">
+                    <x-nav-link :href="route('players.index', $game_Id)" :active="request()->routeIs('players.index')">
                         {{ __('messages.navPlayer')}}
                     </x-nav-link>
-                    <x-nav-link :href="route('machine_types.index', $game)" :active="request()->routeIs('machine_types.index')">
+                    <x-nav-link :href="route('machine_types.index', $game_Id)" :active="request()->routeIs('machine_types.index')">
                         {{ __('messages.machineType') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('decisions.check', [1,0])" :active="request()->routeIs('decisions.check')">
+                    <x-nav-link :href="route('decisions.check', [$game_Id,0])" :active="request()->routeIs('decisions.check')">
                         {{ trans_choice('messages.decision', 2) }}
                     </x-nav-link>
                     @endif
