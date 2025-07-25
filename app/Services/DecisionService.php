@@ -1,9 +1,13 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Decision;
 use App\Models\MachineDecision;
 use App\Models\Machine;
+use Illuminate\Validation\Rules\Exists;
+
+use function PHPUnit\Framework\isNull;
 
 class DecisionService
 {
@@ -16,29 +20,46 @@ class DecisionService
             'updated_at' => now(),
         ]);
 
-        $machineTypeId = $validated['machinetype_id'];
-        $buy = $validated['buy'][$machineTypeId] ?? 0;
-
-        $machinedecision = MachineDecision::create([
-            'decision_id' => $decision->id,
-            'machine_type_id' => $validated['machinetype_id'],
-            'buy' => $buy,
-            'sell' => $validated['sell'] ?? 0,
-        ]);
-
-        if ($machinedecision->buy != 0) {
-            for ($i = 0; $i < $machinedecision->buy; $i++) {
+        // Create Buy MachineDecisions
+        if (isset($validated['buy'])) {
+            foreach ($validated['buy'] as $machineTypeId => $buyMachine) {
                 $company = $decision->player->company;
-                Machine::create([
-                    'machinetype_id' => $machinedecision->machine_type_id,
-                    'company_id' => $company->id,
-                    'period' => $decision->period,
-                ]);
+                // Create MachineDecision for each Machine Type
+                if ($buyMachine > 0) {
+                    MachineDecision::create([
+                        'decision_id' => $decision->id,
+                        'machine_type_id' => $machineTypeId,
+                        'buy' => $buyMachine,
+                        'sell' => null
+                    ]);
+                    // Create Machine, loop the number of Machines a Player wanted to buy
+                    for ($i = 0; $i < $buyMachine; $i++) {
+                        Machine::create([
+                            'machinetype_id' => $machineTypeId,
+                            'company_id' => $company->id,
+                            'period' => $decision->period,
+                        ]);
+                    }
+                }
             }
         }
-        if ($machinedecision->sell != 0) {
-            foreach ($machinedecision->sell as $machineId) {
-                Machine::destroy($machineId);
+
+        // Create Sell MachineDecisions
+        if (isset($validated['sell'])) {
+            foreach ($validated['sell'] as $sellMachine) {
+                // Create MachineDecision
+                MachineDecision::create([
+                    'decision_id' => $decision->id,
+                    'machine_type_id' => null,
+                    'buy' => null,
+                    'sell' => $sellMachine      // $sellMachine is a Machine_ID
+                ]);
+                // Sell Machines
+                $machine = Machine::find($sellMachine);
+                if ($machine) {
+                    $machine->status = '0';
+                    $machine->save();
+                }
             }
         }
     }
