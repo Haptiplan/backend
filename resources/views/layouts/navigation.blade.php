@@ -25,6 +25,7 @@ $currentPeriod = $game->currentPeriod ?? null;
                             <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                         </a>
                     </div>
+
                     <x-nav-link :href="route('decisions.index')" :active="request()->routeIs('decision.index')">
                         {{ trans_choice('messages.decision', 1) }}
                     </x-nav-link>
@@ -46,7 +47,7 @@ $currentPeriod = $game->currentPeriod ?? null;
                     <x-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
                         {{ __('messages.navGame') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('companies.index', $game_Id)" :active="request()->routeIs('companies.index')">                        {{ __('messages.navCompany')}}
+                    <x-nav-link :href="route('companies.index', $game_Id)" :active="request()->routeIs('companies.index')"> {{ __('messages.navCompany')}}
                     </x-nav-link>
                     <x-nav-link :href="route('players.index', $game_Id)" :active="request()->routeIs('players.index')">
                         {{ __('messages.navPlayer')}}
@@ -56,6 +57,12 @@ $currentPeriod = $game->currentPeriod ?? null;
                     </x-nav-link>
                     <x-nav-link :href="route('decisions.check', [$game_Id,0])" :active="request()->routeIs('decisions.check')">
                         {{ trans_choice('messages.decision', 2) }}
+                    </x-nav-link>
+                    @endif
+
+                    @if(isset($game))
+                    <x-nav-link :href="route('games.select')" class="btn btn-outline-primary">
+                        {{ $game->name }}
                     </x-nav-link>
                     @endif
 
