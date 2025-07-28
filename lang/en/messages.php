@@ -110,6 +110,7 @@ return [
     'selectAmount' => 'Amount you want to buy: ',
     'sell' => 'sell',
     'sellMachine' => 'Maschine verkaufen: ',
+    'show' => 'Show',
     'successCreate' => 'Created successfully',
     'successDelete' => 'Deleted successfully',
     'successEdit' => 'Update successful',
