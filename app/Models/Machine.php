@@ -13,6 +13,7 @@ class Machine extends Model
         'machinetype_id',
         'company_id',
         'period',
+        'original_price'
     ];
 
     public function machinetype()
