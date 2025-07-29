@@ -97,6 +97,7 @@ return [
     'passwordReset' => 'Reset password',
     'passwordSafetyMessage' => 'Please use a long, random password to ensure the safety of your account.',
     'passwordUpdate' => 'Update your password',
+    'period' => 'period',
     'player' => 'Player',
     'playerCreate' => 'Create Player',
     'playerEdit' => 'Edit Player',

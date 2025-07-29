@@ -97,6 +97,7 @@ return [
     'passwordReset' => 'Passwort zurücksetzen',
     'passwordSafetyMessage' => 'Benutzen Sie ein langes, zufälliges Passwort um die Sicherheit Ihres Accounts sicherzustellen.',
     'passwordUpdate' => 'Passwort aktualisieren',
+    'period' => 'Periode',
     'player' => 'Spieler',
     'playerCreate' => 'Spieler erstellen',
     'playerEdit' => 'Spieler bearbeiten',
