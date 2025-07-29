@@ -27,9 +27,9 @@ class DecisionService
                 $company = $decision->player->company;
 
                 // Later we must add parameters for machines here!
-                $machineType = MachineType::findOrFail($buyMachine);
+                $machineType = MachineType::findOrFail($machineTypeId);
                 $originalPrice = $machineType->price; // * $parameter_for_machines
-                
+
                 // Create MachineDecision for each Machine Type
                 if ($buyMachine > 0) {
                     MachineDecision::create([

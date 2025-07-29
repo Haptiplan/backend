@@ -8,16 +8,14 @@ class MachinesService
 {
     public function calcMachinesValues(Company $company)
     {
-        Company::findOrFail($company);
-
         $value = 0;
-        $machines = $company->machines;
-        foreach($machines as $machine) {
+        $machines = $company->machines()->where('status', '!=', 0)->get();
+        foreach ($machines as $machine) {
             $price = $machine->machinetype->price;
             $depreciation = $price / $machine->machinetype->depreciation_period;
-            $period = $machine->period - $company->game->current_period_number;
+            $period = $company->game->current_period_number - $machine->period;
 
-            $value =+ $price - $depreciation * $period; 
+            $value += $price - $depreciation * $period;
         }
 
         return $value;
