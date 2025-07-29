@@ -1,5 +1,5 @@
 <a {{ $attributes->merge([
-    'class' => 'inline-flex items-center px-4 py-2 bg-gray-600 border bg-opacity-75 border-transparent rounded-md font-medium text-white tracking-widest hover:bg-gray-500 active:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 '
+    'class' => 'px-6 py-3 bg-gradient-to-r from-blue-500 to-teal-400 text-white rounded-full text-lg font-semibold hover:from-teal-400 hover:to-blue-500 transition duration-300 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-xl '
 ]) }}>
     {{$slot}}
 </a>
