@@ -20,4 +20,14 @@ class MachinesService
 
         return $value;
     }
+
+    public function calcFixCost(Company $company)
+    {
+        $value = 0;
+        $machines = $company->machines()->where('status', '!=', 0)->get();
+        foreach($machines as $machine) {
+            $value += $machine->machinetype->fix_costs_per_period;
+        }
+        return $value;
+    }
 }
