@@ -62,7 +62,7 @@ class DecisionController extends Controller
         $company = Company::where('id', $player->company_id)->first();
         $game = Game::where('id', $company->game_id)->first();
         $machinetypes = $game->machinetypes()->get();
-        $machines = $company->machines()->get();
+        $machines = $company->machines()->where('status', '1')->get();
 
         $player_ids = Player::where('company_id', $company->id)->pluck('id')->toArray();
         $decisions = Decision::whereIn('player_id', $player_ids)->orderByDesc('id')->get();
@@ -90,9 +90,10 @@ class DecisionController extends Controller
             'approve' => 'required',
             'player_id' => 'required | exists:players,id',
             'period' => 'digits_between:1,8',
-            'machinetype_id' => 'required|exists:machine_types,id',
             'buy' => 'array|nullable',
-            'sell' => 'array|nullable'
+            'buy.*' => 'integer|min:0',
+            'sell' => 'array|nullable',
+            'sell.*' => 'integer|exists:machines,id'
         ]);
 
         

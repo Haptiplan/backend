@@ -71,7 +71,7 @@ return [
     'machineCreate' => 'Maschine erstellen',
     'machineEdit' => 'Maschine bearbeiten',
     'machineName' => 'Maschinenname',
-    'machineType' => 'Maschinentypen',
+    'machineType' => 'Maschinentyp|Maschinentypen',
     'machineTypeCapacity' => 'Kapazität',
     'machineTypeCreate' => 'Maschinentyp erstellen',
     'machineTypeDepreciationPeriod' => 'Abschreibungsdauer',

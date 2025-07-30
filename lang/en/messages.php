@@ -71,7 +71,7 @@ return [
     'machineCreate' => 'Create machine',
     'machineEdit' => 'Edit machine',
     'machineName' => 'Machine name',
-    'machineType' => 'Machinetypes',
+    'machineType' => 'Machinetype|Machinetypes',
     'machineTypeCapacity' => 'Capacity',
     'machineTypeCreate' => 'Create machinetype',
     'machineTypeDepreciationPeriod' => 'Depreciable period',
