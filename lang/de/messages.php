@@ -108,6 +108,7 @@ return [
     'save' => 'Speichern',
     'saved' => 'Gespeichert',
     'selectAmount' => 'Anzahl der Maschinen: ',
+    'selectGame' => 'Wähle ein Spiel',
     'sell' => 'verkaufen',
     'sellMachine' => 'Maschine verkaufen: ',
     'successCreate' => 'Erfolgreich erstellt',

@@ -108,6 +108,7 @@ return [
     'save' => 'Save',
     'saved' => 'Saved',
     'selectAmount' => 'Amount you want to buy: ',
+    'selectGame' => 'Select a game',
     'sell' => 'sell',
     'sellMachine' => 'Maschine verkaufen: ',
     'successCreate' => 'Created successfully',
