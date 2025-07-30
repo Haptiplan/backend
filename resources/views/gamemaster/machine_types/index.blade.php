@@ -3,10 +3,7 @@
         {{ __('Dashboard') }}
     </x-dashboard-header>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-xl">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+    <x-content-box>
                     <!-- Centered Title with Elegant Font and Smooth Transition -->
                     <x-page-title>
                         {{ __('messages.machineTypeIndex') }}
@@ -36,8 +33,7 @@
                     <div class="mt-8 space-y-8">
                         @foreach ($games as $game)
                             <x-container>
-                                <label
-                                    class="font-bold text-2xl text-gray-800 dark:text-gray-100 mb-3 underline">{{ $game->name }}</label>
+                                <label class=" underline decoration-yellow-400">{{ $game->name }}:</label>
                                 <ul class="space-y-4 mt-4">
                                     @foreach ($machine_types as $machine_type)
                                         @if ($machine_type->game_id == $game->id)
@@ -49,10 +45,5 @@
                             </x-container>
                         @endforeach
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-</x-app-layout>
+                </x-content-box>
+            </x-app-layout>
