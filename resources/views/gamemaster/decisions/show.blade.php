@@ -1,18 +1,27 @@
 <x-app-layout>
+    <!-- Dashboard Header -->
     <x-dashboard-header>
         {{ __('Dashboard') }}
     </x-dashboard-header>
+
+    <!-- Layout Content Box -->
     <x-content-box>
-        <x-page-title>{{ __('messages.decisionName') . " " . $decision->period }}
-            
+        <!-- Centered Title with Elegant Font and Smooth Transition -->
+        <x-page-title>
+            {{ __('messages.decisionName') . " " . $decision->period }}
         </x-page-title>
-        <div>
-            <li class="ml-10">
-                {{ __('messages.period') . ": " . $decision->period}}
-            </li>
-            <li class="ml-10">
-                {{ __('messages.decisionMaker') . ": " . $decision_maker->name}}
-            </li>
+
+        <!-- List of Decisions -->
+        <div class="mt-8">
+            <x-header-label>
+                {{ __('messages.period') }}:
+            </x-header-label>
+            <x-simple-text :text="$decision->period" />
+
+            <x-header-label>
+                {{ __('messages.decisionMaker') }}:
+            </x-header-label>
+            <x-simple-text :text="$decision_maker->name" />
         </div>
     </x-content-box>
 </x-app-layout>

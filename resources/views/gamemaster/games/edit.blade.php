@@ -1,65 +1,67 @@
 <x-app-layout>
+    <!-- Dashboard Header -->
     <x-dashboard-header>
         {{ __('Dashboard') }}
     </x-dashboard-header>
-   
+
+    <!-- Layout Content Box -->
     <x-content-box>
-        <!-- Game Edit Header -->
+
+        <!-- Centered Title -->
         <x-page-title>
             {{ __('messages.gameEdit') }}
         </x-page-title>
-        <!-- Error Alert -->
-        @if ($errors->any())
-            <div class="alert alert-danger bg-red-100">
-                <ul class="block text-sm font-medium text-red-600 dark:text-red-300">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <x-success-message></x-success-message>
+
+        <!-- Error Handling -->
+        <x-error-message />
+        <x-success-message />
+
+        <!-- Game Edit Form -->
         <form class="space-y-8" action="{{ route('games.update', $game->id) }}" method="POST">
             @csrf
             @method('PUT')
 
             <div class="space-y-4">
-                <label for="game_name" class="block text-lg font-medium text-gray-700 dark:text-gray-300">
+                <x-header-label for="game_name">
                     {{ __('messages.gameName') }}
-                </label>
-                <input type="text" name="game_name" id="game_name" required
-                    class="mt-1 block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200 transition duration-300 ease-in-out transform hover:scale-105"
-                    value="{{ $game->name }}">
+                </x-header-label>
+                <x-input-field name="game_name" id="game_name" required value="{{ $game->name }}" />
             </div>
 
+            <!-- Submit Button -->
             <div class="text-center">
                 <x-submit-button>
                     {{ __('messages.submit') }}
                 </x-submit-button>
             </div>
         </form>
+
         @php
             $groupedGames = $games->groupBy('status');
             $statusOrder = ['pending', 'active', 'completed', 'cancelled'];
         @endphp
+
+        <!-- Status Select Form -->
         <form action="{{ route('games.updateStatus', $game->id) }}" method="POST" class="inline">
             @csrf
             @method('PATCH')
             <x-select-status :statusOrder="$statusOrder" :selected="$game->status" onchange="this.form.submit()" />
         </form>
-        
-        <!-- Gamemaster Add Form -->
+
+        <!-- Centered Title for Gamemaster Add -->
         <x-page-title>
             {{ __('messages.gamemasterAdd') }}
         </x-page-title>
+
+        <!-- Gamemaster Selection Form -->
         <form class="space-y-8" action="{{ route('gamemasters.store') }}" method="POST">
             @csrf
             <input type="hidden" name="game_id" value="{{ $game->id }}">
 
             <div class="space-y-4">
-                <label for="gamemasters" class="block text-lg font-medium text-gray-700 dark:text-gray-300">
+                <x-header-label for="gamemasters">
                     {{ __('messages.listGamemasters') }}
-                </label>
+                </x-header-label>
                 <div class="space-y-4">
                     @foreach ($gamemasters as $gamemaster)
                         <div class="flex items-center space-x-3">
@@ -72,6 +74,7 @@
                 </div>
             </div>
 
+            <!-- Submit Button -->
             <div class="text-center">
                 <x-submit-button>
                     {{ __('messages.submit') }}
@@ -99,8 +102,7 @@
 
         <!-- Back Button -->
         <div class="text-center mt-6">
-            <x-back-button href="{{ route('games.index') }}"
-                class="px-8 py-3 bg-gray-300 dark:bg-gray-600 text-lg text-gray-800 dark:text-gray-200 font-semibold rounded-md shadow-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition duration-300">
+            <x-back-button href="{{ route('games.index') }}">
                 {{ __('messages.back') }}
             </x-back-button>
         </div>

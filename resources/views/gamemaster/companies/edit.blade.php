@@ -1,57 +1,42 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('messages.companyEdit') }}
-        </h2>
-    </x-slot>
+    <!-- Dashboard Header -->
+    <x-dashboard-header>
+        {{ __('Dashboard') }}
+    </x-dashboard-header>
 
+    <!-- Layout Content Box -->
     <x-content-box>
+        <!-- Centered Title with Elegant Font and Smooth Transition -->
         <x-page-title>
             {{ __('messages.companyEdit') }}
         </x-page-title>
-        <!-- Error Alert -->
-        @if ($errors->any())
-            <div class="alert alert-danger bg-red-100 dark:bg-red-800 border-l-4 border-red-500 p-4 mb-6 rounded-md">
-                <ul class="block text-sm font-medium text-red-600 dark:text-red-300">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+
+        <!-- Error Handling with Soft Background and Styled List -->
+        <x-error-message />
+        <x-success-message />
 
         <!-- Edit Company Form -->
-        <x-success-message></x-success-message>
         <form class="space-y-8" action="{{ route('companies.update', $company->id) }}" method="POST">
             @csrf
             @method('PUT')
 
             <!-- Company Name Input -->
             <div class="space-y-4">
-                <label for="company_name" class="block text-lg font-medium text-gray-700 dark:text-gray-300">
+                <x-header-label for="company_name">
                     {{ __('messages.companyName') }}
-                </label>
-                <input type="text" name="company_name" id="company_name" required
-                    class="mt-1 block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200 transition duration-300 ease-in-out transform hover:scale-105"
-                    value="{{ $company->name }}">
+                </x-header-label>
+                <x-input-field name="company_name" value="{{ $company->name }}" required />
             </div>
 
+            <!-- Game Selection -->
             <div class="space-y-4">
-                <label for="game_id" class="block text-lg font-medium text-gray-700 dark:text-gray-300">
+                <x-header-label>
                     {{ __('messages.listGames') }}
-                </label>
-                <div class="space-y-4">
-                    @foreach ($games as $game)
-                        <div class="flex items-center space-x-3">
-                            <input type="radio" name="game_id" id="{{$game->id}}" value="{{$game->id}}"
-                                class="h-5 w-5 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:focus:ring-blue-500 dark:text-blue-600">
-                            <label for="{{$game->id}}"
-                                class="text-lg text-gray-800 dark:text-gray-300">{{ $game->name }}</label>
-                        </div>
-                    @endforeach
-                </div>
+                </x-header-label>
+                <x-game-select :games="$games" :selected="$company->game_id" />
             </div>
-
+            
+            <!-- Submit Button -->
             <div class="text-center">
                 <x-submit-button>
                     {{ __('messages.submit') }}

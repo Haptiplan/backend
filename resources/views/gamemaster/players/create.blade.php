@@ -1,34 +1,30 @@
 <x-app-layout>
+    <!-- Dashboard Header -->
     <x-dashboard-header>
         {{ __('Dashboard') }}
     </x-dashboard-header>
 
+    <!-- Layout Content Box -->
     <x-content-box>
-        <!-- Player Creation Header -->
+
+        <!-- Centered Title -->
         <x-page-title>
             {{ __('messages.playerCreate') }}
         </x-page-title>
 
-        <!-- Error Messages -->
-        @if ($errors->any())
-            <div class="bg-red-100 dark:bg-red-600 p-4 mb-6 rounded-md">
-                <ul class="text-sm font-medium text-red-600 dark:text-red-300">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <x-success-message></x-success-message>
-        <form class="space-y-8" action="{{ route('players.store') }}" method="POST">
+        <!-- Error & Success Messages -->
+        <x-error-message />
+        <x-success-message />
 
+        <!-- Player Creation Form -->
+        <form class="space-y-8" action="{{ route('players.store') }}" method="POST">
             @csrf
 
             <!-- Player Selection -->
             <div class="space-y-4">
-                <label for="id" class="block text-lg font-medium text-gray-700 dark:text-gray-300">
+                <x-header-label for="id">
                     {{ __('messages.player') }}
-                </label>
+                </x-header-label>
                 <div class="space-y-2">
                     @foreach ($users as $user)
                         <div class="flex items-center">
@@ -41,15 +37,15 @@
 
             <!-- Company and Game Selection -->
             <div class="space-y-4">
-                <label for="company_id" class="block text-lg font-medium text-gray-700 dark:text-gray-300">
-                    {{ __('messages.company') }}:
-                </label>
+                <x-header-label for="company_id">
+                    {{ __('messages.company') }}
+                </x-header-label>
                 <div class="space-y-6">
                     @foreach ($games as $game)
                         <div class="space-y-2">
-                            <label
-                                class="text-sm font-medium ml-5 text-gray-700 dark:text-gray-300">{{ __('messages.game') }}:
-                                {{$game->name}}</label>
+                            <x-header-label class="text-sm font-medium ml-5">
+                                {{ __('messages.game') }}: {{$game->name}}
+                            </x-header-label>
                             <div class="space-y-2 ml-8">
                                 @foreach ($companies->where('game_id', $game->id) as $company)
                                     <div class="flex items-center">
