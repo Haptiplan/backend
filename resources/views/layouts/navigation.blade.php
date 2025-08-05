@@ -61,7 +61,7 @@ $currentPeriod = $game->currentPeriod ?? null;
                     </x-nav-link>
                     @if(isset($game))
                     <x-nav-link :href="route('games.select')" class="btn btn-outline-primary">
-                        {{ $game->name }}
+                        {{ __('messages.selectGame') }}
                     </x-nav-link>
                     @endif
                     @endif
