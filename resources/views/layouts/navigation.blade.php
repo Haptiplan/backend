@@ -5,8 +5,9 @@ $admin = User::ROLE_ADMIN;
 $gamemaster = User::ROLE_GAMEMASTER;
 $user = User::ROLE_USER;
 $game_Id = session('selected_game_id');
-$game = Game::findOrFail($game_Id);
-$currentPeriod = $game->currentPeriod ?? null;
+$game = $game_Id ? Game::find($game_Id) : null;
+$currentPeriod = $game?->currentPeriod;
+
 
 @endphp
 

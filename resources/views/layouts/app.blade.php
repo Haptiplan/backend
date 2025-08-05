@@ -20,10 +20,11 @@
     <div class="min-h-screen flex flex-col">
 
         <!-- Navigation -->
-        @if (!request()->routeIs('games.select'))
+        @if (!request()->routeIs('games.select') && Auth::check())
         @include('layouts.navigation')
         @endif
-        
+
+
         <!-- Page Heading -->
         @if (isset($header))
         <header class="bg-white dark:bg-gray-800 shadow-md">
