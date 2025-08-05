@@ -59,12 +59,11 @@ $currentPeriod = $game->currentPeriod ?? null;
                     <x-nav-link :href="route('decisions.check', [$game_Id,0])" :active="request()->routeIs('decisions.check')">
                         {{ trans_choice('messages.decision', 2) }}
                     </x-nav-link>
-                    @endif
-
                     @if(isset($game))
                     <x-nav-link :href="route('games.select')" class="btn btn-outline-primary">
                         {{ $game->name }}
                     </x-nav-link>
+                    @endif
                     @endif
 
                     @if(Auth::check() && Auth::user()->role->id == $user)
