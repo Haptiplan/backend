@@ -21,7 +21,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'ensure.game.selected' => \App\Http\Middleware\EnsureGameIsSelected::class,
             'impersonate' => \App\Http\Middleware\Impersonate::class,
             'gamemaster_auth' => \App\Http\Middleware\GamemasterAuth::class,
-
             'localization' => \App\Http\Middleware\Localization::class,
 
         ]);
