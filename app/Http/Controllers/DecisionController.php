@@ -81,6 +81,11 @@ class DecisionController extends Controller
             'period' => 'digits_between:1,8',
         ]);
 
+        $company = Player::find($validated['player_id'])->company;
+        if ($request->user()->cannot('store', [Decision::class, $company])) {
+            abort(403);
+        }
+
         DB::table('decisions')->insert([
             'player_id' => $validated['player_id'],
             'period' => $validated['period'],
