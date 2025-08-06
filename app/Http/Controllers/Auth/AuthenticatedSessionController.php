@@ -43,6 +43,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
+        // destroy game selection session
+        if (session()->has('selected_game_id')) {
+            session()->forget('selected_game_id');
+        }
+
         return redirect()->route('login');
     }
 

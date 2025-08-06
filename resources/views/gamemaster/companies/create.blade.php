@@ -25,7 +25,7 @@
 
                     <!-- Company Creation Form -->
                      <x-success-message></x-success-message>
-                    <form class="space-y-8" action="{{ route('companies.store') }}" method="POST">
+                    <form class="space-y-8" action="{{ route('companies.store', $game) }}" method="POST">
                         @csrf
 
                         <!-- Company Name Input -->
@@ -36,21 +36,7 @@
                             </label>
                             <input type="text" name="company_name" id="company_name" required
                                    class="mt-1 block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200 transition duration-300 ease-in-out transform hover:scale-105">
-                        </div>
-
-                        <!-- Game Selection -->
-                        <div class="space-y-4">
-                            <label class="block text-lg font-medium text-gray-700 dark:text-gray-300">
-                                {{ __('messages.game') }}
-                            </label>
-                            <div class="space-y-2">
-                                @foreach ($games as $game)
-                                    <div class="flex items-center">
-                                        <input type="radio" name="game_id" id="{{$game->id}}" value="{{$game->id}}" class="mr-2">
-                                        <label for="{{$game->id}}" class="text-gray-800 dark:text-gray-200">{{ $game->name }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
+                            <input type="hidden" name="game_id" value="{{ $game->id }}">
                         </div>
 
                         <!-- Submit Button -->
@@ -63,7 +49,7 @@
 
                     <!-- Back Button -->
                     <div class="text-center mt-6">
-                        <x-back-button href="{{ route('companies.index') }}" class="px-8 py-3 bg-gray-300 dark:bg-gray-600 text-lg text-gray-800 dark:text-gray-200 font-semibold rounded-md shadow-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition duration-300">
+                        <x-back-button href="{{ route('companies.index', $game) }}" class="px-8 py-3 bg-gray-300 dark:bg-gray-600 text-lg text-gray-800 dark:text-gray-200 font-semibold rounded-md shadow-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition duration-300">
                             {{ __('messages.back') }}
                         </x-back-button>
                     </div>
