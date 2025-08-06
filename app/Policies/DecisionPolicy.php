@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Company;
+use App\Models\Decision;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Session;
@@ -30,10 +31,14 @@ class DecisionPolicy
             return Response::deny();
         }
 
-        $periodDecisions = $company->players->flatMap->decisions->pluck('period')->toArray();
-
-        return in_array($company->game->current_period_number, $periodDecisions)
-            ? Response::allow()
-            : Response::deny();
+        foreach ($company->players as $player) {
+            if (in_array(
+                $company->game->current_period_number,
+                $player->decisions->pluck('period')->toArray()
+            )) {
+                return Response::deny();
+            }
+        }
+        return Response::allow();
     }
 }
