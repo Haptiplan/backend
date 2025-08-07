@@ -96,6 +96,10 @@ class DecisionController extends Controller
             'sell.*' => 'integer|exists:machines,id'
         ]);
 
+        $company = Player::find($validated['player_id'])->company;
+        if ($request->user()->cannot('store', [Decision::class, $company])) {
+            abort(403);
+        }
         
         $decisionService->createDecisionWithMachineDecision($validated);
 
