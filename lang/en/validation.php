@@ -93,6 +93,7 @@ return [
         'string' => 'The :attribute field must be less than or equal to :value characters.',
     ],
     'mac_address' => 'The :attribute field must be a valid MAC address.',
+    'machineTypeUsedInGame' => 'The name of the machinetype is already used in the selected game!',
     'max' => [
         'array' => 'The :attribute field must not have more than :max items.',
         'file' => 'The :attribute field must not be greater than :max kilobytes.',
@@ -176,7 +177,8 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
-        'no_decision' => 'Not all decisions have been mate yet.',
+        'game_not_modifiable' => 'This game cannot be modified. Game status must be either "active" or "pending".',
+        'no_decision' => 'Not all decisions have been made yet.',
         'no_game' => 'Game not found.',
         'unvalid_period' => 'The selected period is invalid.',
     ],

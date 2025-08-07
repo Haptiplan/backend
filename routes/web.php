@@ -6,6 +6,7 @@ use App\Http\Controllers\DecisionController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GamemasterController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\MachineTypeController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
@@ -19,83 +20,124 @@ $admin = User::ROLE_ADMIN;
 $gamemaster = User::ROLE_GAMEMASTER;
 $user = User::ROLE_USER;
 
+/** Standard route */
+
 Route::get('/', function () {
     return view('welcome');
 });
 
+/** 
+ * Localization route 
+ * To change languages.
+ */
 Route::get('lang/{locale}', [LanguageController::class, 'changeLanguage'])->name('lang');
 
-/*
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-*/
-
+/** 
+ * Basic routes 
+ * Configure the account the user owns.
+ */
 Route::middleware(['web', 'localization', 'auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-/**Impersonating routes **/
-Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])->group(function(){
+/** 
+ * Impersonating routes 
+ * Imitate a user.
+ */
+Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])->group(function () {
     Route::get('/users/impersonate', [UserController::class, 'impersonate'])->name('impersonate.view');
     Route::post('/users/impersonate/start', [UserController::class, 'startImpersonate'])->name('impersonate.start');
     Route::get('/users/stop', [UserController::class, 'stopImpersonate'])->name('impersonate.stop');
 });
 
 
-/**General user routes **/
-Route::middleware(['localization', 'auth', 'verified', 'impersonate'])->get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard');
+/** Admin routes */
 
-/**Admin routes **/
-Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(function(){
+// Dashboard:
+Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin_dashboard_show');
 });
+// CRUD to manage all users (including admins, gamemasters and players, exept yourself):
+Route::middleware(['web', 'localization', 'verified', 'check_role:' . $admin])
+    ->group(function () {
+        Route::resource('users', UserController::class)->parameters(['users' => 'id']);
+    });
 
-Route::middleware(['web', 'localization', 'verified','check_role:' . $admin])->group(function(){
-    Route::resource('users', UserController::class)->parameters(['users' => 'id']);
-});
+/** Gamemaster routes */
 
-/**Gamemaster routes **/
-Route::middleware(['localization', 'gamemaster_auth'])->prefix('gamemaster')->group(function(){
+// Dashboard:
+Route::middleware(['localization', 'gamemaster_auth', 'ensure.game.selected'])->prefix('gamemaster')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
+Route::middleware(['localization', 'gamemaster_auth','impersonate'])
+    ->group(function () {
+        Route::get('/games/select', [GameController::class, 'select'])->name('games.select');
+        Route::post('/games/select/{game}', [GameController::class, 'setSelected'])->name('games.set_selected');
+    });
 
+// Show desicion of players in a game period:
 Route::middleware(['localization', 'verified', 'impersonate', 'check_period'])
-        ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decisions.check');
-        
+    ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decisions.check');
+// Update game to next period:
 Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
-Route::post('/change_status/{id}', [GameController::class, 'changeStatus'])->name('game.status');
+Route::patch('/games/{game}/status', [GameController::class, 'updateStatus'])->name('games.updateStatus');
 
-Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function(){
-    /** Games **/
-    Route::resource('games', GameController::class)->parameters([
-        'games' => 'id'
-    ]);
-    /** Gamemaster **/
-    Route::resource('gamemasters', GamemasterController::class)->only([
-        'store', 'destroy'
-    ]);
-    Route::delete('/gamemaster/{id}/{game_id}', [GamemasterController::class, 'destroyOne'])->name('gamemasters.deleteOne');
-    /**Companies */
-    Route::resource('companies', CompanyController::class)->parameters([
-        'companies' => 'id'
-    ]);
-    /** User **/
-    Route::resource('players', PlayerController::class)->parameters([
-        'players' => 'id'
-    ]);
+//
 
+
+// CRUD of various models the gamemaster has access to:
+Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function () {
+    // Game routes without the prefix
+    Route::resource('games', GameController::class);
+    Route::prefix(prefix: 'games/{games}')->group(function () {
+
+        /** 
+         * Gamemaster 
+         * Only need to be able to add a gamemaster to a game or delete them.
+         * Deleting either all gamemaster entries for a user (destroy) or one entry in a specific game (destroyOne).
+         */
+        Route::resource('gamemasters', GamemasterController::class)->only([
+            'store',
+            'destroy'
+        ]);
+        Route::delete('/gamemaster/{id}/{game_id}', [GamemasterController::class, 'destroyOne'])->name('gamemasters.deleteOne');
+        /** 
+         * Companies 
+         */
+        Route::resource('companies', CompanyController::class)->parameters([
+            'companies' => 'id'
+        ]);
+        /** 
+         * User 
+         */
+        Route::resource('players', PlayerController::class)->parameters([
+            'players' => 'id'
+        ]);
+    });
+    //Machine Type without the prefix
+    Route::resource('machine_types', MachineTypeController::class)->parameters([
+        'machine_types' => 'id'
+    ]);
 });
 
-/** Player routes **/
-Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function(){
-    //** Decisions **/
+/** Player routes */
+
+// Dashboard:
+Route::middleware(['localization', 'auth', 'verified', 'impersonate'])->get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard');
+// CRUD of various models the players have access to.
+Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function () {
+    /** 
+     * Decisions 
+     * Players shouldn't be able to edit or delete a decision.
+     */
     Route::resource('decisions', DecisionController::class)->except([
-        'edit', 'update', 'destroy'
+        'edit',
+        'update',
+        'destroy'
     ]);
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

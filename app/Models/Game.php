@@ -12,11 +12,16 @@ use Illuminate\Support\Facades\Session;
 class Game extends Model
 {
     use HasFactory;
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'status'];
 
     public function companies()
     {
         return $this->hasMany(Company::class);
+    }
+
+    public function machinetypes()
+    {
+        return $this->hasMany(MachineType::class);
     }
 
     public function gamemasters(): HasMany

@@ -1,9 +1,16 @@
 @php
 use App\Models\User;
+use App\Models\Game;
 $admin = User::ROLE_ADMIN;
 $gamemaster = User::ROLE_GAMEMASTER;
 $user = User::ROLE_USER;
+$game_Id = session('selected_game_id');
+$game = $game_Id ? Game::find($game_Id) : null;
+$currentPeriod = $game?->currentPeriod;
+
+
 @endphp
+
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,6 +26,7 @@ $user = User::ROLE_USER;
                             <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                         </a>
                     </div>
+
                     <x-nav-link :href="route('decisions.index')" :active="request()->routeIs('decision.index')">
                         {{ trans_choice('messages.decision', 1) }}
                     </x-nav-link>
@@ -40,15 +48,23 @@ $user = User::ROLE_USER;
                     <x-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
                         {{ __('messages.navGame') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.index')">
-                        {{ __('messages.navCompany')}}
+                    <x-nav-link :href="route('companies.index', $game_Id)" :active="request()->routeIs('companies.index')"> {{ __('messages.navCompany')}}
                     </x-nav-link>
-                    <x-nav-link :href="route('players.index')" :active="request()->routeIs('players.index')">
+                    <x-nav-link :href="route('players.index', $game_Id)" :active="request()->routeIs('players.index')">
                         {{ __('messages.navPlayer')}}
                     </x-nav-link>
-                    <x-nav-link :href="route('decisions.check', [1,0])" :active="request()->routeIs('decision.check')">
+                    <x-nav-link :href="route('machine_types.index', $game_Id)" :active="request()->routeIs('machine_types.index')">
+                        {{ trans_choice('messages.machineType', 2) }}
+
+                    </x-nav-link>
+                    <x-nav-link :href="route('decisions.check', [$game_Id,0])" :active="request()->routeIs('decisions.check')">
                         {{ trans_choice('messages.decision', 2) }}
                     </x-nav-link>
+                    @if(isset($game))
+                    <x-nav-link :href="route('games.select')" class="btn btn-outline-primary">
+                        {{ __('messages.selectGame') }}
+                    </x-nav-link>
+                    @endif
                     @endif
 
                     @if(Auth::check() && Auth::user()->role->id == $user)
