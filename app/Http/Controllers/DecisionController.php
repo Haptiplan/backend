@@ -101,7 +101,7 @@ class DecisionController extends Controller
             abort(403);
         }
         
-        $decisionService->createDecisionWithMachineDecision($validated);
+        $decisionService->createDecision($validated);
 
         return redirect()->back();
     }
