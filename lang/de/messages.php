@@ -87,6 +87,7 @@ return [
     'navMachine' => 'Maschinen',
     'navPlayer' => 'Spieler',
     'navUser' => 'Nutzer',
+    'noDecisionYet' => 'Noch keine Entscheidung abgegeben',
     'password' => 'Passwort',
     'passwordConfirm' => 'Passwort bestätigen',
     'passwordConfirmMessage' => 'Bitte bestätigen Sie ihr Passwort, bevor Sie fortfahren.',

@@ -87,6 +87,7 @@ return [
     'navMachine' => 'Create Machine',
     'navPlayer' => 'Assign Player',
     'navUser' => 'Users',
+    'noDecisionYet' => 'No decision submitted',
     'password' => 'Password',
     'passwordConfirm' => 'Confirm password',
     'passwordConfirmMessage' => 'Please confirm your password before continuing.',
