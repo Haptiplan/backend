@@ -37,14 +37,14 @@
                             </li>
                             @endif
                             
-                            @if ($game->current_period_number == $period)
+                            @if ($game->current_period_number == $period && $game->max_period_number > $period)
                             <input type="checkbox" name="approve[]" required
                                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded checked:bg-green-500">
                             @endif
                             <br>
                             @endforeach
 
-                            @if ($game->current_period_number == $period)
+                            @if ($game->current_period_number == $period && $game->max_period_number > $period)
                             <button type="submit"
                                 class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
                                 {{ __('messages.continue') }}
