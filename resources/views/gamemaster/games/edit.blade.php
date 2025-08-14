@@ -49,7 +49,7 @@
                         <select name="status" onchange="this.form.submit()" class="border rounded p-1 text-sm">
                             @foreach ($statusOrder as $statusOption)
                             <option value="{{ $statusOption }}" {{ $game->status === $statusOption ? 'selected' : '' }}>
-                                {{ ucfirst($statusOption) }}
+                                {{ __('messages.' . $statusOption) }}
                             </option>
                             @endforeach
                         </select>
