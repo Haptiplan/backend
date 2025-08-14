@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\Game;
 use App\Models\Machine;
 use App\Models\MachineDecision;
+use App\Models\MachineType;
 use App\Models\Player;
 use App\Models\User;
 use App\Services\DecisionService;
@@ -114,9 +115,15 @@ class DecisionController extends Controller
         $decision = Decision::findOrFail($id);
         $decision_maker = User::where('id', $decision->player_id)->first();
 
+        $machine_decisions = MachineDecision::where('decision_id', $decision->id)->get();
+        $machines_bought = Machine::where('company_id', $decision_maker->player->company->id)->where('period', $decision->period)->get();
+        $machines_sold = Machine::whereIn('id', $machine_decisions->pluck('sell')->toArray())->get();
+
         return view('gamemaster.decisions.show', [
             'decision' => $decision,
             'decision_maker' => $decision_maker,
+            'machines_bought' => $machines_bought,
+            'machines_sold' => $machines_sold,
         ]);
     }
 
@@ -133,6 +140,11 @@ class DecisionController extends Controller
 
         $decisions = Decision::whereIn('player_id', $players->pluck('id')->toArray())
             ->where('period', $period)->get();
+        $machine_decisions = MachineDecision::whereIn('decision_id', $decisions->pluck('id')->toArray())->get();
+
+        $machines_bought = Machine::whereIn('company_id', $companies->pluck('id')->toArray())->where('period', $period)->get();
+        $machines_sold = Machine::whereIn('id', $machine_decisions->pluck('sell')->toArray())->get();
+
         $decision_makers = User::select('users.*', 'players.company_id')
             ->join('players', 'users.id', '=', 'players.id')
             ->whereIn('users.id', $decisions->pluck('player_id')->toArray())
@@ -145,6 +157,9 @@ class DecisionController extends Controller
             'game' => $game,
             'companies' => $companies,
             'decisions' => $decisions,
+            'machine_decisions' => $machine_decisions,
+            'machines_bought' => $machines_bought,
+            'machines_sold' => $machines_sold,
             'decision_makers' => $decision_makers,
         ]);
     }

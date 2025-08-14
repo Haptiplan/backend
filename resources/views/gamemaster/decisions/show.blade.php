@@ -11,11 +11,32 @@
                     <h1 class="text-2xl font-bold mb-6">{{ __('messages.decisionName') . " " . $decision->period }}</h1>
                     <div>
                         <li class="ml-10">
-                            {{ __('messages.period') . ": " . $decision->period}}
-                        </li>
-                        <li class="ml-10">
                             {{ __('messages.decisionMaker') . ": " . $decision_maker->name}}
                         </li>
+                        @if($machines_bought->isNotEmpty())
+                        <li class="ml-10">
+                            {{ __('messages.machinesBought') . ": " }}
+                            @foreach ($machines_bought as $machine)
+                            <br>{{ '- ' . $machine->machinetype->name }}
+                            @endforeach
+                        </li>
+                        @else
+                        <li class="ml-10">
+                            {{ __('messages.noMachinesBought') }}
+                        </li>
+                        @endif
+                        @if($machines_sold->isNotEmpty())
+                        <li class="ml-10">
+                            {{ __('messages.machinesSold') . ': ' }}
+                            @foreach ($machines_sold as $machine)
+                            <br>{{ '- ' . $machine->machinetype->name . __('messages.fromPeriod') . $machine->period }}
+                            @endforeach
+                        </li>
+                        @else
+                        <li class="ml-10">
+                            {{ __('messages.noMachinesSold') }}
+                        </li>
+                        @endif
                     </div>
                 </div>
             </div>

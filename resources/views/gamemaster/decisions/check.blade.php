@@ -27,10 +27,39 @@
                             @endphp
 
                             @if ($currentDecisionMaker)
-                            <li class="ml-10">
-                                {{ __('messages.decisionMaker') . ': ' . $currentDecisionMaker->name }}
-                                <input type="hidden" name="done[]" value="1">
-                            </li>
+                            <details class="ml-10">
+                                <summary>{{ __('messages.decisionMaker') . ': ' . $currentDecisionMaker->name }}</summary>
+                                <ul class="list-disc pl-6">
+                                    <li class="ml-10">
+                                        {{ __('messages.createdAt') . ': ' . $decisions->where('player_id', $currentDecisionMaker->id)->first()->created_at->format('d.m.Y H:i') }}
+                                    </li>
+                                    @if($machines_bought->where('company_id', $company->id)->isNotEmpty())
+                                    <li class="ml-10">
+                                        {{ __('messages.machinesBought') . ": " }}
+                                        @foreach ($machines_bought->where('company_id', $company->id) as $machine)
+                                        <br>{{ '- ' . $machine->machinetype->name }} 
+                                        @endforeach
+                                    </li>
+                                    @else
+                                    <li class="ml-10">
+                                        {{ __('messages.noMachinesBought') }}
+                                    </li>
+                                    @endif
+                                    @if($machines_sold->where('company_id', $company->id)->isNotEmpty())
+                                    <li class="ml-10">
+                                        {{ __('messages.machinesSold') . ': ' }}
+                                        @foreach ($machines_sold->where('company_id', $company->id) as $machine)
+                                        <br>{{ '- ' . $machine->machinetype->name . __('messages.fromPeriod') . $machine->period }}
+                                        @endforeach
+                                    </li>
+                                    @else
+                                    <li class="ml-10">
+                                        {{ __('messages.noMachinesSold') }}
+                                    </li>
+                                    @endif
+                                </ul>
+                            </details>
+                            <input type="hidden" name="done[]" value="1">
                             @else
                             <li class="ml-10">
                                 {{ __('messages.noDecisionYet') }}
