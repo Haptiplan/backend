@@ -30,8 +30,6 @@
                             </label>
                             @foreach ($machinetypes as $machinetype)
                             <div class="flex items-center">
-                                <input type="radio" name="machinetype_id" id="machinetype_{{ $machinetype->id }}" value="{{ $machinetype->id }}" class="mr-2">
-
                                 <label for="buy[{{ $machinetype->id }}]" class="text-gray-800 dark:text-gray-200">
                                     {{ $machinetype->name }} {{ __('messages.selectAmount') }}
                                 </label>
