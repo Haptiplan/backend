@@ -203,6 +203,8 @@ class UserController extends Controller
             $gamemaster = Gamemaster::where('game_id', $validated['game'])->firstOrFail();
             $user = User::where('id', $gamemaster->user_id)->firstOrFail();
             $active_user->setImpersonating($user->id);
+            // Set session game id to selected game
+            session(['selected_game_id' => $validated['game']]);
             return redirect()->route('dashboard');
         }
 

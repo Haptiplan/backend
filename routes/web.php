@@ -71,7 +71,7 @@ Route::middleware(['web', 'localization', 'verified', 'check_role:' . $admin])
 Route::middleware(['localization', 'gamemaster_auth', 'ensure.game.selected'])->prefix('gamemaster')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
-Route::middleware(['localization', 'gamemaster_auth','impersonate'])
+Route::middleware(['localization', 'impersonate', 'gamemaster_auth'])
     ->group(function () {
         Route::get('/games/select', [GameController::class, 'select'])->name('games.select');
         Route::post('/games/select/{game}', [GameController::class, 'setSelected'])->name('games.set_selected');
