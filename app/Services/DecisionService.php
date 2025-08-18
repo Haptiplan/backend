@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\AccountEntry;
 use App\Models\Decision;
 use App\Models\MachineDecision;
 use App\Models\Machine;
@@ -34,10 +35,24 @@ class DecisionService
                     ]);
                     // Create Machine, loop the number of Machines a Player wanted to buy
                     for ($i = 0; $i < $buyMachine; $i++) {
-                        Machine::create([
+                        $machine = machine::create([
                             'machinetype_id' => $machineTypeId,
                             'company_id' => $company->id,
                             'period' => $decision->period,
+                        ]);
+                        AccountEntry::create([
+                            'company_id' => $company->id,
+                            'period' => $decision->period,
+                            'debit' => 0720,
+                            'credit' => 4400,
+                            'amount' => $machine->original_price,
+                        ]);
+                        AccountEntry::create([
+                            'company_id' => $company->id,
+                            'period' => $decision->period + 1,
+                            'debit' => 4400,
+                            'credit' => 2800,
+                            'amount' => $machine->original_price, 
                         ]);
                     }
                 }
@@ -60,6 +75,20 @@ class DecisionService
                     $machine->status = '0';
                     $machine->save();
                 }
+                AccountEntry::create([
+                    'company_id' => $decision->player->company->id,
+                    'period' => $decision->period,
+                    'debit' => 2800,
+                    'credit' => 0720,
+                    'amount' => 0 // TODO: Betrag berechnen
+                ]);
+                AccountEntry::create([
+                    'company_id' => $decision->player->company->id,
+                    'period' => $decision->period,
+                    'debit' => 6960,
+                    'credit' => 2800,
+                    'amount' => $machine->original_price - 0, // TODO: Betrag berechnen
+                ]);
             }
         }
     }

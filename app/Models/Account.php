@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Account extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'company_id',
+        'period_id',
+        'id',
+        'number',
+        'type',
+        'level',
+        'name',
+    ];
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+    public function AccountEntries()
+    {
+        return $this->hasMany(AccountEntry::class);
+    }
+}
