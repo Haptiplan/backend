@@ -58,66 +58,77 @@ class AccountSeeder extends Seeder
         'number' => '2000',
         'name' => 'Rohstoffe',
         'type' => 'Aktiv',
+        'level'=> 'UV',
     ],
 
     [
         'number' => '2010',
         'name' => 'Vorprodukte/Fremdbauteile',
         'type' => 'Aktiv',
+        'level'=> 'UV',
     ],
 
     [
         'number' => '2200',
         'name' => 'Fertige Erzeugnisse',
         'type' => 'Aktiv',
+        'level'=> 'UV',
     ],
 
     [
         'number' => '2400',
         'name' => 'Forderungen',
         'type' => 'Aktiv',
+        'level'=> 'UV',
     ],
 
     [
         'number' => '2700',
         'name' => 'Wertpapiere',
         'type' => 'Aktiv',
+        'level'=> 'UV',
     ],
 
     [
         'number' => '2800',
         'name' => 'Bank',
         'type' => 'Aktiv',
+        'level'=> 'UV',
     ],
 
     [
         'number' => '3000',
         'name' => 'Eigenkapital',
         'type' => 'Passiv',
+        'level' => 'EK',
     ],
 
     [
         'number' => '3100',
         'name' => 'Kapitalrücklagen',
         'type' => 'Passiv',
+        'level'=> 'EK',
     ],
 
     [
         'number' => '3210',
         'name' => 'gesetzliche Rücklagen',
         'type' => 'Passiv',
+        'level' => 'EK',
     ],
 
     [
         'number' => '3240',
         'name' => 'andere Gewinnrücklagen',
         'type' => 'Passiv',
+        'level' => 'EK',
     ],
 
     [
         'number' => '3300',
         'name' => 'Gewinn- und Verlustvortrag',
         'type' => 'Passiv',
+        'level' => 'EK',
     ],
 
     [
@@ -130,18 +141,21 @@ class AccountSeeder extends Seeder
         'number' => '4210',
         'name' => 'kurzfr. Bankverbindlichkeiten',
         'type' => 'Passiv',
+        'level'=> 'FK',
     ],
 
     [
         'number' => '4250',
         'name' => 'langfr. Bankverbindlichkeiten',
         'type' => 'Passiv',
+        'level'=> 'FK',
     ],
 
     [
         'number' => '4400',
         'name' => 'Verbindlichkeiten aus Lieferungen und Leistungen',
         'type' => 'Passiv',
+        'level'=> 'FK',
     ],
 
     [

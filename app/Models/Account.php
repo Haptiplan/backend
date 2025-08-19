@@ -54,8 +54,14 @@ class Account extends Model
         // All accounts for the end report
         $accounts = Account::all();
         $bilanz = [
-            'aktiva' => [],
-            'passiva' => [],
+            'aktiva' => [
+                'av' => [],
+                'uv' => [],
+            ],
+            'passiva' => [
+                'ek' => [],
+                'fk' => [],
+            ],
         ];
 
         // Calculate balances for each account
@@ -70,26 +76,53 @@ class Account extends Model
                 ->sum('amount');
             $saldo = $soll - $haben;
 
-            // Assign to account type
+            // Assign to account type and level
             if ($account->type === 'Aktiv') {
-                $bilanz['aktiva'][] = [
-                    'konto' => $account->name,
-                    'saldo' => abs($saldo),
-                ];
+                if ($account->level === 'AV') {
+                    $bilanz['aktiva']['av'][] = [
+                        'konto' => $account->name,
+                        'saldo' => abs($saldo),
+                    ];
+                } elseif ($account->level === 'UV') {
+                    $bilanz['aktiva']['uv'][] = [
+                        'konto' => $account->name,
+                        'saldo' => abs($saldo),
+                    ];
+                }
             } elseif ($account->type === 'Passiv') {
-                $bilanz['passiva'][] = [
-                    'konto' => $account->name,
-                    'saldo' => abs($saldo),
-                ];
+                if($account->level === 'EK') {
+                    $bilanz['passiva']['ek'][] = [
+                        'konto' => $account->name,
+                        'saldo' => abs($saldo),
+                    ];
+                } elseif ($account->level === 'FK') {
+                    $bilanz['passiva']['fk'][] = [
+                        'konto' => $account->name,
+                        'saldo' => abs($saldo),
+                    ];
+                }
             }
         }
 
         // Add GuV result to equity
         $guvErgebnis = Account::calculateGuV($companyId, $period);
-        $bilanz['passiva'][] = [
-            'konto' => 'Periodenerfolg (GuV)',
-            'saldo' => $guvErgebnis,
-        ];
+        if ($guvErgebnis < 0) {
+            AccountEntry::create([
+                'company_id' => $companyId,
+                'period' => $period,
+                'debit' => Account::find( 3300)->id,
+                'credit' => Account::find(8020)->id,
+                'amount' => abs($guvErgebnis['ergebnis']),
+            ]);
+        } elseif ($guvErgebnis > 0) {
+            AccountEntry::create([
+                'company_id' => $companyId,
+                'period' => $period,
+                'debit' => Account::find(8020)->id,
+                'credit' => Account::find(3300)->id,
+                'amount' => abs($guvErgebnis['ergebnis']),
+            ]);
+        }
 
         return $bilanz;
     }
