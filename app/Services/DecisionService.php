@@ -12,6 +12,12 @@ use function PHPUnit\Framework\isNull;
 
 class DecisionService
 {
+
+     public function getKonto($kontonummer)
+    {
+        return collect(config('accounts'))->firstWhere('number', str_pad($kontonummer, 4, '0', STR_PAD_LEFT));
+    }
+
     public function createDecisionWithMachineDecision(array $validated)
     {
         $decision = Decision::create([
@@ -43,21 +49,30 @@ class DecisionService
                         AccountEntry::create([
                             'company_id' => $company->id,
                             'period' => $decision->period,
-                            'debit' => 0720,
-                            'credit' => 4400,
-                            'amount' => $machine->original_price,
+                            'debit' => $this->getKonto(2800)['number'],
+                            'credit' => $this->getKonto(0720)['number'],
+                            'amount' => $machine->original_price, 
                         ]);
                         AccountEntry::create([
                             'company_id' => $company->id,
                             'period' => $decision->period + 1,
-                            'debit' => 4400,
-                            'credit' => 2800,
+                           'debit' => $this->getKonto(4400)['number'],
+                            'credit' => $this->getKonto(kontonummer: 2800)['number'],
                             'amount' => $machine->original_price, 
                         ]);
                     }
                 }
             }
         }
+
+
+        
+
+
+   
+
+    
+
 
         // Create Sell MachineDecisions
         if (isset($validated['sell'])) {
