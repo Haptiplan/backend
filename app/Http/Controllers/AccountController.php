@@ -3,55 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\AccountEntry;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AccountController extends Controller
 {
-    private $accounts = [
-        1 => [
-            'id' => 2800,
-            'type' => 'active',
-            'level' => 'UV',
-            'name' => 'Bank ',
-        ],
-        2 => [
-            'id' => 0720,
-            'type' => 'active',
-            'level' => 'AV',
-            'name' => 'Anlagen und Maschinen',
-        ],
-        3 => [
-            'id' => 4400,
-            'type' => 'passive',
-            'level' => 'FK',
-            'name' => 'Verbindlichkeiten aus Lieferungen und Leistungen',
-        ],
-    ];
-    private $accountEntries = [
-        1 => [
-            'company_id' => 1,
-            'period' => 1,
-            'id' => 1,
-            'debit' => 0720,
-            'credit' => 4400,
-            'amount' => 100000,
-        ],
-        2 => [
-            'company_id' => 1,
-            'period' => 2,
-            'id' => 2,
-            'debit' => 4400,
-            'credit' => 2800,
-            'amount' => 100000,
-        ],
-    ];
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        if (Session::has('impersonate')) {
+            $user = User::find(Session::get('impersonate'));
+        }
+        $company = $user->player->company;
+        $period = $company->game->current_period_number;
+        $accounts = Account::where('company_id', $company->id)
+            ->where('period', '<', $period)
+            ->get();
+        return redirect(route('accounts.index', [
+            'accounts' => $accounts,
+            'period' => $period - 1,
+        ]));
     }
 
     /**
@@ -73,9 +51,23 @@ class AccountController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Account $account)
+    public function show()
     {
-        //
+        $user = Auth::user();
+        if (Session::has('impersonate')) {
+            $user = User::find(Session::get('impersonate'));
+        }
+        $company = $user->player->company;
+        $period = $company->game->current_period_number - 1;
+        $accounts = Account::where('company_id', $company->id)
+            ->where('period', $period)
+            ->get();
+        $guv = Account::calculateGuV($company->id, $period);
+        return redirect(route('accounts.index', [
+            'accounts' => $accounts,
+            'period' => $period,
+            'guv' => $guv,
+        ]));
     }
 
     /**
@@ -102,3 +94,4 @@ class AccountController extends Controller
         //
     }
 }
+

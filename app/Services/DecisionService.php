@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Account;
 use App\Models\AccountEntry;
 use App\Models\Decision;
 use App\Models\MachineDecision;
@@ -13,10 +14,6 @@ use function PHPUnit\Framework\isNull;
 class DecisionService
 {
 
-     public function getKonto($kontonummer)
-    {
-        return collect(config('accounts'))->firstWhere('number', str_pad($kontonummer, 4, '0', STR_PAD_LEFT));
-    }
 
     public function createDecisionWithMachineDecision(array $validated)
     {
@@ -49,16 +46,16 @@ class DecisionService
                         AccountEntry::create([
                             'company_id' => $company->id,
                             'period' => $decision->period,
-                            'debit' => $this->getKonto(2800)['number'],
-                            'credit' => $this->getKonto(0720)['number'],
-                            'amount' => $machine->original_price, 
+                            'debit' => Account::find(720)->id,
+                            'credit' => Account::find(4400)->id,
+                            'amount' => 100000,
                         ]);
                         AccountEntry::create([
                             'company_id' => $company->id,
                             'period' => $decision->period + 1,
-                           'debit' => $this->getKonto(4400)['number'],
-                            'credit' => $this->getKonto(kontonummer: 2800)['number'],
-                            'amount' => $machine->original_price, 
+                            'debit' => Account::find(4400)->id,
+                            'credit' => Account::find(2800)->id,
+                            'amount' => 100000,
                         ]);
                     }
                 }
@@ -66,12 +63,12 @@ class DecisionService
         }
 
 
-        
 
 
-   
 
-    
+
+
+
 
 
         // Create Sell MachineDecisions
@@ -93,18 +90,19 @@ class DecisionService
                 AccountEntry::create([
                     'company_id' => $decision->player->company->id,
                     'period' => $decision->period,
-                    'debit' => 2800,
-                    'credit' => 0720,
-                    'amount' => 0 // TODO: Betrag berechnen
+                    'debit' => Account::find(2800)->id,
+                    'credit' => Account::find(720)->id,
+                    'amount' => 0 // TODO: Betrag berechnen mit Parametern
                 ]);
                 AccountEntry::create([
                     'company_id' => $decision->player->company->id,
                     'period' => $decision->period,
-                    'debit' => 6960,
-                    'credit' => 2800,
-                    'amount' => $machine->original_price - 0, // TODO: Betrag berechnen
+                    'debit' => Account::find(6960)->id,
+                    'credit' => Account::find(2800)->id,
+                    'amount' =>  0, // TODO: Betrag berechnen mit Parametern
                 ]);
             }
         }
+        dd(Account::bilanzMitGuV($decision->player->company->id, $decision->period-1));
     }
 }

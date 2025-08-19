@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
-            $table->string('name');
-            $table->string('type');
-            $table->timestamps();
+        Schema::table('accounts', function (Blueprint $table) {
+            $table->unsignedInteger('level')->after('type')->nullable()->default(null);
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::table('accounts', function (Blueprint $table) {
+            //
+        });
     }
 };

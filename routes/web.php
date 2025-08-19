@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DecisionController;
@@ -136,6 +137,14 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $u
         'edit',
         'update',
         'destroy'
+    ]);
+    /** 
+     * Accounts
+     * Players can see the end result of the past periods.
+     */
+    Route::resource('accounts', AccountController::class)->only([
+        'index',
+        'show'
     ]);
 });
 

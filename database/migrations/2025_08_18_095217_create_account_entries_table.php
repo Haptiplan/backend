@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('account_entries', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id');
+            $table->integer('period');
+            $table->integer('amount'); // Betrag
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreignId('debit')->constrained('accounts');
+            $table->foreignId('credit')->constrained('accounts');
             $table->timestamps();
         });
     }

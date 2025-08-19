@@ -11,6 +11,8 @@ class AccountEntry extends Model
 
     protected $fillable = [
         'id',
+        'company_id',
+        'period',
         'debit', //SOLL
         'credit', // HABEN
         'amount',
