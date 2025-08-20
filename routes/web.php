@@ -120,6 +120,9 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
     Route::resource('machine_types', MachineTypeController::class)->parameters([
         'machine_types' => 'id'
     ]);
+    Route::resource('credit_types', CreditTypeController::class)->parameters([
+    'credit_types' => 'id'
+    ]);
 });
 
 /** Player routes */
