@@ -33,16 +33,8 @@
             <div class="space-y-6">
                 <x-header-label>
                     {{ __('messages.company') }}:
-                </x-header-label>
-
-                @foreach ($games as $game)
-                    <div class="space-y-4">
-                        <x-header-label>
-                            {{ __('messages.game') }}: {{ $game->name }}
-                        </x-header-label>
-                        <x-company-select :companies="$companies->where('game_id', $game->id)->values()->all()" :selected="$player->company_id" />
-                    </div>
-                @endforeach
+                </x-header-label>                
+                <x-company-select :companies="$companies->where('game_id', $game->id)->values()->all()" :selected="$player->company_id" />
             </div>
 
             <!-- Submit Button -->
