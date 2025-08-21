@@ -17,7 +17,7 @@
         <x-success-message />
 
         <!-- Company Creation Form -->
-        <form class="space-y-8" action="{{ route('companies.store') }}" method="POST">
+        <form class="space-y-8" action="{{ route('companies.store', $game) }}" method="POST">
             @csrf
 
             <!-- Company Name Input -->
@@ -28,13 +28,8 @@
                 <x-input-field name="company_name" required />
             </div>
 
-            <!-- Game Selection -->
-            <div class="space-y-4">
-                <x-header-label>
-                    {{ __('messages.game') }}
-                </x-header-label>
-                <x-game-select :games="$games" />
-            </div>
+            <!-- Game ID Input -->
+            <input type="hidden" name="game_id" value="{{ $game->id }}">
 
             <!-- Submit Button -->
             <div class="text-center">
@@ -46,7 +41,7 @@
 
         <!-- Back Button -->
         <div class="text-center mt-6">
-            <x-back-button href="{{ route('companies.index') }}">
+            <x-back-button href="{{ route('companies.index', $game) }}">
                 {{ __('messages.back') }}
             </x-back-button>
         </div>

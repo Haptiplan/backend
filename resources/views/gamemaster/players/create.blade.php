@@ -17,7 +17,7 @@
         <x-success-message />
 
         <!-- Player Creation Form -->
-        <form class="space-y-8" action="{{ route('players.store') }}" method="POST">
+        <form class="space-y-8" action="{{ route('players.store', $game) }}" method="POST">
             @csrf
 
             <!-- Player Selection -->
@@ -35,29 +35,23 @@
                 </div>
             </div>
 
+
             <!-- Company and Game Selection -->
             <div class="space-y-4">
                 <x-header-label for="company_id">
                     {{ __('messages.company') }}
                 </x-header-label>
                 <div class="space-y-6">
-                    @foreach ($games as $game)
-                        <div class="space-y-2">
-                            <x-header-label class="text-sm font-medium ml-5">
-                                {{ __('messages.game') }}: {{$game->name}}
-                            </x-header-label>
-                            <div class="space-y-2 ml-8">
-                                @foreach ($companies->where('game_id', $game->id) as $company)
-                                    <div class="flex items-center">
-                                        <input type="radio" name="company_id" id="{{$company->id}}" value="{{$company->id}}"
-                                            class="mr-2">
-                                        <label for="{{$company->id}}"
-                                            class="text-gray-800 dark:text-gray-200">{{ $company->name }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endforeach
+                    <div class="space-y-2 ml-8">
+                         @foreach ($companies->where('game_id', $game->id) as $company)
+                             <div class="flex items-center">
+                                 <input type="radio" name="company_id" id="{{$company->id}}" value="{{$company->id}}"
+                                    class="mr-2">
+                                <label for="{{$company->id}}"
+                                    class="text-gray-800 dark:text-gray-200">{{ $company->name }}</label>
+                             </div>
+                         @endforeach
+                    </div>
                 </div>
             </div>
 
@@ -71,9 +65,11 @@
 
         <!-- Back Button -->
         <div class="text-center mt-6">
-            <x-back-button href="{{ route('players.index') }}">
+            <x-back-button href="{{ route('players.index', $game) }}">
                 {{ __('messages.back') }}
             </x-back-button>
         </div>
     </x-content-box>
+
+
 </x-app-layout>

@@ -16,7 +16,7 @@
         <x-success-message />
 
         <!-- Edit Company Form -->
-        <form class="space-y-8" action="{{ route('companies.update', $company->id) }}" method="POST">
+        <form class="space-y-8" action="{{ route('companies.update', ['games' => $game->id, 'id' => $company->id]) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -29,12 +29,7 @@
             </div>
 
             <!-- Game Selection -->
-            <div class="space-y-4">
-                <x-header-label>
-                    {{ __('messages.listGames') }}
-                </x-header-label>
-                <x-game-select :games="$games" :selected="$company->game_id" />
-            </div>
+            <input type="hidden" name="game_id" value="{{ $game->id }}">
             
             <!-- Submit Button -->
             <div class="text-center">
@@ -46,7 +41,7 @@
 
         <!-- Back Button -->
         <div class="text-center mt-6">
-            <x-back-button href="{{ route('companies.index') }}">
+            <x-back-button href="{{ route('companies.index', $game) }}">
                 {{ __('messages.back') }}
             </x-back-button>
         </div>

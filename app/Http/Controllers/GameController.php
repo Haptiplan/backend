@@ -184,21 +184,32 @@ class GameController extends Controller
             $game->increment('current_period_number');
         }
 
-        if($game->current_period_number == $game->max_period_number) {
+        if ($game->current_period_number == $game->max_period_number) {
             $game->status = 'completed';
             $game->save();
         }
-        
+
         return redirect()->route('decisions.check', [$game->id, $game->current_period_number]);
-    }  
+    }
     public function updateStatus(Request $request, Game $game)
-{
-    $request->validate([
-        'status' => ['required', Rule::in(['pending', 'active', 'completed', 'cancelled'])],
-    ]);
-    $game->update(['status' => $request->status]);
+    {
+        $request->validate([
+            'status' => ['required', Rule::in(['pending', 'active', 'completed', 'cancelled'])],
+        ]);
+        $game->update(['status' => $request->status]);
 
-    return redirect()->back()->with('success', 'Game status updated successfully.');
-}
-}
+        return redirect()->back()->with('success', 'Game status updated successfully.');
+    }
 
+    public function select()
+    {
+        $games = Game::hasGamemasters()->get();
+        return view('gamemaster.games.select', compact('games'));
+    }
+
+    public function setSelected(Game $game)
+    {
+        session(['selected_game_id' => $game->id]);
+        return redirect()->route('gamemaster_dashboard_show');
+    }
+}
