@@ -61,16 +61,6 @@ class DecisionService
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
         // Create Sell MachineDecisions
         if (isset($validated['sell'])) {
             foreach ($validated['sell'] as $sellMachine) {
@@ -103,6 +93,6 @@ class DecisionService
                 ]);
             }
         }
-        dd(Account::bilanzMitGuV($decision->player->company->id, $decision->period-1));
+        dd([Account::calculateGuV($decision->player->company->id, $decision->period), Account::bilanzMitGuV($decision->player->company->id, $decision->period)]); 
     }
 }

@@ -138,6 +138,13 @@ class AccountSeeder extends Seeder
     ],
 
     [
+        'number' => '4205',
+        'name' => 'Dispositionskredit',
+        'type' => 'Passiv',
+        'level'=> 'FK',
+    ],
+
+    [
         'number' => '4210',
         'name' => 'kurzfr. Bankverbindlichkeiten',
         'type' => 'Passiv',
