@@ -23,13 +23,9 @@ class AccountController extends Controller
         }
         $company = $user->player->company;
         $period = $company->game->current_period_number;
-        $accounts = Account::where('company_id', $company->id)
-            ->where('period', '<', $period)
-            ->get();
-        return redirect(route('accounts.index', [
-            'accounts' => $accounts,
-            'period' => $period - 1,
-        ]));
+        return view('user.results.index', [
+            'periods' => $period - 1,
+        ]);
     }
 
     /**
@@ -51,23 +47,23 @@ class AccountController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function show($period)
     {
         $user = Auth::user();
         if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
         $company = $user->player->company;
-        $period = $company->game->current_period_number - 1;
-        $accounts = Account::where('company_id', $company->id)
-            ->where('period', $period)
-            ->get();
+        if ($period < 0 || $period >= $company->game->current_period_number) {
+            return redirect()->route('accounts.index')->withErrors(['error' => __('messages.invalid_period')]);
+        }
         $guv = Account::calculateGuV($company->id, $period);
-        return redirect(route('accounts.index', [
-            'accounts' => $accounts,
+        $bilanz = Account::bilanzMitGuV($company->id, $period);
+        return view('user.results.show', [
             'period' => $period,
             'guv' => $guv,
-        ]));
+            'bilanz' => $bilanz,
+        ]);
     }
 
     /**

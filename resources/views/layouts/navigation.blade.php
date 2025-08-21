@@ -30,7 +30,11 @@ $currentPeriod = $game?->currentPeriod;
                     <x-nav-link :href="route('decisions.index')" :active="request()->routeIs('decision.index')">
                         {{ trans_choice('messages.decision', 1) }}
                     </x-nav-link>
+                    <x-nav-link :href="route('accounts.index')" :active="request()->routeIs('results.index')">
+                        {{ __('messages.result') }}
+                    </x-nav-link>
                     @endif
+
                     @if(Auth::check() && Auth::user()->role->id == $admin)
                     <x-nav-link :href="route('admin_dashboard_show')" :active="request()->routeIs('admin_dashboard_show')">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
