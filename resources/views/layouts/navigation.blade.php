@@ -52,9 +52,9 @@ $currentPeriod = $game?->currentPeriod;
                     <x-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
                         {{ __('messages.navGame') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('companies.index', $game_Id)" :active="request()->routeIs('companies.index')"> {{ __('messages.navCompany')}}
+                    <x-nav-link :href="route('games.companies.index', $game_Id)" :active="request()->routeIs('games.companies.index')"> {{ __('messages.navCompany')}}
                     </x-nav-link>
-                    <x-nav-link :href="route('players.index', $game_Id)" :active="request()->routeIs('players.index')">
+                    <x-nav-link :href="route('games.players.index', $game_Id)" :active="request()->routeIs('games.players.index')">
                         {{ __('messages.navPlayer')}}
                     </x-nav-link>
                     <x-nav-link :href="route('machine_types.index', $game_Id)" :active="request()->routeIs('machine_types.index')">

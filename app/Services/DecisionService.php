@@ -93,6 +93,6 @@ class DecisionService
                 ]);
             }
         }
-        dd([Account::calculateGuV($decision->player->company->id, $decision->period), Account::bilanzMitGuV($decision->player->company->id, $decision->period)]); 
+        //dd([Account::calculateGuV($decision->player->company->id, $decision->period), Account::bilanzMitGuV($decision->player->company->id, $decision->period)]); 
     }
 }

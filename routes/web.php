@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DecisionController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GamemasterController;
+use App\Http\Controllers\Gamemaster\AccountController as GMAccountController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MachineTypeController;
 use App\Http\Controllers\PlayerController;
@@ -92,7 +93,7 @@ Route::patch('/games/{game}/status', [GameController::class, 'updateStatus'])->n
 Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function () {
     // Game routes without the prefix
     Route::resource('games', GameController::class);
-    Route::prefix(prefix: 'games/{games}')->group(function () {
+    Route::prefix(prefix: 'games/{games}')->name('games.')->group(function () {
 
         /** 
          * Gamemaster 
@@ -115,6 +116,13 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
          */
         Route::resource('players', PlayerController::class)->parameters([
             'players' => 'id'
+        ]);
+        /**
+         * End results (accounting)
+         */
+        Route::resource('accounts', GMAccountController::class)->only([
+            'index',
+            'show'
         ]);
     });
     //Machine Type without the prefix
