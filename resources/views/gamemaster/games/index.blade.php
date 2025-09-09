@@ -32,7 +32,7 @@
         @foreach ($statusOrder as $status)
             @if ($groupedGames->has($status))
                 <x-header-label class="mb-2 capitalize">
-                    {{ ucfirst($status) }}
+                    {{ __('messages.' . $status) }}
                 </x-header-label>
                 <ul class="mb-6">
                     @foreach ($groupedGames[$status] as $game)

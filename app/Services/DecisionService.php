@@ -13,9 +13,7 @@ use function PHPUnit\Framework\isNull;
 
 class DecisionService
 {
-
-
-    public function createDecisionWithMachineDecision(array $validated)
+    public function createDecision(array $validated)
     {
         $decision = Decision::create([
             'player_id' => $validated['player_id'],
@@ -26,19 +24,28 @@ class DecisionService
 
         // Create Buy MachineDecisions
         if (isset($validated['buy'])) {
-            foreach ($validated['buy'] as $machineTypeId => $buyMachine) {
-                $company = $decision->player->company;
-                // Create MachineDecision for each Machine Type
-                if ($buyMachine > 0) {
-                    MachineDecision::create([
-                        'decision_id' => $decision->id,
-                        'machine_type_id' => $machineTypeId,
-                        'buy' => $buyMachine,
-                        'sell' => null
-                    ]);
-                    // Create Machine, loop the number of Machines a Player wanted to buy
-                    for ($i = 0; $i < $buyMachine; $i++) {
-                        $machine = machine::create([
+            $this->MachineBuy($decision, $validated);
+        }
+
+        // Create Sell MachineDecisions
+        if (isset($validated['sell'])) {
+            $this->MachineSell($decision, $validated);
+        }
+    private function MachineBuy($decision, array $validated)
+    {
+        foreach ($validated['buy'] as $machineTypeId => $buyMachine) {
+            $company = $decision->player->company;
+            // Create MachineDecision for each Machine Type
+            if ($buyMachine > 0) {
+                MachineDecision::create([
+                    'decision_id' => $decision->id,
+                    'machine_type_id' => $machineTypeId,
+                    'buy' => $buyMachine,
+                    'sell' => null
+                ]);
+                // Create Machine, loop the number of Machines a Player wanted to buy
+                for ($i = 0; $i < $buyMachine; $i++) {
+                    $machine = machine::create([
                             'machinetype_id' => $machineTypeId,
                             'company_id' => $company->id,
                             'period' => $decision->period,
@@ -57,27 +64,27 @@ class DecisionService
                             'credit' => Account::find(2800)->id,
                             'amount' => 100000,
                         ]);
-                    }
                 }
             }
         }
-        // Create Sell MachineDecisions
-        if (isset($validated['sell'])) {
-            foreach ($validated['sell'] as $sellMachine) {
-                // Create MachineDecision
-                MachineDecision::create([
-                    'decision_id' => $decision->id,
-                    'machine_type_id' => null,
-                    'buy' => null,
-                    'sell' => $sellMachine      // $sellMachine is a Machine_ID
-                ]);
-                // Sell Machines
-                $machine = Machine::find($sellMachine);
-                if ($machine) {
-                    $machine->status = '0';
-                    $machine->save();
-                }
-                AccountEntry::create([
+    }
+    private function MachineSell($decision, array $validated)
+    {
+        foreach ($validated['sell'] as $sellMachine) {
+            // Create MachineDecision
+            MachineDecision::create([
+                'decision_id' => $decision->id,
+                'machine_type_id' => null,
+                'buy' => null,
+                'sell' => $sellMachine      // $sellMachine is a Machine_ID
+            ]);
+            // Sell Machines
+            $machine = Machine::find($sellMachine);
+            if ($machine) {
+                $machine->status = '0';
+                $machine->save();
+            }
+            AccountEntry::create([
                     'company_id' => $decision->player->company->id,
                     'period' => $decision->period,
                     'debit' => Account::find(2800)->id,
@@ -91,8 +98,6 @@ class DecisionService
                     'credit' => Account::find(2800)->id,
                     'amount' =>  0, // TODO: Betrag berechnen mit Parametern
                 ]);
-            }
         }
-        //dd([Account::calculateGuV($decision->player->company->id, $decision->period), Account::bilanzMitGuV($decision->player->company->id, $decision->period)]); 
     }
 }
