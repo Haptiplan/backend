@@ -1,5 +1,5 @@
 <a {{ $attributes->merge([
-    'class' => 'inline-flex items-center px-2 py-1 bg-gray-600 bg-opacity-75 border border-transparent rounded-md font-medium text-white tracking-widest hover:bg-gray-500 active:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 '
+    'class' => "text-center px-8 py-3 bg-gray-300 dark:bg-gray-600 text-lg text-gray-800 dark:text-gray-200 font-semibold rounded-md shadow-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition duration-300"
 ]) }}>
     {{ __('messages.back') }}
 </a>

@@ -10,7 +10,8 @@ use App\Models\User; ?>
     </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-gradient-to-r from-blue-500 to-purple-600 dark:from-gray-800 dark:to-gray-900 shadow-xl sm:rounded-lg">
+            <div
+                class="bg-gradient-to-r from-blue-500 to-purple-600 dark:from-gray-800 dark:to-gray-900 shadow-xl sm:rounded-lg">
                 <div class="p-8 text-white">
                     @if (Auth::check() && Auth::user()->role->id == User::ROLE_ADMIN)
                         <!-- Impersonate GM Section -->
@@ -23,7 +24,8 @@ use App\Models\User; ?>
                                 </label>
                                 @foreach ($games as $game)
                                     <div class="flex items-center space-x-3">
-                                        <input type="radio" name="game" id="game-{{$game->id}}" value="{{$game->id}}" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500">
+                                        <input type="radio" name="game" id="game-{{$game->id}}" value="{{$game->id}}"
+                                            class="w-5 h-5 text-indigo-600 focus:ring-indigo-500">
                                         <label for="game-{{$game->id}}" class="text-lg">
                                             {{$game->name}}
                                         </label>
@@ -32,9 +34,9 @@ use App\Models\User; ?>
                                 <input name="role" id="role" required hidden value="{{ User::ROLE_GAMEMASTER }}">
                             </div>
                             <div>
-                                <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 px-6 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                                <x-impersonate-button>
                                     {{ __('messages.impersonateGM') }}
-                                </button>
+                                </x-impersonate-button>
                             </div>
                         </form>
                     @endif
@@ -52,7 +54,8 @@ use App\Models\User; ?>
                                     <p class="text-lg font-bold mb-2">{{ __('messages.game') }}: {{$game->name}}</p>
                                     @foreach ($companies->where('game_id', $game->id) as $company)
                                         <div class="flex items-center space-x-3">
-                                            <input type="radio" name="company" id="company-{{$company->id}}" value="{{$company->id}}" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500">
+                                            <input type="radio" name="company" id="company-{{$company->id}}"
+                                                value="{{$company->id}}" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500">
                                             <label for="company-{{$company->id}}" class="text-lg">
                                                 {{$company->name}}
                                             </label>
@@ -63,9 +66,10 @@ use App\Models\User; ?>
                             <input name="role" id="role" required hidden value="{{ User::ROLE_USER }}">
                         </div>
                         <div>
-                            <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 px-6 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                            <x-impersonate-button>
                                 {{ __('messages.impersonatePlayer') }}
-                            </button>
+                            </x-impersonate-button>
+
                         </div>
                     </form>
                 </div>
