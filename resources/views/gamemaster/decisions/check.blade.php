@@ -12,6 +12,12 @@
 
         <!-- Display Decision Details -->
         <div>
+            @if ($game->current_period_number != $period)
+            <a href="{{ route('games.accounts.show', ['account' => $period, 'games' => $game->id]) }}">
+                {{ __('messages.results') }}
+            </a>
+            <br><br>
+            @endif
             <form class="space-y-4" action="{{ route('game.continue') }}" method="POST">
                 @csrf
                 @foreach ($companies as $company)
