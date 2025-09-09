@@ -6,13 +6,11 @@
 
     <!-- Layout Content Box -->
     <x-content-box>
-        <!-- Centered Title with Elegant Font and Smooth Transition -->
-        <x-page-title>
-            {{ __('messages.results') }}
-        </x-page-title>
-
         <!-- List of Decisions -->
-        <div class="mt-8">
+        <div>
+            <x-page-title>
+                {{ __('messages.period') . " " . $period }}
+            </x-page-title>
             <!-- Layout Content Box -->
             <x-content-box>
 
@@ -24,12 +22,12 @@
                 <!-- Company List Grouped by Game with Stylish List Items -->
                 <div class="mt-8 space-y-8">
                     <div class="space-y-4">
-                        <table class="w-full border">
+                        <table class="table-fixed mx-auto">
                             <thead>
                                 <tr>
-                                    <th class="text-left font-bold border-b pb-2">{{ __('messages.expenses') }}:</th>
+                                    <th class="text-left font-bold border-b pb-2">{{ __('messages.expenses') }}</th>
                                     <th class="text-left font-bold border-b border-r pb-2 pr-4 text-right">{{ number_format($guv['aufwendungen_sum'], 0, ',', '.') }} €</th>
-                                    <th class="text-left font-bold border-b pb-2">{{ __('messages.earnings') }}:</th>
+                                    <th class="text-left font-bold border-b pb-2">{{ __('messages.earnings') }}</th>
                                     <th class="text-left font-bold border-b pb-2 pr-4 text-right">{{ number_format($guv['ertraege_sum'], 0, ',', '.') }} €</th>
                                 </tr>
                             </thead>
@@ -41,7 +39,7 @@
                                     <tr>
                                     <td class="pl-4 align-top">
                                         @if(isset($guv['aufwendungen'][$i]))
-                                        {{ __('accounts.' . $guv['aufwendungen'][$i]['konto']) }}:
+                                        {{ __('accounts.' . $guv['aufwendungen'][$i]['konto']) }}
                                         @endif
                                     </td>
                                     <td class="border-r pl-4 pr-4 align-top text-right">
@@ -64,14 +62,14 @@
 
                             </tbody>
                         </table>
-                        <h2>{{ __('messages.result') }}: {{ number_format($guv['ergebnis'], 0, ',', '.') }} €</h2>
+                        <h1>{{ __('messages.result') }}: {{ number_format($guv['ergebnis'], 0, ',', '.') }} €</h1>
                     </div>
                 </div>
 
             </x-content-box>
         </div>
         <!-- List of Decisions -->
-        <div class="mt-8">
+        <div>
             <!-- Layout Content Box -->
             <x-content-box>
 
@@ -83,20 +81,18 @@
                 <!-- Company List Grouped by Game with Stylish List Items -->
                 <div class="mt-8 space-y-8">
                     <div class="space-y-4">
-                        <table class="w-full border mt-4">
+                        <table class="table-fixed mx-auto">
                             <thead>
                                 <tr>
-                                    <th colspan="2" class="text-left font-bold border pb-2">{{ __('messages.assets') }}</th>
+                                    <th colspan="2" class="text-left font-bold border-b border-r pb-2">{{ __('messages.assets') }}</th>
                                     <th colspan="2" class="text-left font-bold border-b pb-2">{{ __('messages.liabilities') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- AV & EK -->
                                 <tr>
-                                    <td class="border-b font-bold pt-4">{{ __('messages.fixedAssets') }}:
-                                    <td class="border-b border-r font-bold pt-4 pr-4 text-right">{{ number_format($bilanz['aktiva']['av_sum'], 0, ',', '.') }} €</td>
-                                    <td class="border-b font-bold pt-4">{{ __('messages.equityCapital') }}:
-                                    <td class="border-b font-bold pt-4 pr-4 text-right">{{ number_format($bilanz['passiva']['ek_sum'], 0, ',', '.') }} €</td>
+                                    <td colspan="2" class="border-r font-bold pt-4">{{ __('messages.fixedAssets') }}
+                                    <td colspan="2" class="font-bold pt-4">{{ __('messages.equityCapital') }}
                                 </tr>
                                 @php
                                     $maxRowsAV_EK = max(count($bilanz['aktiva']['av']), count($bilanz['passiva']['ek']));
@@ -105,17 +101,17 @@
                                     <tr>
                                         <td class="pl-4 align-top">
                                             @if(isset($bilanz['aktiva']['av'][$i]))
-                                                {{ __('accounts.' . $bilanz['aktiva']['av'][$i]['konto']) }}: 
+                                                {{ __('accounts.' . $bilanz['aktiva']['av'][$i]['konto']) }}
                                             @endif
                                         </td>
-                                        <td class="border-r pr-4 align-top text-right">
+                                        <td class="border-r pl-4 pr-4 align-top text-right">
                                             @if(isset($bilanz['aktiva']['av'][$i]))
                                                 {{ number_format($bilanz['aktiva']['av'][$i]['saldo'], 0, ',', '.') }} €
                                             @endif
                                         </td>
                                         <td class="pl-4 align-top">
                                             @if(isset($bilanz['passiva']['ek'][$i]))
-                                                {{ __('accounts.' . $bilanz['passiva']['ek'][$i]['konto']) }}:
+                                                {{ __('accounts.' . $bilanz['passiva']['ek'][$i]['konto']) }}
                                             @endif
                                         </td>
                                         <td class="pl-4 pr-4 align-top text-right">
@@ -127,10 +123,8 @@
                                 @endfor
                                 <!-- UV & FK -->
                                 <tr>
-                                    <td class="border-b border-t font-bold pt-4">{{ __('messages.currentAssets') }}:</td>
-                                    <td class="border-b border-t border-r font-bold pr-4 pt-4 text-right">{{ number_format($bilanz['aktiva']['uv_sum'], 0, ',', '.') }} €</td>
-                                    <td class="border-b border-t font-bold pt-4">{{ __('messages.borrowedCapital') }}:</td>
-                                    <td class="border-b border-t font-bold pt-4 pr-4 text-right">{{ number_format($bilanz['passiva']['fk_sum'], 0, ',', '.') }} €</td>
+                                    <td colspan="2" class="border-r font-bold pt-4">{{ __('messages.currentAssets') }}</td>
+                                    <td colspan="2" class="font-bold pt-4">{{ __('messages.borrowedCapital') }}</td>
                                 </tr>
                                 @php
                                     $maxRowsUV_FK = max(count($bilanz['aktiva']['uv']), count($bilanz['passiva']['fk']));
@@ -142,14 +136,14 @@
                                                 {{ __('accounts.' . $bilanz['aktiva']['uv'][$i]['konto']) }}
                                             @endif
                                         </td>
-                                        <td class="border-r pr-4 align-top text-right">
+                                        <td class="border-r pl-4 pr-4 align-top text-right">
                                             @if(isset($bilanz['aktiva']['uv'][$i]))
                                                 {{ number_format($bilanz['aktiva']['uv'][$i]['saldo'], 0, ',', '.') }} €
                                             @endif
                                         </td>
                                         <td class="pl-4 align-top">
                                             @if(isset($bilanz['passiva']['fk'][$i]))
-                                                {{ __('accounts.' . $bilanz['passiva']['fk'][$i]['konto']) }}:
+                                                {{ __('accounts.' . $bilanz['passiva']['fk'][$i]['konto']) }}
                                             @endif
                                         </td>
                                         <td class="pl-4 pr-4 align-top text-right">
