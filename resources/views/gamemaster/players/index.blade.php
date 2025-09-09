@@ -18,7 +18,7 @@
 
         <!-- Create Player Button -->
         <div class="text-center mb-6">
-            <x-create-button href="{{ route('players.create', $game) }}">
+            <x-create-button href="{{ route('games.players.create', $game) }}">
                 {{ __('messages.playerCreate') }}
             </x-create-button>
         </div>
@@ -35,7 +35,7 @@
                              @foreach($players as $player)
                                   @foreach($user_list as $user)
                                        @if ($player->id == $user->id && $player->company_id == $company->id)
-                                           <x-list-item :item="$user" :editRoute="'players.edit', ['games' => $game->id, 'id' => $user->id]" :deleteRoute="'players.destroy', ['games' => $game->id, 'id' => $user->id]" />
+                                           <x-list-item :item="$user" :editRoute="'games.players.edit', ['games' => $game->id, 'id' => $user->id]" :deleteRoute="'games.players.destroy', ['games' => $game->id, 'id' => $user->id]" />
                                        @endif
                                   @endforeach
                              @endforeach
