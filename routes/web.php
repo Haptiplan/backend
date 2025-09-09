@@ -2,13 +2,14 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DecisionController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GamemasterController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MachineTypeController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Gamemaster\DecisionController as GmDecisionController;
+use App\Http\Controllers\Player\DecisionController as PlayerDecisionController;
 use App\Models\User;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\App;
@@ -79,7 +80,7 @@ Route::middleware(['localization', 'impersonate', 'gamemaster_auth'])
 
 // Show desicion of players in a game period:
 Route::middleware(['localization', 'verified', 'impersonate', 'check_period'])
-    ->get('/check_decision/{id}/{period}', [DecisionController::class, 'check'])->name('decisions.check');
+    ->get('/check_decision/{id}/{period}', [GmDecisionController::class, 'show'])->name('decisions.check');
 // Update game to next period:
 Route::post('/continue_game', [GameController::class, 'continue'])->name('game.continue');
 Route::patch('/games/{game}/status', [GameController::class, 'updateStatus'])->name('games.updateStatus');
@@ -132,7 +133,7 @@ Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $u
      * Decisions 
      * Players shouldn't be able to edit or delete a decision.
      */
-    Route::resource('decisions', DecisionController::class)->except([
+    Route::resource('decisions', PlayerDecisionController::class)->except([
         'edit',
         'update',
         'destroy'
