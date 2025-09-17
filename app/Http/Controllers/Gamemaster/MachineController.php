@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Gamemaster;
 
 use App\Models\Machine;
 use App\Http\Controllers\Controller;

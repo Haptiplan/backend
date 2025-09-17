@@ -1,15 +1,15 @@
 <?php
 
-use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\GameController;
-use App\Http\Controllers\GamemasterController;
-use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\MachineTypeController;
-use App\Http\Controllers\PlayerController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Gamemaster\CompanyController;
+use App\Http\Controllers\Gamemaster\GameController;
+use App\Http\Controllers\Gamemaster\GamemasterController;
+use App\Http\Controllers\Gamemaster\MachineTypeController;
+use App\Http\Controllers\Gamemaster\PlayerController;
 use App\Http\Controllers\Gamemaster\DecisionController as GmDecisionController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Player\DecisionController as PlayerDecisionController;
+use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\App;
