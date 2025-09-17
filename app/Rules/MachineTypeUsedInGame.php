@@ -28,7 +28,7 @@ class MachineTypeUsedInGame implements ValidationRule
         $machineType = MachineType::where('name', $this->machine_type_name)
             ->where('game_id', $this->game_id)
             ->count();
-        $exists = $machineType > 1 ? true : false;
+        $exists = $machineType >= 1 ? true : false;
 
         if ($exists) {
             // If it exists, fail the validation with a custom message
