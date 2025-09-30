@@ -31,6 +31,7 @@ class DecisionService
         if (isset($validated['sell'])) {
             $this->MachineSell($decision, $validated);
         }
+    }
     private function MachineBuy($decision, array $validated)
     {
         foreach ($validated['buy'] as $machineTypeId => $buyMachine) {
@@ -46,24 +47,24 @@ class DecisionService
                 // Create Machine, loop the number of Machines a Player wanted to buy
                 for ($i = 0; $i < $buyMachine; $i++) {
                     $machine = machine::create([
-                            'machinetype_id' => $machineTypeId,
-                            'company_id' => $company->id,
-                            'period' => $decision->period,
-                        ]);
-                        AccountEntry::create([
-                            'company_id' => $company->id,
-                            'period' => $decision->period,
-                            'debit' => Account::find(720)->id,
-                            'credit' => Account::find(4400)->id,
-                            'amount' => 100000,
-                        ]);
-                        AccountEntry::create([
-                            'company_id' => $company->id,
-                            'period' => $decision->period + 1,
-                            'debit' => Account::find(4400)->id,
-                            'credit' => Account::find(2800)->id,
-                            'amount' => 100000,
-                        ]);
+                        'machinetype_id' => $machineTypeId,
+                        'company_id' => $company->id,
+                        'period' => $decision->period,
+                    ]);
+                    AccountEntry::create([
+                        'company_id' => $company->id,
+                        'period' => $decision->period,
+                        'debit' => Account::find(720)->id,
+                        'credit' => Account::find(4400)->id,
+                        'amount' => 100000,
+                    ]);
+                    AccountEntry::create([
+                        'company_id' => $company->id,
+                        'period' => $decision->period + 1,
+                        'debit' => Account::find(4400)->id,
+                        'credit' => Account::find(2800)->id,
+                        'amount' => 100000,
+                    ]);
                 }
             }
         }
@@ -85,19 +86,19 @@ class DecisionService
                 $machine->save();
             }
             AccountEntry::create([
-                    'company_id' => $decision->player->company->id,
-                    'period' => $decision->period,
-                    'debit' => Account::find(2800)->id,
-                    'credit' => Account::find(720)->id,
-                    'amount' => 0 // TODO: Betrag berechnen mit Parametern
-                ]);
-                AccountEntry::create([
-                    'company_id' => $decision->player->company->id,
-                    'period' => $decision->period,
-                    'debit' => Account::find(6960)->id,
-                    'credit' => Account::find(2800)->id,
-                    'amount' =>  0, // TODO: Betrag berechnen mit Parametern
-                ]);
+                'company_id' => $decision->player->company->id,
+                'period' => $decision->period,
+                'debit' => Account::find(2800)->id,
+                'credit' => Account::find(720)->id,
+                'amount' => 0 // TODO: Betrag berechnen mit Parametern
+            ]);
+            AccountEntry::create([
+                'company_id' => $decision->player->company->id,
+                'period' => $decision->period,
+                'debit' => Account::find(6960)->id,
+                'credit' => Account::find(2800)->id,
+                'amount' =>  0, // TODO: Betrag berechnen mit Parametern
+            ]);
         }
     }
 }
