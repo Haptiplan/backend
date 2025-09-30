@@ -31,6 +31,7 @@ class DecisionService
         if (isset($validated['sell'])) {
             $this->MachineSell($decision, $validated);
         }
+    }
     private function MachineBuy($decision, array $validated)
     {
         foreach ($validated['buy'] as $machineTypeId => $buyMachine) {
