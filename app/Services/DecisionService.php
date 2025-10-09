@@ -51,19 +51,20 @@ class DecisionService
                         'company_id' => $company->id,
                         'period' => $decision->period,
                     ]);
+                    $machineType = $machine->machinetype;
                     AccountEntry::create([
                         'company_id' => $company->id,
                         'period' => $decision->period,
                         'debit' => Account::find(720)->id,
                         'credit' => Account::find(4400)->id,
-                        'amount' => 100000,
+                        'amount' => $machineType->price,
                     ]);
                     AccountEntry::create([
                         'company_id' => $company->id,
                         'period' => $decision->period + 1,
                         'debit' => Account::find(4400)->id,
                         'credit' => Account::find(2800)->id,
-                        'amount' => 100000,
+                        'amount' => $machineType->price,
                     ]);
                 }
             }
