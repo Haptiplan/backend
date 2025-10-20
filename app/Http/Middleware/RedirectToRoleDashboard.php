@@ -12,13 +12,16 @@ class RedirectToRoleDashboard
 {
     /**
      * Handle an incoming request.
-     * Use only for routes to a dashboard!
+     * Use only for routes to a user dashboard!
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
+        if(session()->has('impersonate')) {
+            $user = User::find(session('impersonate'));
+        }
         if (!$user) {
             return redirect()->route('login');
         }
@@ -29,9 +32,6 @@ class RedirectToRoleDashboard
         }
         if ($user->role->id == User::ROLE_GAMEMASTER) {
             return redirect()->route('gamemaster_dashboard_show');
-        }
-        if ($user->role->id == User::ROLE_USER) {
-            return redirect()->route('dashboard');
         }
 
         return $next($request);
