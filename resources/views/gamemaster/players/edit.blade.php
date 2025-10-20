@@ -17,7 +17,7 @@
         <x-success-message />
 
         <!-- Player Edit Form -->
-        <form action="{{ route('players.update',['games' => $game->id, 'id' => $player->id]) }}" method="POST" class="space-y-10">
+        <form action="{{ route('games.players.update',['games' => $game->id, 'id' => $player->id]) }}" method="POST" class="space-y-10">
             @csrf
             @method('PUT')
 
@@ -47,7 +47,7 @@
 
         <!-- Back Button -->
         <div class="text-center mt-6">
-            <x-back-button href="{{ route('players.index', $game) }}">
+            <x-back-button href="{{ route('games.players.index', $game) }}">
                 {{ __('messages.back') }}
             </x-back-button>
         </div>

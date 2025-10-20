@@ -54,7 +54,7 @@
         </x-page-title>
 
         <!-- Gamemaster Selection Form -->
-        <form class="space-y-8" action="{{ route('gamemasters.store') }}" method="POST">
+        <form class="space-y-8" action="{{ route('games.gamemasters.store') }}" method="POST">
             @csrf
             <input type="hidden" name="game_id" value="{{ $game->id }}">
 
@@ -87,7 +87,7 @@
             @foreach($list_gamemasters as $gamemaster)
                 <div class="flex items-center justify-between text-gray-800 dark:text-gray-300">
                     <span>{{ $gamemaster->name }}</span>
-                    <form action="{{ route('gamemasters.deleteOne', [$gamemaster->id, $game_id]) }}" method="POST"
+                    <form action="{{ route('games.gamemasters.deleteOne', [$gamemaster->id, $game_id]) }}" method="POST"
                         class="inline">
                         @csrf
                         @method('DELETE')

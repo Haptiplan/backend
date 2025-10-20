@@ -54,7 +54,7 @@
                 <x-header-label for="approve" class="text-red-700 dark:text-red-300">
                     {{ __('messages.decisionApprove') }}
                 </x-header-label>
-                <x-input-field type="checkbox" name="approve" id="approve" required class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded checked:bg-red-500" />
+                <input type="checkbox" name="approve" id="approve" required class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded checked:bg-red-500" />
             </div>
 
             <!-- Submit Button -->
