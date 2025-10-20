@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class EnsureGameIsSelected
@@ -16,16 +15,10 @@ class EnsureGameIsSelected
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
-
-        if ($user && $user->role_id === \App\Models\User::ROLE_GAMEMASTER) {
-            if (!session()->has('selected_game_id') &&
-                !$request->routeIs('games.select') &&
-                !$request->routeIs('games.set_selected')
-            ) {
-                return redirect()->route('games.select');
-            }
+        if (!session()->has('selected_game_id')) {
+            return redirect()->route('games.select');
         }
+
         return $next($request);
     }
 }

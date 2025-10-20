@@ -18,10 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin_auth' => \App\Http\Middleware\AdminAuth::class,
             'check_role' => \App\Http\Middleware\CheckRole::class,
             'check_period' => \App\Http\Middleware\CheckPeriod::class,
-            'ensure.game.selected' => \App\Http\Middleware\EnsureGameIsSelected::class,
+            'ensure_game_selected' => \App\Http\Middleware\EnsureGameIsSelected::class,
             'impersonate' => \App\Http\Middleware\Impersonate::class,
             'gamemaster_auth' => \App\Http\Middleware\GamemasterAuth::class,
             'localization' => \App\Http\Middleware\Localization::class,
+            'role_dashboard' => \App\Http\Middleware\RedirectToRoleDashboard::class,
 
         ]);
     })
