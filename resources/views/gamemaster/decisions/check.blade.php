@@ -1,81 +1,111 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                        <h1 class="text-2xl font-bold mb-6">
-                            {{ __('messages.decisionName') . ' ' . $period . ' ' . __('messages.fromGame') . ' ' . $game->name }}
-                        </h1>
-                        <div>
-                            <form class="space-y-4" action="{{ route('game.continue') }}" method="POST">
-                                @csrf
-                                @foreach ($companies as $company)
-                                    <h2 class="text-2xl font-bold mb-6">
-                                        {{ __('messages.company') . ': ' . $company->name }}</h2>
+    <!-- Dashboard Header -->
+    <x-dashboard-header>
+        {{ __('Dashboard') }}
+    </x-dashboard-header>
+    <x-content-box>
+        <!-- Centered Title with Elegant Font and Smooth Transition -->
+        <x-page-title>
+            {{ __('messages.decisionName') . ' ' . $period . ' ' . __('messages.fromGame') . ' ' . $game->name }}
+        </x-page-title>
+        <!-- Display Decision Details -->
+        <div>
+            @if ($game->current_period_number != $period)
+            <a href="{{ route('games.accounts.show', ['account' => $period, 'games' => $game->id]) }}">
+                {{ __('messages.results') }}
+            </a>
+            <br><br>
+            @endif
+            <form class="space-y-4" action="{{ route('game.continue') }}" method="POST">
+                @csrf
+                @foreach ($companies as $company)
+                <x-container>
+                    <x-header-label>
+                        {{ __('messages.company') . ': ' . $company->name }}
+                    </x-header-label>
+                    <input type="hidden" name="game_id" value="{{ $game->id }}" />
+                    @php
+                    // decisionmaker of the specific company
+                    $currentDecisionMaker = $decision_makers->firstWhere('company_id', $company->id);
+                    @endphp
 
-                                    <input type="hidden" name="game_id" value="{{ $game->id }}">
-                                    <li class="ml-10">
-                                        {{ __('messages.decisionMaker') . ': ' }}
-                                        @foreach ($decision_makers as $decision_maker)
-                                            @if ($decision_maker->company_id == $company->id)
-                                                {{ $decision_maker->name }}
-                                                @if (!empty($decision_maker->name))
-                                                    <input type="hidden" name="done[]" value="1">
-                                                @endif
-                                            @endif
-                                        @endforeach
-                                    </li>
-                                    @if ($game->current_period_number == $period)
-                                        <input type="checkbox" name="approve[]" required
-                                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded checked:bg-green-500">
-                                    @endif
-                                    <br>
+                    @if ($currentDecisionMaker)
+                    <details class="ml-10">
+                        <summary>{{ __('messages.decisionMaker') . ': ' . $currentDecisionMaker->name }}</summary>
+                        <ul class="list-disc pl-6">
+                            <li class="ml-10">
+                                {{ __('messages.createdAt') . ': ' . $decisions->where('player_id', $currentDecisionMaker->id)->first()->created_at->format('d.m.Y H:i') }}
+                            </li>
+                            @if($machines_bought->where('company_id', $company->id)->isNotEmpty())
+                            <li class="ml-10">
+                                {{ __('messages.machinesBought') . ": " }}
+                                @foreach ($machines_bought->where('company_id', $company->id) as $machine)
+                                <br>{{ '- ' . $machine->machinetype->name }}
                                 @endforeach
-
-                                @if ($game->current_period_number == $period)
-                                    <button type="submit"
-                                        class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-900 disabled:opacity-25 transition">
-                                        {{ __('messages.continue') }}
-                                    </button>
-                                @endif
-                            </form>
-
-                            @if ($errors->any())
-                                <div
-                                    class="alert alert-danger bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                                    <ul class="block text-sm font-medium text-red-600 dark:text-red-300">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
+                            </li>
+                            @else
+                            <li class="ml-10">
+                                {{ __('messages.noMachinesBought') }}
+                            </li>
                             @endif
-                    <form id="periodForm" action="{{ route('decisions.check', ['id' => 1, 'period' => 0]) }}"
-                        method="GET">
-                        <label for="periods">{{ __('messages.choosePeriod') }}</label>
-                        <select name="period" id="periods" onchange="updateFormAction()">
-                            @for ($i = 0; $i <= $game->current_period_number; $i++)
-                                <option value="{{ $i }}"> {{ $i }}</option>
-                            @endfor
-                        </select>
-                        <button type="submit">{{ __('Submit') }}</button>
-                    </form>
+                            @if($machines_sold->where('company_id', $company->id)->isNotEmpty())
+                            <li class="ml-10">
+                                {{ __('messages.machinesSold') . ': ' }}
+                                @foreach ($machines_sold->where('company_id', $company->id) as $machine)
+                                <br>{{ '- ' . $machine->machinetype->name . __('messages.fromPeriod') . $machine->period }}
+                                @endforeach
+                            </li>
+                            @else
+                            <li class="ml-10">
+                                {{ __('messages.noMachinesSold') }}
+                            </li>
+                            @endif
+                        </ul>
+                    </details>
+                    <input type="hidden" name="done[]" value="1">
+                    @else
+                    <li class="ml-10">
+                        {{ __('messages.noDecisionYet') }}
+                    </li>
+                    @endif
 
-                    <script>
-                        function updateFormAction() {
-                            var period = document.getElementById("periods").value;
-                            var form = document.getElementById("periodForm");
-                            // Update the action attribute of the form with the new period value
-                            form.action = "{{ url('/check_decision/1') }}" + "/" + period;
-                        }
-                    </script>
-                </div>
-            </div>
+                    @if ($game->current_period_number == $period)
+                    <x-input-field type="checkbox" name="approve[]" required
+                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded checked:bg-green-500"/>
+                    @endif
+                </x-container>
+                @endforeach
+                <br>
+
+                @if ($game->current_period_number == $period && $game->max_period_number > $period)
+                <x-next-period-button>
+                    {{ __('messages.continue') }}
+                </x-next-period-button>
+                @endif
+            </form>
+
+            <!-- Error Handling with Soft Background and Styled List -->
+            <x-error-message />
+            <x-success-message />
+
+            <form id="periodForm" action="{{ route('decisions.check', ['id' => 1, 'period' => 0]) }}" method="GET">
+                <label for="periods">{{ __('messages.choosePeriod') }}</label>
+                <x-select-period  :maxPeriod="$game->current_period_number" :selected="$period"
+                    onchange="updateFormAction()" />
+
+                <!-- Submit Button with Gradient Background and Hover Effect -->
+                <x-submit-button>
+                    {{ __('Submit') }}
+                </x-submit-button>
+            </form>
+            <script>
+                function updateFormAction() {
+                    var period = document.getElementById("periods").value;
+                    var form = document.getElementById("periodForm");
+                    // Update the action attribute of the form with the new period value
+                    form.action = "{{ url('/check_decision/1') }}" + "/" + period;
+                }
+            </script>
         </div>
-    </div>
+    </x-content-box>
 </x-app-layout>

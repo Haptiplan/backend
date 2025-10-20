@@ -19,10 +19,11 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $games = Game::hasGamemasters()->get();
-        $companies = Company::whereIn('game_id', $games->pluck('id'))->get();
+        $game_id = session('selected_game_id');
+        $game = Game::findOrFail($game_id);
 
-        return view('gamemaster.companies.index', ['companies' => $companies, 'games' => $games]);
+        $companies = Company::where('game_id', $game_id)->get();
+        return view('gamemaster.companies.index', ['companies' => $companies, 'game' => $game]);
     }
 
     /**
@@ -30,8 +31,10 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        $games = Game::hasGamemasters()->get();
-        return view('gamemaster.companies.create', ['games' => $games]);
+        $game_id = session('selected_game_id');
+        $game = Game::findOrFail($game_id);
+
+        return view('gamemaster.companies.create', ['game' => $game]);
     }
 
     /**
@@ -44,7 +47,7 @@ class CompanyController extends Controller
             'company_name' => [
                 'required',
                 'string',
-                'max:255',  
+                'max:255',
                 Rule::unique('companies', 'name'),
             ],
             'game_id' => [
@@ -59,10 +62,10 @@ class CompanyController extends Controller
         }
 
         if (Gate::denies('modify', $game)) {
-        return redirect()->back()
-            ->withErrors(['error' => __('validation.custom.game_not_modifiable')])
-            ->withInput();
-    }
+            return redirect()->back()
+                ->withErrors(['error' => __('validation.custom.game_not_modifiable')])
+                ->withInput();
+        }
 
         Company::create([
             'name' => $validated['company_name'],
@@ -85,11 +88,11 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        $games = Game::hasGamemasters()->get();
-        $game_ids = $games->pluck('id')->toArray();
-        $company = Company::whereIn('game_id', $game_ids)->find($id);
-
-        return view('gamemaster.companies.edit', ['company' => $company, 'games' => $games]);
+        $game_id = session('selected_game_id');
+        $game = Game::findOrFail($game_id);
+        $company = Company::where('game_id', $game_id)->where('id', $id)->firstOrFail();
+        
+        return view('gamemaster.companies.edit', ['company' => $company, 'game' => $game]);
     }
 
     /**
@@ -104,7 +107,7 @@ class CompanyController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('companies','name')->ignore($company->id),
+                Rule::unique('companies', 'name')->ignore($company->id),
             ],
             'game_id' => [
                 'required',
@@ -140,6 +143,6 @@ class CompanyController extends Controller
 
         $company->delete();
 
-        return redirect()->route('companies.index')->with('status', 'messages.successDelete');
+        return redirect()->route('games.companies.index')->with('status', 'messages.successDelete');
     }
 }

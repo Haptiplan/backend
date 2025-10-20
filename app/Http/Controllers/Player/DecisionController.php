@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Player;
 
 use App\Models\Decision;
 use App\Http\Controllers\Controller;
@@ -8,16 +8,13 @@ use App\Models\Company;
 use App\Models\Game;
 use App\Models\Machine;
 use App\Models\MachineDecision;
+use App\Models\MachineType;
 use App\Models\Player;
 use App\Models\User;
 use App\Services\DecisionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-
-use function PHPUnit\Framework\isEmpty;
-
 
 class DecisionController extends Controller
 {
@@ -43,7 +40,7 @@ class DecisionController extends Controller
             return redirect()->route('decisions.create');
         }
 
-        return view('user.decision.index', [
+        return view('user.decisions.index', [
             'decisions' => $decisions,
         ]);
     }
@@ -71,7 +68,7 @@ class DecisionController extends Controller
             return redirect()->route('decisions.index');
         }
 
-        return view('gamemaster.decisions.create', [
+        return view('user.decisions.create', [
             'decisions' => $decisions,
             'period' => $game->current_period_number,
             'player' => $player,
@@ -85,18 +82,22 @@ class DecisionController extends Controller
      */
     public function store(Request $request, DecisionService $decisionService)
     {
-        //dd($request);
         $validated = $request->validate([
             'approve' => 'required',
             'player_id' => 'required | exists:players,id',
             'period' => 'digits_between:1,8',
-            'machinetype_id' => 'exists:machine_types,id|nullable',
             'buy' => 'array|nullable',
-            'sell' => 'array|nullable'
+            'buy.*' => 'integer|min:0',
+            'sell' => 'array|nullable',
+            'sell.*' => 'integer|exists:machines,id'
         ]);
 
+        $company = Player::find($validated['player_id'])->company;
+        if ($request->user()->cannot('store', [Decision::class, $company])) {
+            abort(403);
+        }
         
-        $decisionService->createDecisionWithMachineDecision($validated);
+        $decisionService->createDecision($validated);
 
         return redirect()->back();
     }
@@ -104,53 +105,44 @@ class DecisionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
         $decision = Decision::findOrFail($id);
         $decision_maker = User::where('id', $decision->player_id)->first();
 
-        return view('gamemaster.decisions.show', [
+        $machine_decisions = MachineDecision::where('decision_id', $decision->id)->get();
+        $machines_bought = Machine::where('company_id', $decision_maker->player->company->id)->where('period', $decision->period)->get();
+        $machines_sold = Machine::whereIn('id', $machine_decisions->pluck('sell')->toArray())->get();
+
+        return view('user.decisions.show', [
             'decision' => $decision,
             'decision_maker' => $decision_maker,
+            'machines_bought' => $machines_bought,
+            'machines_sold' => $machines_sold,
         ]);
     }
 
     /**
-     * Display all decisions the players made for the gamemaster.
+     * Show the form for editing the specified resource.
      */
-    public function check($id, $period)
+    public function edit(string $id)
     {
-        $all_games = Game::hasGamemasters()->get();
-        $all_companies = Company::where('game_id', $all_games->pluck('id')->toArray())->get();
-        $game = Game::find($id);
-        $companies = Company::where('game_id', $id)->get();
-        $players = Player::whereIn('company_id', $companies->pluck('id')->toArray())->get();
+        //
+    }
 
-        $decisions = Decision::whereIn('player_id', $players->pluck('id')->toArray())
-            ->where('period', $period)->get();
-        $decision_makers = User::select('users.*', 'players.company_id')
-            ->join('players', 'users.id', '=', 'players.id')
-            ->whereIn('users.id', $decisions->pluck('player_id')->toArray())
-            ->get();
-
-        return view('gamemaster.decisions.check', [
-            'all_games' => $all_games,
-            'all_companies' => $all_companies,
-            'period' => $period,
-            'game' => $game,
-            'companies' => $companies,
-            'decisions' => $decisions,
-            'decision_makers' => $decision_makers,
-        ]);
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
-        Decision::findOrFail($id)->delete();
-
-        return redirect()->back();
+        //
     }
 }

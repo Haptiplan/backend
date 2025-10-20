@@ -20,4 +20,9 @@ class Player extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function decisions()
+    {
+        return $this->hasMany(Decision::class);
+    }
 }
