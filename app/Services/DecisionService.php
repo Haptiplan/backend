@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Account;
+use App\Models\AccountEntry;
 use App\Models\Decision;
 use App\Models\MachineDecision;
 use App\Models\Machine;
@@ -19,10 +21,12 @@ class DecisionService
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
         // Create Buy MachineDecisions
         if (isset($validated['buy'])) {
             $this->MachineBuy($decision, $validated);
         }
+
         // Create Sell MachineDecisions
         if (isset($validated['sell'])) {
             $this->MachineSell($decision, $validated);
@@ -42,10 +46,25 @@ class DecisionService
                 ]);
                 // Create Machine, loop the number of Machines a Player wanted to buy
                 for ($i = 0; $i < $buyMachine; $i++) {
-                    Machine::create([
+                    $machine = machine::create([
                         'machinetype_id' => $machineTypeId,
                         'company_id' => $company->id,
                         'period' => $decision->period,
+                    ]);
+                    $machineType = $machine->machinetype;
+                    AccountEntry::create([
+                        'company_id' => $company->id,
+                        'period' => $decision->period,
+                        'debit' => Account::find(720)->id,
+                        'credit' => Account::find(4400)->id,
+                        'amount' => $machineType->price,
+                    ]);
+                    AccountEntry::create([
+                        'company_id' => $company->id,
+                        'period' => $decision->period + 1,
+                        'debit' => Account::find(4400)->id,
+                        'credit' => Account::find(2800)->id,
+                        'amount' => $machineType->price,
                     ]);
                 }
             }
@@ -67,7 +86,20 @@ class DecisionService
                 $machine->status = '0';
                 $machine->save();
             }
+            AccountEntry::create([
+                'company_id' => $decision->player->company->id,
+                'period' => $decision->period,
+                'debit' => Account::find(2800)->id,
+                'credit' => Account::find(720)->id,
+                'amount' => 0 // TODO: Betrag berechnen mit Parametern
+            ]);
+            AccountEntry::create([
+                'company_id' => $decision->player->company->id,
+                'period' => $decision->period,
+                'debit' => Account::find(6960)->id,
+                'credit' => Account::find(2800)->id,
+                'amount' =>  0, // TODO: Betrag berechnen mit Parametern
+            ]);
         }
     }
-   
 }

@@ -16,7 +16,7 @@
         <x-success-message />
 
         <!-- Edit Company Form -->
-        <form class="space-y-8" action="{{ route('companies.update', ['games' => $game->id, 'id' => $company->id]) }}" method="POST">
+        <form class="space-y-8" action="{{ route('games.companies.update', ['games' => $game->id, 'id' => $company->id]) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -41,7 +41,7 @@
 
         <!-- Back Button -->
         <div class="text-center mt-6">
-            <x-back-button href="{{ route('companies.index', $game) }}">
+            <x-back-button href="{{ route('games.companies.index', $game) }}">
                 {{ __('messages.back') }}
             </x-back-button>
         </div>

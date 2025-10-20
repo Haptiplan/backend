@@ -143,6 +143,6 @@ class CompanyController extends Controller
 
         $company->delete();
 
-        return redirect()->route('companies.index')->with('status', 'messages.successDelete');
+        return redirect()->route('games.companies.index')->with('status', 'messages.successDelete');
     }
 }

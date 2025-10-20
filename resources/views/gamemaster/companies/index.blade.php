@@ -18,7 +18,7 @@
         
         <!-- Create Company Button with Gradient Background and Hover Effect -->
         <div class="text-center mb-6">
-            <x-create-button href="{{ route('companies.create', $game) }}">
+            <x-create-button href="{{ route('games.companies.create', $game) }}">
                 {{ __('messages.companyCreate') }}
             </x-create-button>
         </div>
@@ -29,7 +29,7 @@
                 <ul class="mt-2">
                     @foreach ($companies as $company)
                         @if ($game->id == $company->game_id)
-                            <x-list-item :item="$company" :editRoute="'companies.edit', ['games' => $game->id, 'id' => $company->id]" :deleteRoute="'companies.destroy', ['games' => $game->id, 'id' => $company->id]" />
+                            <x-list-item :item="$company" :editRoute="'games.companies.edit', ['games' => $game->id, 'id' => $company->id]" :deleteRoute="'games.companies.destroy', ['games' => $game->id, 'id' => $company->id]" />
                         @endif
                     @endforeach
                 </ul>

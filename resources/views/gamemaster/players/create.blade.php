@@ -17,7 +17,7 @@
         <x-success-message />
 
         <!-- Player Creation Form -->
-        <form class="space-y-8" action="{{ route('players.store', $game) }}" method="POST">
+        <form class="space-y-8" action="{{ route('games.players.store', $game) }}" method="POST">
             @csrf
 
             <!-- Player Selection -->
@@ -65,7 +65,7 @@
 
         <!-- Back Button -->
         <div class="text-center mt-6">
-            <x-back-button href="{{ route('players.index', $game) }}">
+            <x-back-button href="{{ route('games.players.index', $game) }}">
                 {{ __('messages.back') }}
             </x-back-button>
         </div>

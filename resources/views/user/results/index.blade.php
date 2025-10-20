@@ -7,20 +7,19 @@
     <!-- Layout Content Box -->
     <x-content-box>
         <x-page-title>
-            {{ trans_choice('messages.decision', $decisions) }}
+            {{ __('messages.results') }}
         </x-page-title>
         <x-error-message />
         <x-success-message />
-
         <div>
-            @foreach ($decisions as $decision)
-            <li class="ml-10">
-                {{ __('messages.decisionName') . " " . $decision->period}}
-                <x-show-button :href="route('decisions.show', $decision->id)">
+            @for ($i = 0; $i < $periods; $i++)
+                <li class="ml-10">
+                {{ __('messages.resultsOf') . " " . $i}}
+                <x-show-button :href="route('accounts.show', $i)">
                     {{ __('messages.show') }}
                 </x-show-button>
-            </li>
-            @endforeach
+                
+                @endfor
         </div>
     </x-content-box>
 
