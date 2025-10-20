@@ -1,6 +1,7 @@
 @php
 use App\Models\User;
 use App\Models\Game;
+use App\Models\Player;
 $admin = User::ROLE_ADMIN;
 $gamemaster = User::ROLE_GAMEMASTER;
 $user = User::ROLE_USER;
@@ -26,10 +27,11 @@ $currentPeriod = $game?->currentPeriod;
                             <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                         </a>
                     </div>
-
+                    @if (in_array(Auth::user()->id, Player::all()->pluck('id')->toArray()))
                     <x-nav-link :href="route('decisions.index')" :active="request()->routeIs('decision.index')">
                         {{ trans_choice('messages.decision', 1) }}
                     </x-nav-link>
+                    @endif
                     @endif
                     @if(Auth::check() && Auth::user()->role->id == $admin)
                     <x-nav-link :href="route('admin_dashboard_show')" :active="request()->routeIs('admin_dashboard_show')">
@@ -65,10 +67,6 @@ $currentPeriod = $game?->currentPeriod;
                         {{ __('messages.selectGame') }}
                     </x-nav-link>
                     @endif
-                    @endif
-
-                    @if(Auth::check() && Auth::user()->role->id == $user)
-
                     @endif
                 </div>
             </div>
