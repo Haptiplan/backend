@@ -57,7 +57,7 @@ Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])-
 /** Admin routes */
 
 // Dashboard:
-Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(function () {
+Route::middleware(['localization', 'admin_auth', 'role_dashboard'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin_dashboard_show');
 });
 // CRUD to manage all users (including admins, gamemasters and players, exept yourself):
@@ -69,7 +69,7 @@ Route::middleware(['web', 'localization', 'verified', 'check_role:' . $admin])
 /** Gamemaster routes */
 
 // Dashboard:
-Route::middleware(['localization', 'gamemaster_auth', 'ensure.game.selected'])->prefix('gamemaster')->group(function () {
+Route::middleware(['ensure_game_selected', 'localization', 'gamemaster_auth', 'role_dashboard'])->prefix('gamemaster')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
 Route::middleware(['localization', 'impersonate', 'gamemaster_auth'])
@@ -89,7 +89,7 @@ Route::patch('/games/{game}/status', [GameController::class, 'updateStatus'])->n
 
 
 // CRUD of various models the gamemaster has access to:
-Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function () {
+Route::middleware(['ensure_game_selected', 'web', 'localization', 'verified', 'impersonate', 'check_role:' . $gamemaster])->group(function () {
     // Game routes without the prefix
     Route::resource('games', GameController::class);
     Route::prefix(prefix: 'games/{games}')->group(function () {
@@ -126,7 +126,7 @@ Route::middleware(['web', 'localization', 'verified', 'impersonate', 'check_role
 /** Player routes */
 
 // Dashboard:
-Route::middleware(['localization', 'auth', 'verified', 'impersonate'])->get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard');
+Route::middleware(['localization', 'auth', 'verified', 'impersonate', 'role_dashboard'])->get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard');
 // CRUD of various models the players have access to.
 Route::middleware(['localization', 'verified', 'impersonate', 'check_role:' . $user])->group(function () {
     /** 
