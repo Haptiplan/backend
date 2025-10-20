@@ -57,7 +57,7 @@ Route::middleware(['localization', 'check_role:' . $admin . ',' . $gamemaster])-
 /** Admin routes */
 
 // Dashboard:
-Route::middleware(['localization', 'admin_auth', 'role_dashboard'])->prefix('admin')->group(function () {
+Route::middleware(['localization', 'admin_auth'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin_dashboard_show');
 });
 // CRUD to manage all users (including admins, gamemasters and players, exept yourself):
@@ -69,7 +69,7 @@ Route::middleware(['web', 'localization', 'verified', 'check_role:' . $admin])
 /** Gamemaster routes */
 
 // Dashboard:
-Route::middleware(['ensure_game_selected', 'localization', 'gamemaster_auth', 'role_dashboard'])->prefix('gamemaster')->group(function () {
+Route::middleware(['ensure_game_selected', 'localization', 'gamemaster_auth'])->prefix('gamemaster')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
 Route::middleware(['localization', 'impersonate', 'gamemaster_auth'])
