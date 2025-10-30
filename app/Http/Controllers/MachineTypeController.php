@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Game;
-use App\Models\MachineType;
+use App\Models\Game\Game;
+use App\Models\Game\MachineType;
 use App\Rules\MachineTypeUsedInGame;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

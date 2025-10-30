@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Decision;
 
+use App\Models\Game\Company;
+use App\Models\Game\MachineType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

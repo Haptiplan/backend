@@ -16,7 +16,7 @@ class GamemasterAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $gamemaster = \App\Models\User::ROLE_GAMEMASTER;
+        $gamemaster = \App\Models\User\User::ROLE_GAMEMASTER;
         if(Auth::user()->role->id == $gamemaster){
             return $next($request);
         }else{

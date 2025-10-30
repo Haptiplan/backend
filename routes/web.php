@@ -12,8 +12,8 @@ use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Gamemaster\DecisionController as GmDecisionController;
 use App\Http\Controllers\Player\DecisionController as PlayerDecisionController;
-use App\Models\User;
 use App\Http\Controllers\UserController;
+use App\Models\User\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -71,7 +71,7 @@ Route::middleware(['web', 'localization', 'verified', 'check_role:' . $admin])
 /** Gamemaster routes */
 
 // Dashboard:
-Route::middleware(['ensure_game_selected', 'localization', 'gamemaster_auth'])->prefix('gamemaster')->group(function () {
+Route::middleware(['ensure_game_selected', 'localization', 'impersonate', 'gamemaster_auth'])->prefix('gamemaster')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'gamemasterDashboard'])->name('gamemaster_dashboard_show');
 });
 Route::middleware(['localization', 'impersonate', 'gamemaster_auth'])

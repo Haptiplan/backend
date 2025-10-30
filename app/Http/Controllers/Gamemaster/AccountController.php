@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\gamemaster;
 
 use App\Http\Controllers\Controller;
-use App\Models\Account;
-use App\Models\Game;
-use App\Models\User;
+use App\Models\Decision\Account;
+use App\Models\Game\Game;
+use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;

@@ -17,7 +17,7 @@ class AdminAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $admin = \App\Models\User::ROLE_ADMIN;
+        $admin = \App\Models\User\User::ROLE_ADMIN;
         if(Auth::user()->role->id == $admin ){
             return $next($request);
         }else{

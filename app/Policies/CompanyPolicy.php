@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Company;
-use App\Models\Game;
-use App\Models\User;
+use App\Models\Game\Company;
+use App\Models\Game\Game;
+use App\Models\User\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Session;
 

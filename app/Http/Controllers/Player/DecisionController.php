@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Player;
 
-use App\Models\Decision;
+use App\Models\Decision\Decision;
 use App\Http\Controllers\Controller;
-use App\Models\Company;
-use App\Models\Game;
-use App\Models\Machine;
-use App\Models\MachineDecision;
-use App\Models\MachineType;
-use App\Models\Player;
-use App\Models\User;
+use App\Models\Game\Company;
+use App\Models\Game\Game;
+use App\Models\Decision\Machine;
+use App\Models\Decision\MachineDecision;
+use App\Models\User\Player;
+use App\Models\User\User;
 use App\Services\DecisionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

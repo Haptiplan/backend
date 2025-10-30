@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Machine;
+use App\Models\Decision\Machine;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 

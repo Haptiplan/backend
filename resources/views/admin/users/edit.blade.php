@@ -1,5 +1,5 @@
 <?php
-    use App\Models\User;
+    use App\Models\User\User;
 ?>
 <x-app-layout>
     <x-slot name="header">

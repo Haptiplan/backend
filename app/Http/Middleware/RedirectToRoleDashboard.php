@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
+use App\Models\User\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,11 +19,11 @@ class RedirectToRoleDashboard
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
-        if(session()->has('impersonate')) {
-            $user = User::find(session('impersonate'));
-        }
         if (!$user) {
             return redirect()->route('login');
+        }
+        if(session()->has('impersonate')) {
+            $user = User::find(session('impersonate'));
         }
 
         // Prüfe, ob die aktuelle Route zum User passt

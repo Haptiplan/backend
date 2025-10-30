@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Company;
-use App\Models\Game;
-use App\Models\Player;
-use App\Models\User;
+use App\Models\Game\Company;
+use App\Models\Game\Game;
+use App\Models\User\Player;
+use App\Models\User\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

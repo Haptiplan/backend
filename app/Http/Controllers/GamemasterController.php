@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Game;
-use App\Models\User;
-use App\Models\Gamemaster;
+use App\Models\Game\Game;
+use App\Models\User\Gamemaster;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 
 class GamemasterController extends Controller
 {

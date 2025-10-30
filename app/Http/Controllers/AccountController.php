@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
-use App\Models\AccountEntry;
-use App\Models\User;
+use App\Models\Decision\Account;
+use App\Models\User\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
