@@ -1,7 +1,7 @@
 @php
-use App\Models\User;
-use App\Models\Game;
-use App\Models\Player;
+use App\Models\User\User;
+use App\Models\Game\Game;
+use App\Models\User\Player;
 $admin = User::ROLE_ADMIN;
 $gamemaster = User::ROLE_GAMEMASTER;
 $user = User::ROLE_USER;

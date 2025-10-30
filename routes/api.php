@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Models\Company;
-use App\Models\Game;
+use App\Models\Game\Company;
+use App\Models\Game\Game;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/test-create-company', function(Request $request) {

@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Game;
 use App\Models\Gamemaster;
-use App\Models\User;
+use App\Models\User\User;
 
 class GamemasterSeeder extends Seeder
 {

@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use App\Models\MachineType;
+use App\Models\Game\MachineType;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;

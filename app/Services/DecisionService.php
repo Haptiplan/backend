@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Account;
-use App\Models\AccountEntry;
-use App\Models\Decision;
-use App\Models\MachineDecision;
-use App\Models\Machine;
+use App\Models\Decision\Account;
+use App\Models\Decision\AccountEntry;
+use App\Models\Decision\Decision;
+use App\Models\Decision\MachineDecision;
+use App\Models\Decision\Machine;
 use Illuminate\Validation\Rules\Exists;
 
 use function PHPUnit\Framework\isNull;

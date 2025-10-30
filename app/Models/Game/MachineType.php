@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Models\Game;
+
+use App\Models\Decision\Machine;
+use App\Models\Decision\MachineDecision;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class MachineType extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'game_id',
+        'name',
+        'price',
+        'fix_costs_per_period',
+        'capacity',
+        'number_of_operators',
+        'depreciation_period'
+    ];
+
+    public function game()
+    {
+        return $this->belongsTo(Game::class);
+    }
+
+    public function machines()
+    {
+        return $this->hasMany(Machine::class);
+    }
+
+    public function machinedecisions()
+    {
+        return $this->hasMany(MachineDecision::class);
+    }
+}
