@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Game;
 
+use App\Models\Game\Company;
 use App\Models\Game\Game;
 use App\Models\User\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Session;
 
-class GamemasterPolicy
+class CompanyPolicy
 {
     /**
      * Create a new policy instance.
@@ -23,33 +24,35 @@ class GamemasterPolicy
             $user = User::find(Session::get('impersonate'));
         }
 
-        if ($user->role->id == User::ROLE_ADMIN) return Response::allow();
-
-        return ($user->role->id == User::ROLE_GAMEMASTER)
+        return in_array($user->id, $game->gamemasters->pluck('user_id')->toArray())
             ? Response::allow()
             : Response::deny();
     }
-    
-    public function delete(User $user, Game $game)
+    public function update(User $user, Company $company)
     {
         if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
 
-        if ($user->role->id == User::ROLE_ADMIN) return Response::allow();
+        $isGamemaster = $company->game->gamemasters()
+        ->where('user_id', $user->id)
+        ->exists();
 
-        return in_array($game->id, $game->hasGamemasters()->pluck('id')->toArray())
+        return $isGamemaster
             ? Response::allow()
             : Response::deny();
     }
-
-    public function deleteAll(User $user)
+    public function delete(User $user, Company $company)
     {
         if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
 
-        return $user->role->id == User::ROLE_ADMIN
+        $isGamemaster = $company->game->gamemasters()
+        ->where('user_id', $user->id)
+        ->exists();
+
+        return $isGamemaster
             ? Response::allow()
             : Response::deny();
     }

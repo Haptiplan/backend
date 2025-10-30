@@ -1,45 +1,56 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Game;
 
-use App\Models\Game\Company;
+use App\Models\Game\Game;
 use App\Models\User\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Session;
 
-class PlayerPolicy
+
+class GamePolicy
 {
-    public function store(User $user, Company $company): Response
+    /**
+     * Create a new policy instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    public function store(User $user): Response
     {
         if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
-        $user_ids = $company->game->gamemasters->pluck('user_id')->toArray();
 
-        return in_array($user->id, $user_ids)
+        return $user->role->id == User::ROLE_GAMEMASTER
             ? Response::allow()
             : Response::deny();
     }
-    public function update(User $user, Company $company)
+    public function update(User $user, Game $game)
     {
         if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
-        $user_ids = $company->game->gamemasters->pluck('user_id')->toArray();
 
-        return in_array($user->id, $user_ids)
+        return in_array($user->id, $game->gamemasters()->pluck('user_id')->toArray())
             ? Response::allow()
             : Response::deny();
     }
-    public function delete(User $user, Company $company)
+    public function delete(User $user, Game $game)
     {
         if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
-        $user_ids = $company->game->gamemasters->pluck('user_id')->toArray();
 
-        return in_array($user->id, $user_ids)
+        return in_array($user->id, $game->gamemasters()->pluck('user_id')->toArray())
             ? Response::allow()
             : Response::deny();
+    }
+
+    public function modify(User $user, Game $game)
+    {
+        return in_array($game->status, ['active', 'pending']);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Game;
 
 use App\Models\Game\Game;
 use App\Models\Game\MachineType;

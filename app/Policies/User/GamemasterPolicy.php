@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\User;
 
 use App\Models\Game\Game;
 use App\Models\User\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Session;
 
-
-class GamePolicy
+class GamemasterPolicy
 {
     /**
      * Create a new policy instance.
@@ -18,39 +17,40 @@ class GamePolicy
         //
     }
 
-    public function store(User $user): Response
+    public function store(User $user, Game $game): Response
     {
         if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
 
-        return $user->role->id == User::ROLE_GAMEMASTER
-            ? Response::allow()
-            : Response::deny();
-    }
-    public function update(User $user, Game $game)
-    {
-        if (Session::has('impersonate')) {
-            $user = User::find(Session::get('impersonate'));
-        }
+        if ($user->role->id == User::ROLE_ADMIN) return Response::allow();
 
-        return in_array($user->id, $game->gamemasters()->pluck('user_id')->toArray())
+        return ($user->role->id == User::ROLE_GAMEMASTER)
             ? Response::allow()
             : Response::deny();
     }
+    
     public function delete(User $user, Game $game)
     {
         if (Session::has('impersonate')) {
             $user = User::find(Session::get('impersonate'));
         }
 
-        return in_array($user->id, $game->gamemasters()->pluck('user_id')->toArray())
+        if ($user->role->id == User::ROLE_ADMIN) return Response::allow();
+
+        return in_array($game->id, $game->hasGamemasters()->pluck('id')->toArray())
             ? Response::allow()
             : Response::deny();
     }
 
-    public function modify(User $user, Game $game)
+    public function deleteAll(User $user)
     {
-        return in_array($game->status, ['active', 'pending']);
+        if (Session::has('impersonate')) {
+            $user = User::find(Session::get('impersonate'));
+        }
+
+        return $user->role->id == User::ROLE_ADMIN
+            ? Response::allow()
+            : Response::deny();
     }
 }

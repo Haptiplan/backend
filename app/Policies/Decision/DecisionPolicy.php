@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Decision;
 
 use App\Models\Game\Company;
 use App\Models\User\User;
