@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\Game;
 
-use App\Models\User\User;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class Impersonate
+class EnsureGameIsSelected
 {
     /**
      * Handle an incoming request.
@@ -17,10 +15,10 @@ class Impersonate
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->session()->has('impersonate'))
-        {
-            Auth::onceUsingId($request->session()->get('impersonate'));
+        if (!session()->has('selected_game_id')) {
+            return redirect()->route('games.select');
         }
+
         return $next($request);
     }
 }

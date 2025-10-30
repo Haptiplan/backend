@@ -15,14 +15,14 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'admin_auth' => \App\Http\Middleware\AdminAuth::class,
-            'check_role' => \App\Http\Middleware\CheckRole::class,
-            'check_period' => \App\Http\Middleware\CheckPeriod::class,
-            'ensure_game_selected' => \App\Http\Middleware\EnsureGameIsSelected::class,
-            'impersonate' => \App\Http\Middleware\Impersonate::class,
-            'gamemaster_auth' => \App\Http\Middleware\GamemasterAuth::class,
+            'admin_auth' => \App\Http\Middleware\User\AdminAuth::class,
+            'check_role' => \App\Http\Middleware\User\CheckRole::class,
+            'check_period' => \App\Http\Middleware\Game\CheckPeriod::class,
+            'ensure_game_selected' => \App\Http\Middleware\Game\EnsureGameIsSelected::class,
+            'impersonate' => \App\Http\Middleware\User\Impersonate::class,
+            'gamemaster_auth' => \App\Http\Middleware\User\GamemasterAuth::class,
             'localization' => \App\Http\Middleware\Localization::class,
-            'role_dashboard' => \App\Http\Middleware\RedirectToRoleDashboard::class,
+            'role_dashboard' => \App\Http\Middleware\User\RedirectToRoleDashboard::class,
 
         ]);
     })

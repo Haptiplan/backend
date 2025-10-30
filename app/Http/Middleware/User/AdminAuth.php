@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\User;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class GamemasterAuth
+class AdminAuth
 {
+    
     /**
      * Handle an incoming request.
      *
@@ -16,11 +17,12 @@ class GamemasterAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $gamemaster = \App\Models\User\User::ROLE_GAMEMASTER;
-        if(Auth::user()->role->id == $gamemaster){
+        $admin = \App\Models\User\User::ROLE_ADMIN;
+        if(Auth::user()->role->id == $admin ){
             return $next($request);
         }else{
             return redirect()->route('login')->with('error', 'You do not have permission to access this page !');
         }
+        
     }
 }
