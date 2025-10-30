@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Decision;
 
 use App\Models\Decision\AccountEntry;
 use App\Http\Controllers\Controller;

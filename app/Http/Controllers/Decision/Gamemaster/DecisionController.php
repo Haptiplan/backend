@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Gamemaster;
+namespace App\Http\Controllers\Decision\Gamemaster;
 
 use App\Models\Decision\Decision;
 use App\Http\Controllers\Controller;

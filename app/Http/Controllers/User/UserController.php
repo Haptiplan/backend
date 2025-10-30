@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\Game\Company;
 use App\Models\Game\Game;
 use App\Models\User\Gamemaster;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Player;
+namespace App\Http\Controllers\Decision\Player;
 
 use App\Models\Decision\Decision;
 use App\Http\Controllers\Controller;
